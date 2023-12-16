@@ -5,6 +5,7 @@ import Container from "../components/Container/Container";
 import Header from "../components/Header/Header";
 import HomeSection from "../modules/Home/HomeSection";
 import Footer from "../components/Footer/Footer";
+import Blog from "../components/Blog/Blog";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Container>
           <Header />
           <HomeSection />
+          <Blog />
           <Footer />
         </Container>
     </div>

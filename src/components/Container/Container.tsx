@@ -13,7 +13,7 @@ interface ContainerProps {
     width: 1262px;
     margin: 0 auto;
     position: relative;
-    height: 1920px;
+    height: auto;
   `;
   
   export default Container;

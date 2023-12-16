@@ -20,6 +20,7 @@ const FooterContainer = styled.div`
     width: 1004px;
     flex-direction: column;
     margin: 0 auto;
+    margin-top: 318px;
 `
 
 const FooterBlock = styled.div`
