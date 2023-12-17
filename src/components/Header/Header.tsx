@@ -10,6 +10,7 @@ const HeaderBlock = styled.div`
     border-bottom: 1px solid #1A1A1A;
     background: rgba(6, 6, 6, 0.70);
     backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     width: 100%;
     max-width: 1920px;
     display: flex;
