@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import Link from "next/link";
 import Image from "next/image";
-import CardBlog from "../../modules/Blog/Card";
+import CardBlog from "../../modules/Blog/Card/Card";
 
 const BlogContainer = styled.div`
     display: flex;
@@ -15,6 +15,7 @@ const BlogContainer = styled.div`
     padding: 34px 29px 29px 29px;
     margin-top: 111px;
     gap: 17px;
+    overflow: hidden;
 `
 const Header = styled.div`
     display: flex;
@@ -66,9 +67,9 @@ const Blog = () => {
                 </Link>
             </Header>
             <CardContainer>
-                <CardBlog />
-                <CardBlog />
-                <CardBlog />
+                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
+                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
+                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
             </CardContainer>
         </BlogContainer>
     )

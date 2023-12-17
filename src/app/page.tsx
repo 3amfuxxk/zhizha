@@ -6,6 +6,7 @@ import Header from "../components/Header/Header";
 import HomeSection from "../modules/Home/HomeSection";
 import Footer from "../components/Footer/Footer";
 import Blog from "../components/Blog/Blog";
+import Review from "../components/Review/Review";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
           <Header />
           <HomeSection />
           <Blog />
+          <Review />
           <Footer />
         </Container>
     </div>
