@@ -5,6 +5,7 @@ import SocialMediaBlock from "../../modules/Footer/SocialMediaBlock/SocialMediaB
 import ListBlock from "../../modules/Footer/ListBlock/ListBlock";
 import FormBlock from "../../modules/Footer/FormBlock/FormBlock";
 import { Roboto } from "next/font/google";
+import Link from "next/link";
 
 const roboto = Roboto({
     weight: ['400', '500'],
@@ -21,6 +22,7 @@ const FooterContainer = styled.div`
     flex-direction: column;
     margin: 0 auto;
     margin-top: 318px;
+    margin-bottom: 102px;
 `
 
 const FooterBlock = styled.div`
@@ -89,6 +91,31 @@ const SocialContainer = styled.div`
     gap: 14px;
     grid-area: div5;
 `
+const CreditsBlock = styled.div`
+    display: flex;
+    width: 100%;
+    margin-top: 92px;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+`
+const CreditsText = styled.p`
+    color: rgba(255, 255, 255, 0.50);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+`
+const Span = styled.span`
+    color: #FFF;
+`
+
+const ScrollTop = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+}
 
 const Footer = () => {
     return (
@@ -103,14 +130,14 @@ const Footer = () => {
                         <Image src={'/img/Footer/svg/flag.svg'} width={27} height={18} alt='' />
                     </InfoRow>
                 </InfoBlock>
-                <UpBlock>
-                    <UpBlockRow>
-                        <HeadText>
-                            Вгору
-                        </HeadText>
-                        <Image src={'img/Footer/svg/arrow-up.svg'} width={18} height={9} alt="" />
-                    </UpBlockRow>
-                </UpBlock>
+                    <UpBlock onClick={ScrollTop}>
+                        <UpBlockRow>
+                            <HeadText>
+                                Вгору
+                            </HeadText>
+                            <Image src={'img/Footer/svg/arrow-up.svg'} width={18} height={9} alt="" />
+                        </UpBlockRow>
+                    </UpBlock>
                 <ListBlock />
                 <SocialContainer>
                     <SocialMediaBlock imgLink="/img/Footer/svg/tg.svg" />
@@ -119,6 +146,11 @@ const Footer = () => {
                 </SocialContainer>
                 <FormBlock />
             </FooterBlock>
+            <CreditsBlock>
+                <CreditsText>
+                    @2023 Жижа. <Span>All Rights reserved</Span>
+                </CreditsText>
+            </CreditsBlock>
         </FooterContainer>
     )
 }

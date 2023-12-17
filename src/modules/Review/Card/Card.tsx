@@ -52,13 +52,51 @@ const Text = styled.p`
     font-weight: 500;
     line-height: 150%;
 `
+const UserBlock = styled.div`
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    align-items: center;
+    margin-top: 14px;
+`
+const UserImage = styled.div`
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    fill: #181818;
+    display: flex;
+    border-radius: 50%;
+    overflow: hidden;
+`
+const UserInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+`
+const UserName = styled.p`
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+`
+const UserRole = styled.p`
+color: rgba(255, 255, 255, 0.50);
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 100%;
+`
+
 interface Props {
     imgLink1: string;
     imgLink2: string;
     text: string;
+    userLink: string;
+    userName: string;
 }
 
-const Card = ({imgLink1,imgLink2,text}: Props) => {
+const Card = ({imgLink1, imgLink2, text, userLink, userName}: Props) => {
     return (
         <CardContainer>
             <ImageBlock>
@@ -74,6 +112,19 @@ const Card = ({imgLink1,imgLink2,text}: Props) => {
                     {text}
                 </Text>
             </ReviewText>
+            <UserBlock>
+                <UserImage>
+                    <Image src={`/img/Review/user/${userLink}`} width={60} height={60} alt="" />
+                </UserImage>
+                <UserInfo>
+                    <UserName>
+                        {userName}
+                    </UserName>
+                    <UserRole className={roboto.className}>
+                        Покупець
+                    </UserRole>
+                </UserInfo>
+            </UserBlock>
         </CardContainer>
     )
 }
