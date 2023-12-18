@@ -76,7 +76,7 @@ const CatalogBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardBlock>
-                    <Link href={"/"}>
+                    <Link href={"/liquid"}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
                     <Link href={"/"}>
