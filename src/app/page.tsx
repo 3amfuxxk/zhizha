@@ -8,6 +8,7 @@ import Footer from "../components/Footer/Footer";
 import Blog from "../components/Blog/Blog";
 import Review from "../components/Review/Review";
 import Pros from "../components/Pros/Pros";
+import Recommendation from "../components/Recommendation/Recommendation";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <Container>
           <Header />
           <HomeSection />
+          <Recommendation />
           <Pros />
           <Blog />
           <Review />
