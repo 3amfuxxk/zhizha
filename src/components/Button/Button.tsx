@@ -17,6 +17,7 @@ const ButtonContainer = styled.div`
     background: #B6020D;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `
 const Text = styled.p`
     color: #FFF;

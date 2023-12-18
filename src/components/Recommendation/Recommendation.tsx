@@ -80,7 +80,7 @@ const Recommendation = () => {
                         Ми рекомендуємо:
                     </HeadText>
                 </HeaderLeft>
-                <Link href="/">
+                <Link href="/catalog">
                     <HeaderRight>
                         <LinkText>
                             До каталогу
@@ -90,14 +90,14 @@ const Recommendation = () => {
                 </Link>
             </Header>
             <CardContainer>
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
-                <Card imgLink='rb.jpg' />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'3'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'4'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'5'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'6'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'7'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'8'} />
             </CardContainer>
         </RecContainer>
     )
