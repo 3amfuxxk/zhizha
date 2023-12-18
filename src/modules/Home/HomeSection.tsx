@@ -116,14 +116,16 @@ const HomeSection = () => {
             <SmallText className={roboto.className}>
                 Та різних популярних, або гіковських девайсів та комплектуючих
             </SmallText>
-            <Button>
-                <ButtonBlock>
-                    <ButtonText>
-                        Каталог
-                    </ButtonText>
-                    <Image src={'/img/Home/arrow-right.svg'} width={9} height={15} alt='' />
-                </ButtonBlock>
-            </Button>
+            <Link href={"/catalog"} >
+                <Button>
+                    <ButtonBlock>
+                        <ButtonText>
+                            Каталог
+                        </ButtonText>
+                        <Image src={'/img/Home/arrow-right.svg'} width={9} height={15} alt='' />
+                    </ButtonBlock>
+                </Button>
+            </Link>
         </HomeBlock>
     )
 }

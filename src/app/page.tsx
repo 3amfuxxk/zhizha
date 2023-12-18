@@ -16,8 +16,8 @@ export default function Home() {
         <Container>
           <Header />
           <HomeSection />
-          <Recommendation />
           <Pros />
+          <Recommendation />
           <Blog />
           <Review />
           <Footer />

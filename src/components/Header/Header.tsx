@@ -4,6 +4,7 @@ import Image from "next/image";
 import NavButton from "../NavButton/NavButton";
 import BarComponent from "../BarComponent/BarComponent";
 import Language from "../Language/Language";
+import Link from "next/link";
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -73,9 +74,13 @@ const ItemsCount = styled.p`
 const Header = () => {
     return (
         <HeaderBlock>
-            <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
+            <Link href={"/"}>
+                <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
+            </Link>
             <NavBlock>
-                <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
+                <Link href={"/catalog"} >
+                    <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
+                </Link>
                 <NavButton text={'Доставка'} svgLink={'contact.svg'} />
                 <NavButton text={'Контакти'} svgLink={'order.svg'} />
             </NavBlock>

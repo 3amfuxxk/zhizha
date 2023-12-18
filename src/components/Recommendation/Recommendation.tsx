@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -55,10 +55,11 @@ const LinkText = styled.p`
     font-weight: 500;
     line-height: 130%;
 `
-const CardContainer = styled.div`
+const CardContainer = styled.div<{expanded: boolean}>`
     display: grid;
     overflow: hidden;
-    max-height: 872px;
+    max-height: ${(props) => (props.expanded ? '1754px' : '872px')};
+    transition: max-height 0.3s ease;
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr 1fr; 
     grid-template-rows: 1fr 1fr; 
@@ -67,8 +68,42 @@ const CardContainer = styled.div`
         ". . . ."
         ". . . ."; 
 `
+// max-height: ${({ expanded }) => (expanded ? '1754px' : '872px')};
+const ButtonRow = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 45px;
+`
+const ButtonMore = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 135px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #B6020D;
+    gap: 7px;
+    margin: 0 auto;
+    cursor: pointer;
+`
+const ButtonText = styled.p`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+`
 
 const Recommendation = () => {
+    const [expanded, setExpanded] = useState<boolean>(false);
+
+    const toggleExpanded = () => {
+        setExpanded((prevExpanded) => !prevExpanded);
+    };
+
     return (
         <RecContainer>
             <Header>
@@ -89,7 +124,15 @@ const Recommendation = () => {
                     </HeaderRight>
                 </Link>
             </Header>
-            <CardContainer>
+            <CardContainer expanded={expanded}>
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'3'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'4'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'5'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'6'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'7'} />
+                <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'8'} />
                 <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} />
                 <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} />
                 <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'3'} />
@@ -99,6 +142,14 @@ const Recommendation = () => {
                 <Card imgLink='rb.jpg' type={'liquid'} price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'7'} />
                 <Card imgLink='rb.jpg' type={'liquid'} price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'8'} />
             </CardContainer>
+            <ButtonRow>
+                <ButtonMore onClick={toggleExpanded}>
+                    <ButtonText>
+                        Більше
+                    </ButtonText>
+                    <Image src={'/img/Card/svg/dots.svg'} width={16} height={4} alt="" />
+                </ButtonMore>
+            </ButtonRow>
         </RecContainer>
     )
 }
