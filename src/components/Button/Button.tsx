@@ -6,6 +6,7 @@ import Image from "next/image";
 interface Props {
     text: string;
     children?: React.ReactNode;
+    onClick?: () => void;
 }
 
 const ButtonContainer = styled.div`
@@ -32,9 +33,9 @@ const ButtonBlock = styled.div`
 
 `
 
-const Button = ({text,children}: Props) => {
+const Button = ({text, children, onClick}: Props) => {
     return (
-        <ButtonContainer>
+        <ButtonContainer onClick={onClick}>
             <ButtonBlock>
                 {children}
                 <Text>

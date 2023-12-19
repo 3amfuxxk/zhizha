@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -86,7 +86,15 @@ const LikeBlock = styled.div`
     cursor: pointer;
 `
 
-type ProductType = 'liquid' | 'pod' | 'component';
+interface Product {
+    name: string;
+    price: number;
+    sale?: number;
+    imgLink: string;
+    id: string;
+    strength: string[];
+    size: string[];
+}
 
 interface Props {
     name: string;
@@ -94,10 +102,26 @@ interface Props {
     sale?: number;
     imgLink: string;
     id: string;
-    type: ProductType;
+    onAddToCart: (product: Product) => void;
+    strength: string[];
+    size: string[];
 }
 
-const Card = ({ name, price, sale, imgLink, id, type }: Props) => {
+const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: Props) => {
+
+    const handleOpen = () => {
+        const addContainer = document.getElementById('add-container');
+        if (addContainer) {
+            addContainer.style.display = 'flex';
+        }
+    };
+
+    const handleAddToCart = () => {
+        const product = { name, price, sale, imgLink, id, strength, size};
+        onAddToCart(product);
+        handleOpen();
+    };
+
     return (
         <CardContainer>
             <ImgBlock>
@@ -120,7 +144,7 @@ const Card = ({ name, price, sale, imgLink, id, type }: Props) => {
                     )}
                 </PriceBlock>
                 <AddBlock>
-                    <Button text={'В кошик'}>
+                    <Button onClick={handleAddToCart} text={'В кошик'} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock>
