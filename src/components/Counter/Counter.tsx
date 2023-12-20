@@ -95,7 +95,7 @@ const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Pro
     
 
     return (
-        <CounterBlock width={width} height={height} inpWidth={inpWidth} >
+        <CounterBlock width={width} height={height} inpWidth={inpWidth} onQuantityChange={onQuantityChange} totalQuantity={totalQuantity} >
             <FuncBlock onClick={handleDecrement} id={'decrementChange'}>
                 -
             </FuncBlock>

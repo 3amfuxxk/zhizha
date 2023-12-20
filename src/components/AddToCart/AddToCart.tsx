@@ -112,7 +112,10 @@ const Specs = styled.div`
     flex-wrap: wrap;
     width: 100%;
 `
-const BlockProps = styled.div`
+interface BlockProps {
+    isSelected: boolean;
+}
+const BlockProps = styled.div<BlockProps>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -241,13 +244,12 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
         };
 
         onDataUpdate(updatedProductData);
-        console.log(updatedProductData);
     };
 
-    // const handleCart = () => {
-    //     handleAddToCart();
-    //     handleClose();
-    //   };
+    const handleCart = () => {
+        handleAddToCart();
+        handleClose();
+      };
 
     return (
         <AddContainer id='add-container'>
@@ -316,7 +318,7 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                                 Назад до магазину
                             </p>
                         </Leave>
-                        <Add onClick={handleAddToCart}>
+                        <Add onClick={handleCart}>
                             <Image src={'/img/Card/svg/cart.svg'} width="13" height={16} alt="" />
                             <p>
                                 Додати в кошик

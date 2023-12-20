@@ -4,6 +4,8 @@ import Image from "next/image";
 import NavButton from "../NavButton/NavButton";
 import Language from "../Language/Language";
 import Link from "next/link";
+// import { useSelectedProduct } from "../../context/SelectedProduct";
+import Counter from "../Counter/Counter";
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -93,7 +95,7 @@ const Cart = styled.div`
     margin-left: auto;
     user-select: none;
 `
-const CartBlock = styled.div`
+const CartBlock = styled.div<{ cartOpen: boolean }>`
     width: 459px;
     height: 648px;
     flex-shrink: 0;
@@ -101,10 +103,11 @@ const CartBlock = styled.div`
     background: #141414;
     display: ${props => props.cartOpen ? 'flex' : 'none'};
     flex-direction: column;
+    padding: 29px;
+    gap: 16px;
 `
 const CartProducts = styled.div`
     display: flex;
-    padding: 29px;
     flex-direction: column;
     gap: 16px;
 `
@@ -129,13 +132,119 @@ const CartContainer = styled.div`
     right: 0;
     z-index: 3;
 `
+const Product = styled.div`
+    display: flex;
+    width: 100%;
+    overflow-y: scroll;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 340px;
+    height: 340px;
 
-const Header = () => {
-    const [cartOpen, setCart] = useState(false);
+    &::-webkit-scrollbar {
+        width: 0.1px;
+    }
+`
+const ProductCard = styled.div`
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    width: 100%;
+    height: 134px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #1F1E1F;
+`
+const ImageBlock = styled.div`
+    display: flex;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: #181818;
+    overflow: hidden;
+`
+const ProductInfo = styled.div`
+    display: flex;
+    padding: 5px 10px 5px 0px;
+    flex-direction: column;
+    flex: 1;
+`
+const ProductName = styled.p`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+`
+const ProductID = styled.p`
+    color: #FFF;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    margin-top: 4px;
+`
+const Span = styled.span`
+    color: rgba(255, 255, 255, 0.60);
+`
+const PriceContainer = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+`
+const PriceBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+const ProductPrice = styled.p`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+    letter-spacing: 0.7px;
+`
+const ProductSale = styled.p`
+    color: #8F8E8F;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+    letter-spacing: 0.7px;
+    text-decoration: line-through;
+`
+interface SelectedProduct {
+    name: string;
+    price: number;
+    sale?: number;
+    imgLink: string;
+    id: string;
+    strength: string[];
+    size: string[];
+    totalQuantity: number;
+    selectedStrengthIndex: number;
+    selectedSizeIndex: number;
+}
+
+interface HeaderProps {
+    cartItems: SelectedProduct[];
+}
+
+const Header = ({ cartItems }: HeaderProps) => {
+    const [cartOpen, setCart] = useState<boolean>(false);
 
     const toggleOpen = () => {
         setCart(!cartOpen);
     }
+
+    const [totalQuantity, setTotalQuantity] = useState<number>(1);
+
+    const handleQuantityChange = (newQuantity: number) => {
+        setTotalQuantity(newQuantity);
+    };
 
     return (
         <HeaderBlock>
@@ -175,11 +284,64 @@ const Header = () => {
                                 <Img src={'/img/Header/close.svg'} width={22} height={22} alt="" />
                             </CartNav>
                         </CartProducts>
+                        <Product id="product-block" className="scrol">
+                            {cartItems.map((product, index) => (
+                                <ProductCard key={index}>
+                                    <ImageBlock>
+                                        <Image src={`/img/Card/${product.imgLink}`} width={114} height={114} alt="" />
+                                    </ImageBlock>
+                                    <ProductInfo>
+                                        <ProductName>
+                                            {product.name}
+                                        </ProductName>
+                                        <ProductID>
+                                            Код товару: <Span>{product.id}</Span>
+                                        </ProductID>
+                                        <PriceContainer>
+                                            <PriceBlock>
+                                                <ProductPrice>
+                                                    {product.price * totalQuantity}₴
+                                                </ProductPrice>
+                                                <ProductSale>
+                                                    {product.sale ? `${product.sale * totalQuantity}₴` : null}
+                                                </ProductSale>
+                                            </PriceBlock>
+                                            <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                                        </PriceContainer>
+                                    </ProductInfo>
+                                </ProductCard>
+                            ))}
+                        </Product>
                     </CartBlock>
                 </CartContainer>
             </Bar>
-        </HeaderBlock>
+        </HeaderBlock >
     )
 }
 
 export default Header;
+
+{/* <ProductCard>
+                                <ImageBlock>
+                                    <Image src={`/img/Card/${selectedProduct?.imgLink}`} width={114} height={114} alt="" />
+                                </ImageBlock>
+                                <ProductInfo>
+                                    <ProductName>
+                                        {selectedProduct?.name}
+                                    </ProductName>
+                                    <ProductID>
+                                        Код товару: <Span>{selectedProduct?.id}</Span>
+                                    </ProductID>
+                                    <PriceContainer>
+                                        <PriceBlock>
+                                            <ProductPrice>
+                                                {selectedProduct?.price * totalQuantity}₴
+                                            </ProductPrice>
+                                            <ProductSale>
+                                                {selectedProduct?.sale * totalQuantity}₴
+                                            </ProductSale>
+                                        </PriceBlock>
+                                        <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                                    </PriceContainer>
+                                </ProductInfo>
+                            </ProductCard> */}

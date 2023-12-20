@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import LinkPath from "../../../components/LinkPath/LinkPath";
 import Card from "../../../components/Card/Card";
@@ -102,6 +102,23 @@ const LiquidBlock = () => {
     const toggleExpanded = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
+
+        const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const response = await fetch('http://18.130.180.167/api/v1/products/');
+            const result = await response.json();
+            setData(result);
+            console.log(data);
+        } catch (error) {
+            console.error('Ошибка запроса:', error);
+        }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <LiquidContainer>

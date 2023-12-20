@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Card from '../Card/Card';
 import AddToCart from '../AddToCart/AddToCart';
+// import { useSelectedProduct } from '../../context/SelectedProduct';
 
 const RecContainer = styled.div`
     display: flex;
@@ -108,23 +109,44 @@ interface Product {
     size: string[];
 }
 
-const Recommendation = () => {
+interface SelectedProduct {
+    name: string;
+    price: number;
+    sale?: number;
+    imgLink: string;
+    id: string;
+    strength: string[];
+    size: string[];
+    totalQuantity: number;
+    selectedStrengthIndex: number;
+    selectedSizeIndex: number;
+}
+
+interface RecommendationProps {
+    onDataUpdate: (data: SelectedProduct) => void;
+  }
+
+const Recommendation = ({onDataUpdate}: RecommendationProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
     const toggleExpanded = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
-    
+
 
     const handleAddToCart = (product: Product) => {
         setSelectedProduct(product);
     };
 
+    // const { updateSelectedProduct } = useSelectedProduct();
+    const [cartItems, setCartItems] = useState<SelectedProduct[]>([]);
+
     const handleDataFromAddToCart = (data: SelectedProduct) => {
-        // Обработка данных из AddToCart
         console.log('Received data:', data);
-      };
+        setCartItems(prevCartItems => [...prevCartItems, data]);
+        onDataUpdate(data);
+    };
 
     return (
         <RecContainer>
