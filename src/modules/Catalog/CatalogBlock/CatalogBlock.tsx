@@ -79,10 +79,10 @@ const CatalogBlock = () => {
                     <Link href={"/liquid"}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
-                    <Link href={"/"}>
+                    <Link href={"/accessories"}>
                         <Card text={"Комплектуючі"} imgLink={'component.png'} />
                     </Link>
-                    <Link href={"/"}>
+                    <Link href={"/pods"}>
                         <Card text={"Под системи"} imgLink={'pod.png'} />
                     </Link>
                 </CardBlock>

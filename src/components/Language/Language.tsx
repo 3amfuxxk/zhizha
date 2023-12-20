@@ -13,6 +13,8 @@ const LanguageBlock = styled.div`
     overflow: hidden;
     position: relative;
     transition: height 0.3s ease;
+    position: absolute;
+    left: 62px;
 `
 
 const LanguageBar = styled.div`
@@ -28,6 +30,8 @@ const LanguageRow = styled.div`
     display: flex;
     gap: 5px;
     align-items: center;
+    cursor: pointer;
+    user-select: none;
 `
 
 const Text = styled.p`
@@ -53,10 +57,6 @@ const Img = styled(Image)`
     rotate: 0deg;
 `
 
-const toggle = () => {
-
-}
-
 const Language = () => {
     const [expanded, setExpanded] = useState(false);
 
@@ -67,11 +67,11 @@ const Language = () => {
     return (
         <LanguageBlock style={{ height: expanded ? '103px' : '50px' }}>
             <LanguageBar>
-                <LanguageRow>
+                <LanguageRow onClick={toggle}>
                     <Text>
                         UA
                     </Text>
-                    <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' onClick={toggle} style={{rotate: expanded ? '180deg' : '0deg'}} />
+                    <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{rotate: expanded ? '180deg' : '0deg'}} />
                 </LanguageRow>
                 <Span />
                 <LanguageRow>

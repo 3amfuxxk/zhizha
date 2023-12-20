@@ -57,9 +57,10 @@ interface Props {
     height: number;
     inpWidth: number;
     onQuantityChange: (newQuantity: number) => void;
+    totalQuantity: number;
 }
 
-const Counter = ({width, height, inpWidth, onQuantityChange}: Props) => {
+const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Props) => {
     const [quantity, setQuantity] = useState(1);
 
     const handleIncrement = () => {
@@ -86,6 +87,12 @@ const Counter = ({width, height, inpWidth, onQuantityChange}: Props) => {
             }
         }
     }, [quantity]);
+
+    useEffect(() => {
+        setQuantity(totalQuantity);
+      });
+
+    
 
     return (
         <CounterBlock width={width} height={height} inpWidth={inpWidth} >

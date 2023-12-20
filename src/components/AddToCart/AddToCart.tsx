@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Counter from '../Counter/Counter';
@@ -190,26 +190,18 @@ interface SelectedProduct {
     id: string;
     strength: string[];
     size: string[];
+    totalQuantity: number;
+    selectedStrengthIndex: number;
+    selectedSizeIndex: number;
 }
 
 interface Props {
     selectedProduct: SelectedProduct;
+    onDataUpdate: (data: SelectedProduct) => void;
 }
 
 
-const AddToCart = ({ selectedProduct }: Props) => {
-    const handleClose = () => {
-        const addContainer = document.getElementById('add-container');
-        if (addContainer) {
-            addContainer.style.display = 'none';
-        }
-    };
-
-    const [totalQuantity, setTotalQuantity] = useState<number>(1);
-
-    const handleQuantityChange = (newQuantity: number) => {
-        setTotalQuantity(newQuantity);
-    };
+const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
 
     const [SelecteStrength, setSelecteStrength] = useState(0);
     const [SelectedSize, setSelectedSize] = useState(0);
@@ -220,6 +212,42 @@ const AddToCart = ({ selectedProduct }: Props) => {
     const handleSizeClick = (index: number) => {
         setSelectedSize(index);
     };
+
+    const [totalQuantity, setTotalQuantity] = useState<number>(1);
+
+    const handleQuantityChange = (newQuantity: number) => {
+        setTotalQuantity(newQuantity);
+    };
+
+    const handleClose = () => {
+        const addContainer = document.getElementById('add-container');
+        if (addContainer) {
+            setTotalQuantity(1);
+            setSelecteStrength(0);
+            setSelectedSize(0);
+            addContainer.style.display = 'none';
+        }
+    };
+
+    const handleAddToCart = () => {
+        const selectedStrength = selectedProduct.strength[SelecteStrength];
+        const selectedSize = selectedProduct.size[SelectedSize];
+
+        const updatedProductData = {
+            ...selectedProduct,
+            totalQuantity: totalQuantity,
+            selectedStrength: selectedStrength,
+            selectedSize: selectedSize,
+        };
+
+        onDataUpdate(updatedProductData);
+        console.log(updatedProductData);
+    };
+
+    // const handleCart = () => {
+    //     handleAddToCart();
+    //     handleClose();
+    //   };
 
     return (
         <AddContainer id='add-container'>
@@ -248,7 +276,7 @@ const AddToCart = ({ selectedProduct }: Props) => {
                                 <Price>
                                     {selectedProduct.price * totalQuantity}₴
                                 </Price>
-                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} />
+                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                             </PriceBlock>
                         </InfoBlock>
                     </ProductRow>
@@ -288,7 +316,7 @@ const AddToCart = ({ selectedProduct }: Props) => {
                                 Назад до магазину
                             </p>
                         </Leave>
-                        <Add>
+                        <Add onClick={handleAddToCart}>
                             <Image src={'/img/Card/svg/cart.svg'} width="13" height={16} alt="" />
                             <p>
                                 Додати в кошик

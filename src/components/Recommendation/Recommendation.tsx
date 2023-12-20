@@ -56,7 +56,7 @@ const LinkText = styled.p`
     font-weight: 500;
     line-height: 130%;
 `
-const CardContainer = styled.div<{expanded: boolean}>`
+const CardContainer = styled.div<{ expanded: boolean }>`
     display: grid;
     overflow: hidden;
     max-height: ${(props) => (props.expanded ? '1754px' : '872px')};
@@ -115,10 +115,16 @@ const Recommendation = () => {
     const toggleExpanded = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
+    
 
     const handleAddToCart = (product: Product) => {
         setSelectedProduct(product);
     };
+
+    const handleDataFromAddToCart = (data: SelectedProduct) => {
+        // Обработка данных из AddToCart
+        console.log('Received data:', data);
+      };
 
     return (
         <RecContainer>
@@ -141,9 +147,9 @@ const Recommendation = () => {
                 </Link>
             </Header>
             <CardContainer expanded={expanded}>
-                <AddToCart selectedProduct={selectedProduct} />
-                <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл','60мл']} />
-                <Card imgLink='rb.jpg' price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл','60мл']} />
+                <AddToCart selectedProduct={selectedProduct} onDataUpdate={handleDataFromAddToCart} />
+                <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                <Card imgLink='rb.jpg' price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
             </CardContainer>
             <ButtonRow>
                 <ButtonMore onClick={toggleExpanded}>
