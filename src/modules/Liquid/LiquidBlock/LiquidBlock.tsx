@@ -97,6 +97,23 @@ const ButtonText = styled.p`
     line-height: normal;
 `
 
+interface SelectedProduct {
+    name: string;
+    price: number;
+    sale?: number;
+    imgLink: string;
+    id: string;
+    strength: string[];
+    size: string[];
+    totalQuantity: number;
+    selectedStrengthIndex: number;
+    selectedSizeIndex: number;
+}
+
+interface CatalogBlockProps {
+    cartItems: SelectedProduct[];
+}
+
 interface Product {
     id: string,
     title: string,
@@ -111,7 +128,7 @@ interface Product {
     categories: string[],
 }
 
-const LiquidBlock = () => {
+const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
     const toggleExpanded = () => {
@@ -133,6 +150,21 @@ const LiquidBlock = () => {
 
         fetchData();
     }, []);
+
+    const productCards = data ? data.map((product: Product) => ({
+        id: product.id,
+        sale: product.sale_price,
+        discount: product.discount,
+        imgLink: product.image,
+        ice: product.ice,
+        desc: product.desc,
+        price: product.starting_price,
+        name: product.title,
+        categories: product.categories,
+        onAddToCart: toggleExpanded,
+        strength: ['5%(50мг)', '6.5%(62мг)'],
+        size: ['30мл', '60мл'],
+    })) : [];
 
     return (
         <LiquidContainer>
@@ -164,18 +196,19 @@ const LiquidBlock = () => {
                 </LinkPath>
                 <CardContainer expanded={expanded}>
                     <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
-                    {data ? (
-                        data.map((product: Product) => (
-                            <Link href={'/product'}>
+                    {productCards.length > 0 ? (
+                        productCards.map((product) => (
+                            <Link key={product.id} href={{ pathname: '/product', query: { cartItems: JSON.stringify(cartItems), productData: JSON.stringify(product) } }}>
                                 <Card
                                     key={product.id}
-                                    imgLink={product.image}
-                                    price={product.starting_price}
-                                    name={product.title}
+                                    imgLink={'rb.jpg'}
+                                    price={product.price}
+                                    name={product.name}
                                     id={product.id}
-                                    onAddToCart={toggleExpanded}
-                                    strength={['5%(50мг)', '6.5%(62мг)']}
-                                    size={['30мл', '60мл']}
+                                    onAddToCart={product.onAddToCart}
+                                    strength={product.strength}
+                                    size={product.size}
+                                    sale={product.sale}
                                 />
                             </Link>
                         ))

@@ -29,7 +29,7 @@ export default function Home() {
     <div>
         <Container>
           <Header cartItems={cartCartItems} />
-          <LiquidBlock />
+          <LiquidBlock cartItems={cartCartItems} />
           <Footer />
         </Container>
     </div>
