@@ -4,6 +4,7 @@ import LinkPath from "../../../components/LinkPath/LinkPath";
 import Card from "../../../components/Card/Card";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 
 const LiquidContainer = styled.div`
     display: flex;
@@ -103,22 +104,21 @@ const LiquidBlock = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
 
-        const [data, setData] = useState(null);
+    const [data, setData] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const response = await fetch('http://18.130.180.167/api/v1/products/');
-            const result = await response.json();
-            setData(result);
-            console.log(data);
-        } catch (error) {
-            console.error('Ошибка запроса:', error);
-        }
-        };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://18.130.180.167/api/v1/products/');
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Ошибка запроса:', error);
+      }
+    };
 
-        fetchData();
-    }, []);
+    fetchData();
+  }, []);
 
     return (
         <LiquidContainer>

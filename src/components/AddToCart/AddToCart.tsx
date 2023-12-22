@@ -242,7 +242,7 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
             selectedStrength: selectedStrength,
             selectedSize: selectedSize,
         };
-
+        console.log(updatedProductData);
         onDataUpdate(updatedProductData);
     };
 

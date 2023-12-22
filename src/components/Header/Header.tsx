@@ -4,8 +4,8 @@ import Image from "next/image";
 import NavButton from "../NavButton/NavButton";
 import Language from "../Language/Language";
 import Link from "next/link";
-// import { useSelectedProduct } from "../../context/SelectedProduct";
 import Counter from "../Counter/Counter";
+
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -216,6 +216,116 @@ const ProductSale = styled.p`
     letter-spacing: 0.7px;
     text-decoration: line-through;
 `
+const OrderInfo = styled.div`
+    display: flex;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 237px;
+    flex-shrink: 0;
+    border-radius: 0px 0px 18px 18px;
+    border-top: 1px solid #282828;
+    background: #181818;
+    flex-direction: column;
+    padding: 19px 29px 29px 29px;
+`
+const PromoBlock = styled.div`
+    display: flex;
+    width: 100%;
+    position: relative;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid #292929;
+    background: #141414;
+    align-items: center;
+`
+const PromoInput = styled.input`
+    display: flex;
+    flex-shrink: 0;
+    background: transparent;
+    height: 100%;
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 14px;
+    color: #FFF;
+    border: none;
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+`
+const SubmitPromo = styled.div`
+    display: flex;
+    width: 116px;
+    height: 100%;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #B6020D;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 700;
+`
+const OrderPrice = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: 14px;
+`
+const InfoPrice = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`
+const SummaryText = styled.p`
+    color: rgba(255, 255, 255, 0.70);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+    flex-shrink: 0;
+`
+const SpanBot = styled.span`
+    display: flex;
+    width: 100%;
+    height: 1px;
+    border-radius: 5px;
+    opacity: 0.3;
+    background: rgba(255, 255, 255, 0.70);
+    margin: 14px 4px 0px 4px;
+`
+const TotalPrice = styled.div`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+    flex-shrink: 0;
+`
+const SubmitOrder = styled.div`
+    display: flex;
+    cursor: pointer;
+    width: 100%;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #B6020D;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+`
+const OrderText = styled.p`
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+`
 interface SelectedProduct {
     name: string;
     price: number;
@@ -240,15 +350,33 @@ const Header = ({ cartItems }: HeaderProps) => {
         setCart(!cartOpen);
     }
 
-    const [totalQuantity, setTotalQuantity] = useState<number>(1);
+    const [productQuantities, setProductQuantities] = useState<{ [key: string]: number }>({});
 
-    const handleQuantityChange = (newQuantity: number) => {
-        setTotalQuantity(newQuantity);
+    const handleQuantityChange = (productId: string, newQuantity: number) => {
+        setProductQuantities((prevQuantities) => ({
+            ...prevQuantities,
+            [productId]: newQuantity,
+        }));
     };
+
+    const totalCost = cartItems.reduce((accumulator, product) => {
+        const productCost = product.price * (productQuantities[product.id] || product.totalQuantity);
+        return accumulator + productCost;
+    }, 0);
+
+    const totalSale = cartItems.reduce((accumulator, product) => {
+        if (product.sale) {
+            const productSale = product.sale * (productQuantities[product.id] || product.totalQuantity);
+            return accumulator + productSale;
+        }
+        return accumulator;
+    }, 0);
+
+    const orderCost = totalCost - totalSale;
 
     return (
         <HeaderBlock>
-            <Link href={"/"}>
+            <Link href={{ pathname: '/catalog', query: { cartItems: JSON.stringify(cartItems) }}}>
                 <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
             </Link>
             <NavBlock>
@@ -270,7 +398,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                     <Cart onClick={toggleOpen}>
                         <RoundCount>
                             <ItemsCount>
-                                0
+                                {cartItems.length}
                             </ItemsCount>
                         </RoundCount>
                         <Image src={'/img/Header/shop-bag.svg'} alt={''} width={18} height={21} />
@@ -281,7 +409,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                                 <CartHeader>
                                     Ваш Кошик
                                 </CartHeader>
-                                <Img src={'/img/Header/close.svg'} width={22} height={22} alt="" />
+                                <Img src={'/img/Header/close.svg'} width={22} height={22} alt="" onClick={toggleOpen} />
                             </CartNav>
                         </CartProducts>
                         <Product id="product-block" className="scrol">
@@ -300,18 +428,63 @@ const Header = ({ cartItems }: HeaderProps) => {
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {product.price * totalQuantity}₴
+                                                    {product.price * (productQuantities[product.id] || product.totalQuantity)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {product.sale ? `${product.sale * totalQuantity}₴` : null}
+                                                    {product.sale ? `${product.sale * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
-                                            <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                                            <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                handleQuantityChange(product.id, newQuantity)
+                                            }
+                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} />
                                         </PriceContainer>
                                     </ProductInfo>
                                 </ProductCard>
                             ))}
                         </Product>
+                        <OrderInfo>
+                            <PromoBlock>
+                                <PromoInput placeholder="Введіть ваш промокод" />
+                                <SubmitPromo>
+                                    Активувати
+                                </SubmitPromo>
+                            </PromoBlock>
+                            <OrderPrice>
+                                <InfoPrice>
+                                    <SummaryText>
+                                        Сума замовлення
+                                    </SummaryText>
+                                    <SpanBot />
+                                    <SummaryText>
+                                        {totalCost}₴
+                                    </SummaryText>
+                                </InfoPrice>
+                                <InfoPrice>
+                                    <SummaryText>
+                                        Знижки
+                                    </SummaryText>
+                                    <SpanBot />
+                                    <SummaryText>
+                                        {totalSale}₴
+                                    </SummaryText>
+                                </InfoPrice>
+                                <InfoPrice>
+                                    <TotalPrice>
+                                        До сплати
+                                    </TotalPrice>
+                                    <SpanBot />
+                                    <TotalPrice>
+                                       {orderCost}₴
+                                    </TotalPrice>
+                                </InfoPrice>
+                                <SubmitOrder>
+                                    <OrderText>
+                                        Оформити замовлення
+                                    </OrderText>
+                                </SubmitOrder>
+                            </OrderPrice>
+                        </OrderInfo>
                     </CartBlock>
                 </CartContainer>
             </Bar>
@@ -320,28 +493,3 @@ const Header = ({ cartItems }: HeaderProps) => {
 }
 
 export default Header;
-
-{/* <ProductCard>
-                                <ImageBlock>
-                                    <Image src={`/img/Card/${selectedProduct?.imgLink}`} width={114} height={114} alt="" />
-                                </ImageBlock>
-                                <ProductInfo>
-                                    <ProductName>
-                                        {selectedProduct?.name}
-                                    </ProductName>
-                                    <ProductID>
-                                        Код товару: <Span>{selectedProduct?.id}</Span>
-                                    </ProductID>
-                                    <PriceContainer>
-                                        <PriceBlock>
-                                            <ProductPrice>
-                                                {selectedProduct?.price * totalQuantity}₴
-                                            </ProductPrice>
-                                            <ProductSale>
-                                                {selectedProduct?.sale * totalQuantity}₴
-                                            </ProductSale>
-                                        </PriceBlock>
-                                        <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
-                                    </PriceContainer>
-                                </ProductInfo>
-                            </ProductCard> */}

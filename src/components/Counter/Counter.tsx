@@ -77,16 +77,16 @@ const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Pro
         }
     };
 
-    useEffect(() => {
-        const decrementChange = document.getElementById('decrementChange');
-        if (decrementChange) {
-            if (quantity === 1) {
-                decrementChange.style.opacity = '0.3';
-            } else {
-                decrementChange.style.opacity = '1';
-            }
-        }
-    }, [quantity]);
+    // useEffect(() => {
+    //     const decrementChange = document.getElementById('decrementChange');
+    //     if (decrementChange) {
+    //         if (quantity === 1) {
+    //             decrementChange.style.opacity = '0.3';
+    //         } else {
+    //             decrementChange.style.opacity = '1';
+    //         }
+    //     }
+    // }, [quantity]);
 
     useEffect(() => {
         setQuantity(totalQuantity);

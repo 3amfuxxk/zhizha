@@ -54,7 +54,24 @@ const CardBlock = styled.div`
     justify-content: space-between;
 `
 
-const CatalogBlock = () => {
+interface SelectedProduct {
+    name: string;
+    price: number;
+    sale?: number;
+    imgLink: string;
+    id: string;
+    strength: string[];
+    size: string[];
+    totalQuantity: number;
+    selectedStrengthIndex: number;
+    selectedSizeIndex: number;
+}
+
+interface CatalogBlockProps {
+    catalogItems: SelectedProduct[];
+}
+
+const CatalogBlock = ({ catalogItems }: CatalogBlockProps) => {
     return (
         <CatalogContainer>
             <HeaderBlock>
@@ -76,7 +93,7 @@ const CatalogBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardBlock>
-                    <Link href={"/liquid"}>
+                    <Link href={{pathname:"/liquid", query: { catalogItems: JSON.stringify(catalogItems) } }}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
                     <Link href={"/accessories"}>
