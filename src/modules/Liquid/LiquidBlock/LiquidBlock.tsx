@@ -97,6 +97,20 @@ const ButtonText = styled.p`
     line-height: normal;
 `
 
+interface Product {
+    id: string,
+    title: string,
+    desc: string,
+    starting_price: number,
+    sale_price: number,
+    discount: number,
+    volume: number,
+    stock: number,
+    ice: boolean,
+    image: string,
+    categories: string[],
+}
+
 const LiquidBlock = () => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -104,21 +118,21 @@ const LiquidBlock = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<Product[] | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://18.130.180.167/api/v1/products/');
-        setData(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Ошибка запроса:', error);
-      }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get<Product[]>('http://18.130.180.167/api/v1/products/');
+                setData(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Ошибка запроса:', error);
+            }
+        };
 
-    fetchData();
-  }, []);
+        fetchData();
+    }, []);
 
     return (
         <LiquidContainer>
@@ -149,7 +163,25 @@ const LiquidBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardContainer expanded={expanded}>
-                    <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл','60мл']} />
+                    <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                    {data ? (
+                        data.map((product: Product) => (
+                            <Link href={'/product'}>
+                                <Card
+                                    key={product.id}
+                                    imgLink={product.image}
+                                    price={product.starting_price}
+                                    name={product.title}
+                                    id={product.id}
+                                    onAddToCart={toggleExpanded}
+                                    strength={['5%(50мг)', '6.5%(62мг)']}
+                                    size={['30мл', '60мл']}
+                                />
+                            </Link>
+                        ))
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>

@@ -23,13 +23,12 @@ interface SelectedProduct {
 export default function Home() {
   const searchParams = useSearchParams();
   const cartItems = searchParams.get('cartItems');
-  const parsedCartItems: SelectedProduct[] = cartItems ? JSON.parse(cartItems) : [];
-  console.log(parsedCartItems);
+  const cartCartItems: SelectedProduct[] = cartItems ? JSON.parse(cartItems) : [];
 
   return (
     <div>
         <Container>
-          <Header cartItems={parsedCartItems} />
+          <Header cartItems={cartCartItems} />
           <LiquidBlock />
           <Footer />
         </Container>

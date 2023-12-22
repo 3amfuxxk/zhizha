@@ -376,11 +376,11 @@ const Header = ({ cartItems }: HeaderProps) => {
 
     return (
         <HeaderBlock>
-            <Link href={{ pathname: '/catalog', query: { cartItems: JSON.stringify(cartItems) }}}>
+            <Link href={'/'}>
                 <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
             </Link>
             <NavBlock>
-                <Link href={"/catalog"} >
+                <Link href={{ pathname: '/catalog', query: { cartItems: JSON.stringify(cartItems) }}}>
                     <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
                 </Link>
                 <NavButton text={'Доставка'} svgLink={'contact.svg'} />

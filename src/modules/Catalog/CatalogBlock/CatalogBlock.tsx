@@ -68,10 +68,10 @@ interface SelectedProduct {
 }
 
 interface CatalogBlockProps {
-    catalogItems: SelectedProduct[];
+    cartItems: SelectedProduct[];
 }
 
-const CatalogBlock = ({ catalogItems }: CatalogBlockProps) => {
+const CatalogBlock = ({ cartItems }: CatalogBlockProps) => {
     return (
         <CatalogContainer>
             <HeaderBlock>
@@ -93,7 +93,7 @@ const CatalogBlock = ({ catalogItems }: CatalogBlockProps) => {
                     </Link>
                 </LinkPath>
                 <CardBlock>
-                    <Link href={{pathname:"/liquid", query: { catalogItems: JSON.stringify(catalogItems) } }}>
+                    <Link href={{pathname:"/liquid", query: { cartItems: JSON.stringify(cartItems) } }}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
                     <Link href={"/accessories"}>
