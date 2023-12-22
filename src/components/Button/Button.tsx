@@ -7,12 +7,14 @@ interface Props {
     text: string;
     children?: React.ReactNode;
     onClick?: () => void;
+    width: number;
+    height: number;
 }
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.div<Props>`
     display: flex;
-    width: 135px;
-    height: 38px;
+    width: ${(props) => props.width}px;
+    height: ${(props) => props.height}px;
     flex-shrink: 0;
     border-radius: 8px;
     background: #B6020D;
@@ -33,9 +35,9 @@ const ButtonBlock = styled.div`
 
 `
 
-const Button = ({text, children, onClick}: Props) => {
+const Button = ({text, children, onClick, width, height}: Props) => {
     return (
-        <ButtonContainer onClick={onClick}>
+        <ButtonContainer onClick={onClick} width={width} height={height}>
             <ButtonBlock>
                 {children}
                 <Text>

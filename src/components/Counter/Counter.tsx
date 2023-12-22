@@ -11,12 +11,12 @@ const CounterBlock = styled.div<Props>`
     background: #181818;
     justify-content: space-between;
 `
-const FuncBlock = styled.div`
+const FuncBlock = styled.div<Props>`
     display: flex;
     height: 100%;
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
-    border-radius: 5px;
+    border-radius: ${(props) => props.radius}px;
     border: 1px solid #292929;
     background: #181818;
     justify-content: center;
@@ -55,12 +55,13 @@ const Input = styled.input<{inpWidth: number}>`
 interface Props {
     width: number;
     height: number;
+    radius: number;
     inpWidth: number;
     onQuantityChange: (newQuantity: number) => void;
     totalQuantity: number;
 }
 
-const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Props) => {
+const Counter = ({width, height, inpWidth, radius, onQuantityChange, totalQuantity}: Props) => {
     const [quantity, setQuantity] = useState(1);
 
     const handleIncrement = () => {
@@ -95,12 +96,12 @@ const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Pro
     
 
     return (
-        <CounterBlock width={width} height={height} inpWidth={inpWidth} onQuantityChange={onQuantityChange} totalQuantity={totalQuantity} >
-            <FuncBlock onClick={handleDecrement} id={'decrementChange'}>
+        <CounterBlock width={width} height={height} inpWidth={inpWidth} radius={radius} onQuantityChange={onQuantityChange} totalQuantity={totalQuantity} >
+            <FuncBlock onClick={handleDecrement} id={'decrementChange'} radius={radius}>
                 -
             </FuncBlock>
             <Input type={'number'} placeholder={'1'} inpWidth={inpWidth} value={quantity} maxLength={3} max={999} readOnly />
-            <FuncBlock onClick={handleIncrement}>
+            <FuncBlock onClick={handleIncrement} radius={radius}>
                 +
             </FuncBlock>
         </CounterBlock>

@@ -434,7 +434,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                                                     {product.sale ? `${product.sale * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
-                                            <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                            <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
                                                 handleQuantityChange(product.id, newQuantity)
                                             }
                                                 totalQuantity={productQuantities[product.id] || product.totalQuantity} />

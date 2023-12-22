@@ -41,7 +41,7 @@ export default function Home() {
   const cartCartItems: SelectedProduct[] = cartItems ? JSON.parse(cartItems) : [];
 
   const productData = searchParams.get('productData');
-  const productProductData: ProductData[] = productData ? JSON.parse(productData) : [];
+  const productProductData: ProductData = productData ? JSON.parse(productData) : [];
 
   console.log(productData);
 

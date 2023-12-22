@@ -174,7 +174,7 @@ const Recommendation = ({onDataUpdate}: RecommendationProps) => {
             </Header>
             <CardContainer expanded={expanded}>
                 <AddToCart selectedProduct={selectedProduct} onDataUpdate={handleDataFromAddToCart} />
-                <Card imgLink='rb.jpg' price={222} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                <Card imgLink='rb.jpg' price={220} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
                 <Card imgLink='rb.jpg' price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
             </CardContainer>
             <ButtonRow>

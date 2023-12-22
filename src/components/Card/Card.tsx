@@ -117,7 +117,7 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
     };
 
     const handleAddToCart = () => {
-        const product = { name, price, sale, imgLink, id, strength, size};
+        const product = { name, price, sale, imgLink, id, strength, size };
         onAddToCart(product);
         handleOpen();
     };
@@ -144,7 +144,7 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
                     )}
                 </PriceBlock>
                 <AddBlock>
-                    <Button onClick={handleAddToCart} text={'В кошик'} >
+                    <Button onClick={handleAddToCart} text={'В кошик'} width={135} height={38} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock>
