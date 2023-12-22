@@ -96,10 +96,10 @@ const CatalogBlock = ({ cartItems }: CatalogBlockProps) => {
                     <Link href={{pathname:"/liquid", query: { cartItems: JSON.stringify(cartItems) } }}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
-                    <Link href={"/accessories"}>
+                    <Link href={{pathname: "/accessories", query: { cartItems: JSON.stringify(cartItems) } } }>
                         <Card text={"Комплектуючі"} imgLink={'component.png'} />
                     </Link>
-                    <Link href={"/pods"}>
+                    <Link href={{pathname: "/pods", query: { cartItems: JSON.stringify(cartItems) }}}>
                         <Card text={"Под системи"} imgLink={'pod.png'} />
                     </Link>
                 </CardBlock>
