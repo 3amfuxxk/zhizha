@@ -118,14 +118,19 @@ interface Product {
     id: string,
     title: string,
     desc: string,
-    starting_price: number,
-    sale_price: number,
-    discount: number,
-    volume: number,
-    stock: number,
+    code: number,
     ice: boolean,
     image: string,
     categories: string[],
+    options:
+        {
+            volume: number,
+            nico: number,
+            startingPrice: string,
+            salePrice: string,
+            discount: number,
+            inStock: boolean,
+        }
 }
 
 const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
@@ -149,18 +154,21 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
         };
 
         fetchData();
+        console.log(data);
     }, []);
 
     const productCards = data ? data.map((product: Product) => ({
         id: product.id,
-        sale: product.sale_price,
-        discount: product.discount,
+        code: product.code,
+        sale: product.options.salePrice,
+        discount: product.options.discount,
         imgLink: product.image,
         ice: product.ice,
         desc: product.desc,
-        price: product.starting_price,
+        price: product.options.startingPrice,
         name: product.title,
         categories: product.categories,
+        inStock: product.options.inStock,
         onAddToCart: toggleExpanded,
         strength: ['5%(50мг)', '6.5%(62мг)'],
         size: ['30мл', '60мл'],
@@ -195,20 +203,20 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
                     </Link>
                 </LinkPath>
                 <CardContainer expanded={expanded}>
-                    <Card imgLink='rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                    <Card imgLink='/img/Card/rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
                     {productCards.length > 0 ? (
                         productCards.map((product) => (
                             <Link key={product.id} href={{ pathname: '/product', query: { cartItems: JSON.stringify(cartItems), productData: JSON.stringify(product) } }}>
                                 <Card
                                     key={product.id}
-                                    imgLink={'rb.jpg'}
-                                    price={product.price}
+                                    imgLink={product.imgLink}
+                                    price={333}
                                     name={product.name}
                                     id={product.id}
                                     onAddToCart={product.onAddToCart}
                                     strength={product.strength}
                                     size={product.size}
-                                    sale={product.sale}
+                                    sale={111}
                                 />
                             </Link>
                         ))

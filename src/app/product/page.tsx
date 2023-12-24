@@ -21,17 +21,19 @@ interface SelectedProduct {
 }
 
 interface ProductData {
-  id: string;
-  sale: number;
-  discount: number;
-  imgLink: string;
-  ice: boolean;
-  desc: string;
-  price: number;
-  name: string;
-  categories: string[];
-  strength: string[];
-  size: string[];
+  id: string,
+  sale: number,
+  discount: number,
+  imgLink: string,
+  ice: boolean,
+  desc: string,
+  price: number,
+  name: string,
+  code: number,
+  categories: string[],
+  strength: string[],
+  size: string[],
+  inStock: boolean,
 }
 
 export default function Home() {

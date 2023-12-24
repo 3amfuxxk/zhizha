@@ -97,11 +97,11 @@ const Counter = ({width, height, inpWidth, radius, onQuantityChange, totalQuanti
 
     return (
         <CounterBlock width={width} height={height} inpWidth={inpWidth} radius={radius} onQuantityChange={onQuantityChange} totalQuantity={totalQuantity} >
-            <FuncBlock onClick={handleDecrement} id={'decrementChange'} radius={radius}>
+            <FuncBlock onClick={handleDecrement} id={'decrementChange'}>
                 -
             </FuncBlock>
             <Input type={'number'} placeholder={'1'} inpWidth={inpWidth} value={quantity} maxLength={3} max={999} readOnly />
-            <FuncBlock onClick={handleIncrement} radius={radius}>
+            <FuncBlock onClick={handleIncrement}>
                 +
             </FuncBlock>
         </CounterBlock>

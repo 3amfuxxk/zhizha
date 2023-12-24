@@ -5,6 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Counter from "../Counter/Counter";
 import Button from "../Button/Button";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+    weight: ["300", "400", "500", "700"],
+    style: ["normal", "italic"],
+    subsets: ["latin", "cyrillic", "greek"],
+})
 
 const ProductContainer = styled.div`
     display: flex;
@@ -191,20 +198,97 @@ const NavBlock = styled.div`
     gap: 9px;
     margin-top: auto;
 `
+const DescWhole = styled.div`
+    display: flex;
+    width: 100%;
+    padding: 34px 29px 25px 29px;
+    flex-direction: column;
+    gap: 10px;
+    height: 177px;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: #141414;
+`
+const DescHeader = styled.p`
+    color: #FFF;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+`
+const FullBlock = styled.div`
+    display: -webkit-box;
+    width: 100%;
+    margin-left: 4px;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+`
+const ImageWhole = styled.div`
+    display: flex;
+    width: 100%;
+    height: 578px;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: #141414;
+    padding: 29px;
+`
+const ImageFull = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #1F1E1F;
+    overflow: hidden;
+`
+const FullData = styled.div`
+    display: flex;
+    width: 100%;
+    height: 542px;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: #141414;
+    padding: 34px 29px 29px 29px;
+    flex-direction: column;
+`
+const FullDataBlock = styled.div`
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+`
+const DataValue = styled.p`
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+`
+// DataName = Active
 
 
 interface ProductData {
-    id: string;
-    sale: number;
-    discount: number;
-    imgLink: string;
-    ice: boolean;
-    desc: string;
-    price: number;
-    name: string;
-    categories: string[];
-    strength: string[];
-    size: string[];
+    id: string,
+    sale: number,
+    discount: number,
+    imgLink: string,
+    ice: boolean,
+    desc: string,
+    price: number,
+    name: string,
+    code: number,
+    categories: string[],
+    strength: string[],
+    size: string[],
+    inStock: boolean,
 }
 
 interface Product {
@@ -272,10 +356,10 @@ const ProductPage = ({ selectedProduct }: Product) => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            1337₴
+                            {selectedProduct.price}
                         </StartingPrice>
                         <SalePrice>
-                            1000₴
+                            {selectedProduct.sale}
                         </SalePrice>
                         <Discount>
                             {selectedProduct.discount}%
@@ -288,7 +372,7 @@ const ProductPage = ({ selectedProduct }: Product) => {
                         {selectedProduct.strength.map((item, index) => (
                             <BlockProps
                                 key={index}
-                                isSelected={SelectedSize === index}
+                                isSelected={SelecteStrength === index}
                                 onClick={() => handleStrengthClick(index)}>
                                 <Text>{item}</Text>
                             </BlockProps>
@@ -315,6 +399,27 @@ const ProductPage = ({ selectedProduct }: Product) => {
                     </NavBlock>
                 </ProductInfo>
             </GeneralInfo>
+            <DescWhole>
+                <DescHeader>
+                    Опис товару:
+                </DescHeader>
+                <FullBlock className={roboto.className}>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt vero neque sunt eos iusto nulla repudiandae voluptas sit autem suscipit et assumenda, vel beatae? Voluptatem ullam pariatur quidem vitae ipsam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus dolor magnam id recusandae atque, vitae repellat. Laudantium et natus deleniti odio, non in excepturi, praesentium nemo aperiam porro quam. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum corporis fuga alias consequuntur quas iure pariatur impedit repudiandae nulla cumque ducimus perferendis est assumenda maiores dolore dolor, atque ratione nesciunt!
+                </FullBlock>
+            </DescWhole>
+            <ImageWhole>
+                <ImageFull>
+                    <Image src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
+                </ImageFull>
+            </ImageWhole>
+            <FullData>
+                <DescHeader>
+                    Характеристики (Name_Of_Product):
+                </DescHeader>
+                <FullDataBlock className={roboto.className}>
+
+                </FullDataBlock>
+            </FullData>
         </ProductContainer>
     )
 }

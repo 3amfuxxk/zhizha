@@ -125,7 +125,7 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
     return (
         <CardContainer>
             <ImgBlock>
-                <Image src={`/img/Card/${imgLink}`} width={280} height={280} alt="" />
+                <Image src={imgLink} width={280} height={280} alt="" />
             </ImgBlock>
             <NameBlock>
                 <NameText>
