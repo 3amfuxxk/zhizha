@@ -101,8 +101,8 @@ const ButtonText = styled.p`
 
 interface Product {
     name: string;
-    price: number;
-    sale?: number;
+    startingPrice: number;
+    salePrice: number;
     imgLink: string;
     id: string;
     strength: string[];
@@ -111,8 +111,8 @@ interface Product {
 
 interface SelectedProduct {
     name: string;
-    price: number;
-    sale?: number;
+    startingPrice: number;
+    salePrice: number;
     imgLink: string;
     id: string;
     strength: string[];
@@ -124,9 +124,9 @@ interface SelectedProduct {
 
 interface RecommendationProps {
     onDataUpdate: (data: SelectedProduct) => void;
-  }
+}
 
-const Recommendation = ({onDataUpdate}: RecommendationProps) => {
+const Recommendation = ({ onDataUpdate }: RecommendationProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
@@ -143,7 +143,7 @@ const Recommendation = ({onDataUpdate}: RecommendationProps) => {
 
     const handleDataFromAddToCart = (data: SelectedProduct) => {
         const isProductInCart = cartItems.some(item => item.id === data.id);
-    
+
         if (!isProductInCart) {
             setCartItems(prevCartItems => [...prevCartItems, data]);
             onDataUpdate(data);
@@ -174,8 +174,34 @@ const Recommendation = ({onDataUpdate}: RecommendationProps) => {
             </Header>
             <CardContainer expanded={expanded}>
                 <AddToCart selectedProduct={selectedProduct} onDataUpdate={handleDataFromAddToCart} />
-                <Card imgLink='/img/Card/rb.jpg' price={220} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
-                <Card imgLink='/img/Card/rb.jpg' price={333} sale={120} name={'Рідина R@!N BULL (30/60мл)'} id={'2'} onAddToCart={handleAddToCart} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                <Card
+                    imgLink='/img/Card/rb.jpg'
+                    options={{
+                        startingPrice: '100',
+                        salePrice: '80',
+                        discount: 20,
+                        inStock: true,
+                    }}
+                    name={'Рідина R@!N BULL (30/60мл)'}
+                    id={'1'}
+                    onAddToCart={handleAddToCart}
+                    strength={['5%(50мг)', '6.5%(62мг)']}
+                    size={['30мл', '60мл']}
+                />
+                <Card
+                    imgLink='/img/Card/rb.jpg'
+                    options={{
+                        startingPrice: '100',
+                        salePrice: '80',
+                        discount: 20,
+                        inStock: true,
+                    }}
+                    name={'Рідина R@!N BOOBS (15/45мл)'}
+                    id={'2'}
+                    onAddToCart={handleAddToCart}
+                    strength={['5%(50мг)', '6.5%(62мг)']}
+                    size={['30мл', '60мл']}
+                />
             </CardContainer>
             <ButtonRow>
                 <ButtonMore onClick={toggleExpanded}>

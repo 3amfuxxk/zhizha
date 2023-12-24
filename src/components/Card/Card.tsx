@@ -87,27 +87,40 @@ const LikeBlock = styled.div`
 `
 
 interface Product {
-    name: string;
-    price: number;
-    sale?: number;
-    imgLink: string;
     id: string;
+    name: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     strength: string[];
     size: string[];
 }
 
 interface Props {
-    name: string;
-    price: number;
-    sale?: number;
-    imgLink: string;
     id: string;
+    name: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     onAddToCart: (product: Product) => void;
     strength: string[];
     size: string[];
 }
 
-const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: Props) => {
+interface ProductOption {
+    startingPrice: string;
+    salePrice: string;
+    discount: number;
+    inStock: boolean;
+}
+
+const Card = ({ id, name, code, desc, ice, image, categories, options, onAddToCart, strength, size }: Props) => {
 
     const handleOpen = () => {
         const addContainer = document.getElementById('add-container');
@@ -117,7 +130,7 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
     };
 
     const handleAddToCart = () => {
-        const product = { name, price, sale, imgLink, id, strength, size };
+        const product = { id, name, code, desc, ice, image, categories, options, strength, size};
         onAddToCart(product);
         handleOpen();
     };
@@ -125,7 +138,7 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
     return (
         <CardContainer>
             <ImgBlock>
-                <Image src={imgLink} width={280} height={280} alt="" />
+                <Image src={image} width={280} height={280} alt="" />
             </ImgBlock>
             <NameBlock>
                 <NameText>
@@ -135,13 +148,21 @@ const Card = ({ name, price, sale, imgLink, id, onAddToCart, strength, size }: P
             <InfoBlock>
                 <PriceBlock>
                     <PriceText>
+                        {options.salePrice}₴
+                    </PriceText>
+                    {options.startingPrice > options.salePrice && (
+                        <SaleText>
+                            {options.startingPrice}₴
+                        </SaleText>
+                    )}
+                    {/* <PriceText>
                         {price}₴
                     </PriceText>
                     {sale != null && (
                         <SaleText>
                             {sale}₴
                         </SaleText>
-                    )}
+                    )} */}
                 </PriceBlock>
                 <AddBlock>
                     <Button onClick={handleAddToCart} text={'В кошик'} width={135} height={38} >

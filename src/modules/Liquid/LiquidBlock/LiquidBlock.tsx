@@ -115,22 +115,23 @@ interface CatalogBlockProps {
 }
 
 interface Product {
-    id: string,
-    title: string,
-    desc: string,
-    code: number,
-    ice: boolean,
-    image: string,
-    categories: string[],
-    options:
-        {
-            volume: number,
-            nico: number,
-            startingPrice: string,
-            salePrice: string,
-            discount: number,
-            inStock: boolean,
-        }
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
+}
+
+interface ProductOption {
+    strength: string[];
+    size: string[];
+    startingPrice: string;
+    salePrice: string;
+    discount: number;
+    inStock: boolean;
 }
 
 const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
@@ -154,7 +155,6 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
         };
 
         fetchData();
-        console.log(data);
     }, []);
 
     const productCards = data ? data.map((product: Product) => ({

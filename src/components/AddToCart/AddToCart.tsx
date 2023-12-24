@@ -187,8 +187,8 @@ const Add = styled.div`
 `
 interface SelectedProduct {
     name: string;
-    price: number;
-    sale?: number;
+    startingPrice: number;
+    salePrice: number;
     imgLink: string;
     id: string;
     strength: string[];
@@ -276,9 +276,9 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                             </IDBlock>
                             <PriceBlock>
                                 <Price>
-                                    {selectedProduct.price * totalQuantity}₴
+                                    {selectedProduct.salePrice * totalQuantity}₴
                                 </Price>
-                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                                <Counter width={86} height={28} inpWidth={28} radius={5} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                             </PriceBlock>
                         </InfoBlock>
                     </ProductRow>
