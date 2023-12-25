@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Counter from '../Counter/Counter';
+import type { RootState } from '../../store/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '../../store/slice';
 
 const AddContainer = styled.div`
     display: none;
@@ -185,36 +188,49 @@ const Add = styled.div`
     font-weight: 700;
     line-height: normal;
 `
-interface SelectedProduct {
-    name: string;
-    startingPrice: number;
-    salePrice: number;
-    imgLink: string;
+interface AddToCartProduct {
     id: string;
-    strength: string[];
-    size: string[];
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     totalQuantity: number;
-    selectedStrengthIndex: number;
-    selectedSizeIndex: number;
+}
+
+
+interface Product {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption[];
+}
+interface ProductOption {
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
 }
 
 interface Props {
-    selectedProduct: SelectedProduct;
-    onDataUpdate: (data: SelectedProduct) => void;
+    product: Product;
 }
 
 
-const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
+const AddToCart = ({ product }: Props) => {
 
-    const [SelecteStrength, setSelecteStrength] = useState(0);
-    const [SelectedSize, setSelectedSize] = useState(0);
 
-    const handleStrengthClick = (index: number) => {
-        setSelecteStrength(index);
-    };
-    const handleSizeClick = (index: number) => {
-        setSelectedSize(index);
-    };
+
+    const [selectedNico, setSelectedNico] = useState(0);
+    const [selectedVolume, setSelectedVolume] = useState(0);
 
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
@@ -226,34 +242,26 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
         const addContainer = document.getElementById('add-container');
         if (addContainer) {
             setTotalQuantity(1);
-            setSelecteStrength(0);
-            setSelectedSize(0);
             addContainer.style.display = 'none';
         }
     };
 
-    const handleAddToCart = () => {
-        const selectedStrength = selectedProduct.strength[SelecteStrength];
-        const selectedSize = selectedProduct.size[SelectedSize];
-
-        const updatedProductData = {
-            ...selectedProduct,
-            totalQuantity: totalQuantity,
-            selectedStrength: selectedStrength,
-            selectedSize: selectedSize,
+    const dispatch = useDispatch();
+    const handleCart = (product: Product, quantity: number) => {
+        const selectedOptions: ProductOption = product.options[selectedNico];
+        const selectedProduct: AddToCartProduct = {
+          ...product,
+          totalQuantity: quantity,
+          options: selectedOptions,
         };
-        console.log(updatedProductData);
-        onDataUpdate(updatedProductData);
-    };
-
-    const handleCart = () => {
-        handleAddToCart();
         handleClose();
+        dispatch(addToCart(selectedProduct));
+        console.log(selectedProduct);
       };
 
     return (
         <AddContainer id='add-container'>
-            {selectedProduct && (
+            {product && (
                 <AddCard>
                     <Header>
                         <HeadText>
@@ -265,18 +273,18 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                     </Header>
                     <ProductRow>
                         <ImageBlock>
-                            <Image src={`/img/Card/${selectedProduct.imgLink}`} width={114} height={114} alt="" />
+                            <Image src={product.image} width={114} height={114} alt="" />
                         </ImageBlock>
                         <InfoBlock>
                             <Name>
-                                {selectedProduct.name}
+                                {product.title}
                             </Name>
                             <IDBlock>
-                                Код товару: <Span>{selectedProduct.id}</Span>
+                                Код товару: <Span>{product.code}</Span>
                             </IDBlock>
                             <PriceBlock>
                                 <Price>
-                                    {selectedProduct.salePrice * totalQuantity}₴
+                                    {product.options[selectedNico]?.sale_price * totalQuantity}₴
                                 </Price>
                                 <Counter width={86} height={28} inpWidth={28} radius={5} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                             </PriceBlock>
@@ -287,12 +295,16 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                             Міцність:
                         </SectName>
                         <Specs>
-                            {selectedProduct.strength.map((item, index) => (
+                            {product.options.map((option, index) => (
                                 <BlockProps
                                     key={index}
-                                    isSelected={SelecteStrength === index}
-                                    onClick={() => handleStrengthClick(index)}>
-                                    <Text>{item}</Text>
+                                    isSelected={selectedNico === index}
+                                    onClick={() => {
+                                        setSelectedNico(index);
+                                        setSelectedVolume(index);
+                                    }}
+                                >
+                                    <Text>{option.nico}</Text>
                                 </BlockProps>
                             ))}
                         </Specs>
@@ -302,12 +314,16 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                             Об’єм:
                         </SectName>
                         <Specs>
-                            {selectedProduct.size.map((item, index) => (
+                            {product.options.map((option, index) => (
                                 <BlockProps
                                     key={index}
-                                    isSelected={SelectedSize === index}
-                                    onClick={() => handleSizeClick(index)}>
-                                    <Text>{item}</Text>
+                                    isSelected={selectedVolume === index}
+                                    onClick={() => {
+                                        setSelectedVolume(index);
+                                        setSelectedNico(index);
+                                    }}
+                                >
+                                    <Text>{option.volume}</Text>
                                 </BlockProps>
                             ))}
                         </Specs>
@@ -318,7 +334,7 @@ const AddToCart = ({ selectedProduct, onDataUpdate}: Props) => {
                                 Назад до магазину
                             </p>
                         </Leave>
-                        <Add onClick={handleCart}>
+                        <Add onClick={() => handleCart(product, totalQuantity)}>
                             <Image src={'/img/Card/svg/cart.svg'} width="13" height={16} alt="" />
                             <p>
                                 Додати в кошик

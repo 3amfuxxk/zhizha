@@ -8,11 +8,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import ProductPage from "../../components/ProductPage/ProductPage";
 
 interface SelectedProduct {
-  name: string;
-  price: number;
-  sale?: number;
-  imgLink: string;
   id: string;
+  name: string;
+  code: number;
+  desc: string;
+  ice: boolean;
+  image: string;
+  categories: string[];
+  options: ProductOption;
   strength: string[];
   size: string[];
   totalQuantity: number;
@@ -21,19 +24,22 @@ interface SelectedProduct {
 }
 
 interface ProductData {
-  id: string,
-  sale: number,
-  discount: number,
-  imgLink: string,
-  ice: boolean,
-  desc: string,
-  price: number,
-  name: string,
-  code: number,
-  categories: string[],
-  strength: string[],
-  size: string[],
-  inStock: boolean,
+  id: string;
+  title: string;
+  code: number;
+  desc: string;
+  ice: boolean;
+  image: string;
+  categories: string[];
+  options: ProductOption;
+  strength: string[];
+  size: string[];
+}
+interface ProductOption {
+  startingPrice: number;
+  salePrice: number;
+  discount: number;
+  inStock: boolean;
 }
 
 export default function Home() {

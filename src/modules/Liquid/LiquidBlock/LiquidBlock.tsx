@@ -98,11 +98,14 @@ const ButtonText = styled.p`
 `
 
 interface SelectedProduct {
-    name: string;
-    price: number;
-    sale?: number;
-    imgLink: string;
     id: string;
+    name: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     strength: string[];
     size: string[];
     totalQuantity: number;
@@ -122,17 +125,17 @@ interface Product {
     ice: boolean;
     image: string;
     categories: string[];
-    options: ProductOption;
+    options: ProductOption[];
+}
+interface ProductOption {
+    starting_price: string;
+    sale_price: string;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
 }
 
-interface ProductOption {
-    strength: string[];
-    size: string[];
-    startingPrice: string;
-    salePrice: string;
-    discount: number;
-    inStock: boolean;
-}
 
 const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -157,23 +160,27 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
         fetchData();
     }, []);
 
-    const productCards = data ? data.map((product: Product) => ({
-        id: product.id,
-        code: product.code,
-        sale: product.options.salePrice,
-        discount: product.options.discount,
-        imgLink: product.image,
-        ice: product.ice,
-        desc: product.desc,
-        price: product.options.startingPrice,
-        name: product.title,
-        categories: product.categories,
-        inStock: product.options.inStock,
-        onAddToCart: toggleExpanded,
-        strength: ['5%(50мг)', '6.5%(62мг)'],
-        size: ['30мл', '60мл'],
-    })) : [];
+    const productCards = data
+        ? data.map((product: Product) => ({
+            id: product.id,
+            code: product.code,
+            image: '/img/Card/rb.jpg',
+            ice: product.ice,
+            desc: product.desc,
+            name: product.title,
+            categories: product.categories,
+            options: product.options.map((option: ProductOption) => ({
+                startingPrice: option.starting_price,
+                salePrice: option.sale_price,
+                discount: option.discount,
+                inStock: option.in_stock,
+                nico: option.nico,
+                volume: option.volume,
+            })),
+        }))
+        : [];
 
+    console.log(productCards);
     return (
         <LiquidContainer>
             <NameBlock>
@@ -203,20 +210,43 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
                     </Link>
                 </LinkPath>
                 <CardContainer expanded={expanded}>
-                    <Card imgLink='/img/Card/rb.jpg' price={333} name={'Рідина R@!N BULL (30/60мл)'} id={'1'} onAddToCart={toggleExpanded} strength={['5%(50мг)', '6.5%(62мг)']} size={['30мл', '60мл']} />
+                    <Card
+                        id={"12asd12sa"}
+                        title={'Рідина R@!N BULL (30/60мл)'}
+                        code={123123}
+                        desc={'def desc'}
+                        ice={true}
+                        image='/img/Card/rb.jpg'
+                        categories={["pod", "liquid"]}
+                        options={{
+                            starting_price: "100",
+                            sale_price: "80",
+                            discount: 20,
+                            in_stock: true,
+                            nico: 24,
+                            volume: 100,
+                        }}
+                    />
                     {productCards.length > 0 ? (
                         productCards.map((product) => (
                             <Link key={product.id} href={{ pathname: '/product', query: { cartItems: JSON.stringify(cartItems), productData: JSON.stringify(product) } }}>
                                 <Card
                                     key={product.id}
-                                    imgLink={product.imgLink}
-                                    price={333}
+                                    code={product.code}
+                                    desc={product.desc}
+                                    ice={product.ice}
+                                    categories={product.categories}
+                                    image={product.image}
+                                    options={{
+                                        startingPrice: product.options.startingPrice,
+                                        salePrice: product.options.salePrice,
+                                        discount: product.options.discount,
+                                        inStock: product.options.inStock,
+                                    }}
                                     name={product.name}
                                     id={product.id}
-                                    onAddToCart={product.onAddToCart}
-                                    strength={product.strength}
-                                    size={product.size}
-                                    sale={111}
+                                    strength={['5%(50мг)', '6.5%(62мг)']}
+                                    size={['30мл', '60мл']}
                                 />
                             </Link>
                         ))

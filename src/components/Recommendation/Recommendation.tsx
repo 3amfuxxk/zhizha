@@ -100,57 +100,68 @@ const ButtonText = styled.p`
 `
 
 interface Product {
-    name: string;
-    startingPrice: number;
-    salePrice: number;
-    imgLink: string;
     id: string;
-    strength: string[];
-    size: string[];
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption[];
+}
+interface ProductOption {
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
 }
 
-interface SelectedProduct {
-    name: string;
-    startingPrice: number;
-    salePrice: number;
-    imgLink: string;
-    id: string;
-    strength: string[];
-    size: string[];
-    totalQuantity: number;
-    selectedStrengthIndex: number;
-    selectedSizeIndex: number;
-}
+// interface SelectedProduct {
+//     id: string;
+//     title: string;
+//     code: number;
+//     desc: string;
+//     ice: boolean;
+//     image: string;
+//     categories: string[];
+//     options: ProductOption;
+//     totalQuantity: number;
+//     selectedStrengthIndex: number;
+//     selectedSizeIndex: number;
+// }
 
-interface RecommendationProps {
-    onDataUpdate: (data: SelectedProduct) => void;
-}
+// interface RecommendationProps {
+//     onDataUpdate: (data: SelectedProduct) => void;
+// }
 
-const Recommendation = ({ onDataUpdate }: RecommendationProps) => {
+// const Recommendation = ({ onDataUpdate }: RecommendationProps) => {
+
+const Recommendation = () => {
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
     const toggleExpanded = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
 
-
-    const handleAddToCart = (product: Product) => {
-        setSelectedProduct(product);
+    const [showProduct, setShowProduct] = useState<any>(null);
+    const handleToAddToCart = (product: Product) => {
+        setShowProduct(product);
     };
 
-    const [cartItems, setCartItems] = useState<SelectedProduct[]>([]);
+    // const [cartItems, setCartItems] = useState<SelectedProduct[]>([]);
 
-    const handleDataFromAddToCart = (data: SelectedProduct) => {
-        const isProductInCart = cartItems.some(item => item.id === data.id);
+    // const handleDataFromAddToCart = (data: SelectedProduct) => {
+    //     const isProductInCart = cartItems.some(item => item.id === data.id);
 
-        if (!isProductInCart) {
-            setCartItems(prevCartItems => [...prevCartItems, data]);
-            onDataUpdate(data);
-        } else {
-            console.log('Товар уже добавлен в корзину');
-        }
-    };
+    //     if (!isProductInCart) {
+    //         setCartItems(prevCartItems => [...prevCartItems, data]);
+    //         onDataUpdate(data);
+    //     } else {
+    //         console.log('Товар уже добавлен в корзину');
+    //     }
+    // };
 
     return (
         <RecContainer>
@@ -173,34 +184,63 @@ const Recommendation = ({ onDataUpdate }: RecommendationProps) => {
                 </Link>
             </Header>
             <CardContainer expanded={expanded}>
-                <AddToCart selectedProduct={selectedProduct} onDataUpdate={handleDataFromAddToCart} />
+            {/* <AddToCart selectedProduct={selectedProduct} onDataUpdate={handleDataFromAddToCart} /> */}
+                <AddToCart product={showProduct}  />
                 <Card
-                    imgLink='/img/Card/rb.jpg'
-                    options={{
-                        startingPrice: '100',
-                        salePrice: '80',
-                        discount: 20,
-                        inStock: true,
-                    }}
-                    name={'Рідина R@!N BULL (30/60мл)'}
+                    code={123123}
+                    desc={'def desc'}
+                    ice={true}
+                    categories={["pod", "liquid"]}
+                    image='/img/Card/rb.jpg'
+                    options={[
+                        {
+                            starting_price: 100,
+                            sale_price: 80,
+                            discount: 20,
+                            in_stock: true,
+                            nico: 40,
+                            volume: 100,
+                        },
+                        {
+                            starting_price: 300,
+                            sale_price: 270,
+                            discount: 10,
+                            in_stock: true,
+                            nico: 60,
+                            volume: 150,
+                        },
+                    ]}
+                    title={'Рідина R@!N BULL (30/60мл)'}
                     id={'1'}
-                    onAddToCart={handleAddToCart}
-                    strength={['5%(50мг)', '6.5%(62мг)']}
-                    size={['30мл', '60мл']}
+                    onAddToCart={handleToAddToCart}
                 />
                 <Card
-                    imgLink='/img/Card/rb.jpg'
-                    options={{
-                        startingPrice: '100',
-                        salePrice: '80',
-                        discount: 20,
-                        inStock: true,
-                    }}
-                    name={'Рідина R@!N BOOBS (15/45мл)'}
+                    code={323123}
+                    desc={'def desc'}
+                    ice={true}
+                    categories={["pod", "liquid"]}
+                    image='/img/Card/rb.jpg'
+                    options={[
+                        {
+                            starting_price: 400,
+                            sale_price: 300,
+                            discount: 25,
+                            in_stock: true,
+                            nico: 30,
+                            volume: 50,
+                        },
+                        {
+                            starting_price: 250,
+                            sale_price: 200,
+                            discount: 20,
+                            in_stock: true,
+                            nico: 60,
+                            volume: 100,
+                        },
+                    ]}
+                    title={'Рідина R@!N BOOBS (15/45мл)'}
                     id={'2'}
-                    onAddToCart={handleAddToCart}
-                    strength={['5%(50мг)', '6.5%(62мг)']}
-                    size={['30мл', '60мл']}
+                    onAddToCart={handleToAddToCart}
                 />
             </CardContainer>
             <ButtonRow>

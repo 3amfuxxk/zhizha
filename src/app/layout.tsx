@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Manrope } from 'next/font/google'
+import { StoreProvider } from '@/store/StoreProvider';
 
 const manrope = Manrope({
-  weight: [ '200','300','400','500','600','700','800' ],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
   style: ['normal'],
   subsets: ['latin'],
 });
@@ -19,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={manrope.className}>{children}</body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className={manrope.className}>{children}</body>
+      </html>
+    </StoreProvider>
   )
 }

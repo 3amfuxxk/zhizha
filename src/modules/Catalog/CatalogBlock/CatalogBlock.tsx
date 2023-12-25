@@ -55,17 +55,27 @@ const CardBlock = styled.div`
 `
 
 interface SelectedProduct {
-    name: string;
-    price: number;
-    sale?: number;
-    imgLink: string;
     id: string;
+    name: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     strength: string[];
     size: string[];
     totalQuantity: number;
     selectedStrengthIndex: number;
     selectedSizeIndex: number;
 }
+interface ProductOption {
+    startingPrice: number;
+    salePrice: number;
+    discount: number;
+    inStock: boolean;
+}
+
 
 interface CatalogBlockProps {
     cartItems: SelectedProduct[];

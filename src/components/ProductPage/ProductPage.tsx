@@ -276,20 +276,23 @@ const DataValue = styled.p`
 
 
 interface ProductData {
-    id: string,
-    sale: number,
-    discount: number,
-    imgLink: string,
-    ice: boolean,
-    desc: string,
-    price: number,
-    name: string,
-    code: number,
-    categories: string[],
-    strength: string[],
-    size: string[],
-    inStock: boolean,
-}
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
+    strength: string[];
+    size: string[];
+  }
+  interface ProductOption {
+    startingPrice: number;
+    salePrice: number;
+    discount: number;
+    inStock: boolean;
+  }
 
 interface Product {
     selectedProduct: ProductData;
@@ -334,7 +337,7 @@ const ProductPage = ({ selectedProduct }: Product) => {
                 </Link>
                 <Link href={'/'}>
                     <Active>
-                        {selectedProduct.name}
+                        {selectedProduct.title}
                     </Active>
                 </Link>
             </LinkPath>
@@ -346,7 +349,7 @@ const ProductPage = ({ selectedProduct }: Product) => {
                 </ImageBlock>
                 <ProductInfo>
                     <ProductName>
-                        {selectedProduct.name}
+                        {selectedProduct.title}
                     </ProductName>
                     <ProductId>
                         Код товару: <SpanId>{selectedProduct.id}</SpanId>
@@ -356,40 +359,40 @@ const ProductPage = ({ selectedProduct }: Product) => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            {selectedProduct.price}
+                            {selectedProduct.options.startingPrice}
                         </StartingPrice>
                         <SalePrice>
-                            {selectedProduct.sale}
+                            {selectedProduct.options.salePrice}
                         </SalePrice>
                         <Discount>
-                            {selectedProduct.discount}%
+                            {selectedProduct.options.discount}%
                         </Discount>
                     </ProductPrice>
                     <CategoryText>
                         Міцність:
                     </CategoryText>
                     <Specs>
-                        {selectedProduct.strength.map((item, index) => (
+                        {/* {selectedProduct.strength.map((item, index) => (
                             <BlockProps
                                 key={index}
                                 isSelected={SelecteStrength === index}
                                 onClick={() => handleStrengthClick(index)}>
                                 <Text>{item}</Text>
                             </BlockProps>
-                        ))}
+                        ))} */}
                     </Specs>
                     <CategoryText>
                         Об’єм
                     </CategoryText>
                     <Specs>
-                        {selectedProduct.size.map((item, index) => (
+                        {/* {selectedProduct.size.map((item, index) => (
                             <BlockProps
                                 key={index}
                                 isSelected={SelectedSize === index}
                                 onClick={() => handleSizeClick(index)}>
                                 <Text>{item}</Text>
                             </BlockProps>
-                        ))}
+                        ))} */}
                     </Specs>
                     <NavBlock>
                         <Counter width={138} height={46} inpWidth={46} radius={8} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />

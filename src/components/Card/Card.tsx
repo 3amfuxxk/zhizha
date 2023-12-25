@@ -88,39 +88,37 @@ const LikeBlock = styled.div`
 
 interface Product {
     id: string;
-    name: string;
+    title: string;
     code: number;
     desc: string;
     ice: boolean;
     image: string;
     categories: string[];
-    options: ProductOption;
-    strength: string[];
-    size: string[];
+    options: ProductOption[];
 }
 
 interface Props {
     id: string;
-    name: string;
+    title: string;
     code: number;
     desc: string;
     ice: boolean;
     image: string;
     categories: string[];
-    options: ProductOption;
-    onAddToCart: (product: Product) => void;
-    strength: string[];
-    size: string[];
+    options: ProductOption[];
+    onAddToCart?: (product: Product) => void;
 }
 
 interface ProductOption {
-    startingPrice: string;
-    salePrice: string;
+    starting_price: number;
+    sale_price: number;
     discount: number;
-    inStock: boolean;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
 }
 
-const Card = ({ id, name, code, desc, ice, image, categories, options, onAddToCart, strength, size }: Props) => {
+const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToCart }: Props) => {
 
     const handleOpen = () => {
         const addContainer = document.getElementById('add-container');
@@ -130,8 +128,10 @@ const Card = ({ id, name, code, desc, ice, image, categories, options, onAddToCa
     };
 
     const handleAddToCart = () => {
-        const product = { id, name, code, desc, ice, image, categories, options, strength, size};
-        onAddToCart(product);
+        const product = { id, title, code, desc, ice, image, categories, options};
+        if (onAddToCart) {
+            onAddToCart(product);
+        }
         handleOpen();
     };
 
@@ -142,27 +142,19 @@ const Card = ({ id, name, code, desc, ice, image, categories, options, onAddToCa
             </ImgBlock>
             <NameBlock>
                 <NameText>
-                    {name}
+                    {title}
                 </NameText>
             </NameBlock>
             <InfoBlock>
                 <PriceBlock>
                     <PriceText>
-                        {options.salePrice}₴
+                        {options[0].sale_price}₴
                     </PriceText>
-                    {options.startingPrice > options.salePrice && (
+                    {options[0].starting_price > options[0].sale_price && (
                         <SaleText>
-                            {options.startingPrice}₴
+                            {options[0].starting_price}₴
                         </SaleText>
                     )}
-                    {/* <PriceText>
-                        {price}₴
-                    </PriceText>
-                    {sale != null && (
-                        <SaleText>
-                            {sale}₴
-                        </SaleText>
-                    )} */}
                 </PriceBlock>
                 <AddBlock>
                     <Button onClick={handleAddToCart} text={'В кошик'} width={135} height={38} >

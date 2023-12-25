@@ -5,7 +5,8 @@ import NavButton from "../NavButton/NavButton";
 import Language from "../Language/Language";
 import Link from "next/link";
 import Counter from "../Counter/Counter";
-
+import { useSelector } from 'react-redux';
+import { addToCart } from '../../store/slice';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -326,24 +327,30 @@ const OrderText = styled.p`
     font-weight: 800;
     line-height: 130%;
 `
-interface SelectedProduct {
-    name: string;
-    price: number;
-    sale?: number;
-    imgLink: string;
+interface AddToCartProduct {
     id: string;
-    strength: string[];
-    size: string[];
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
     totalQuantity: number;
-    selectedStrengthIndex: number;
-    selectedSizeIndex: number;
+}
+interface ProductOption {
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
 }
 
-interface HeaderProps {
-    cartItems: SelectedProduct[];
-}
 
-const Header = ({ cartItems }: HeaderProps) => {
+const Header = () => {
+    const cartProducts = useSelector(addToCart);
+
     const [cartOpen, setCart] = useState<boolean>(false);
 
     const toggleOpen = () => {
@@ -359,20 +366,20 @@ const Header = ({ cartItems }: HeaderProps) => {
         }));
     };
 
-    const totalCost = cartItems.reduce((accumulator, product) => {
-        const productCost = product.price * (productQuantities[product.id] || product.totalQuantity);
-        return accumulator + productCost;
-    }, 0);
+    // const totalCost = cartItems.reduce((accumulator, product) => {
+    //     const productCost = product.options.startingPrice * (productQuantities[product.id] || product.totalQuantity);
+    //     return accumulator + productCost;
+    // }, 0);
 
-    const totalSale = cartItems.reduce((accumulator, product) => {
-        if (product.sale) {
-            const productSale = product.sale * (productQuantities[product.id] || product.totalQuantity);
-            return accumulator + productSale;
-        }
-        return accumulator;
-    }, 0);
+    // const totalSale = cartItems.reduce((accumulator, product) => {
+    //     if (product.options.startingPrice) {
+    //         const productSale = (product.options.startingPrice - product.options.salePrice) * (productQuantities[product.id] || product.totalQuantity);
+    //         return accumulator + productSale;
+    //     }
+    //     return accumulator;
+    // }, 0);
 
-    const orderCost = totalCost - totalSale;
+    // const orderCost = totalCost - totalSale;
 
     return (
         <HeaderBlock>
@@ -380,7 +387,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                 <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
             </Link>
             <NavBlock>
-                <Link href={{ pathname: '/catalog', query: { cartItems: JSON.stringify(cartItems) }}}>
+                <Link href={{ pathname: '/catalog'}}>
                     <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
                 </Link>
                 <NavButton text={'Доставка'} svgLink={'contact.svg'} />
@@ -398,7 +405,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                     <Cart onClick={toggleOpen}>
                         <RoundCount>
                             <ItemsCount>
-                                {cartItems.length}
+                                {cartProducts.length}
                             </ItemsCount>
                         </RoundCount>
                         <Image src={'/img/Header/shop-bag.svg'} alt={''} width={18} height={21} />
@@ -413,35 +420,33 @@ const Header = ({ cartItems }: HeaderProps) => {
                             </CartNav>
                         </CartProducts>
                         <Product id="product-block" className="scrol">
-                            {cartItems.map((product, index) => (
-                                <ProductCard key={index}>
+                                <ProductCard>
                                     <ImageBlock>
-                                        <Image src={`/img/Card/${product.imgLink}`} width={114} height={114} alt="" />
+                                        <Image src={addToCart.image} width={114} height={114} alt="" />
                                     </ImageBlock>
                                     <ProductInfo>
                                         <ProductName>
                                             {product.name}
                                         </ProductName>
                                         <ProductID>
-                                            Код товару: <Span>{product.id}</Span>
+                                            Код товару: <Span>{product.code}</Span>
                                         </ProductID>
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {product.price * (productQuantities[product.id] || product.totalQuantity)}₴
+                                                    {product.options.salePrice * (productQuantities[product.id] || product.totalQuantity)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {product.sale ? `${product.sale * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
+                                                    {product.options.startingPrice ? `${product.options.startingPrice * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
-                                            <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                            {/* <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
                                                 handleQuantityChange(product.id, newQuantity)
                                             }
-                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} />
+                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} /> */}
                                         </PriceContainer>
                                     </ProductInfo>
                                 </ProductCard>
-                            ))}
                         </Product>
                         <OrderInfo>
                             <PromoBlock>
@@ -475,7 +480,7 @@ const Header = ({ cartItems }: HeaderProps) => {
                                     </TotalPrice>
                                     <SpanBot />
                                     <TotalPrice>
-                                       {orderCost}₴
+                                        {orderCost}₴
                                     </TotalPrice>
                                 </InfoPrice>
                                 <SubmitOrder>
