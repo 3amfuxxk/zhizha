@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cartSlice from './slice'
+import  selectedProductReducer from './liquidSlice'
 
 export const store = configureStore({
     reducer: {
       cart: cartSlice,
+      selectedProduct: selectedProductReducer,
     },
   });
   

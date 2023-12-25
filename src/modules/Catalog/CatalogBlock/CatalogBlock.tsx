@@ -54,34 +54,7 @@ const CardBlock = styled.div`
     justify-content: space-between;
 `
 
-interface SelectedProduct {
-    id: string;
-    name: string;
-    code: number;
-    desc: string;
-    ice: boolean;
-    image: string;
-    categories: string[];
-    options: ProductOption;
-    strength: string[];
-    size: string[];
-    totalQuantity: number;
-    selectedStrengthIndex: number;
-    selectedSizeIndex: number;
-}
-interface ProductOption {
-    startingPrice: number;
-    salePrice: number;
-    discount: number;
-    inStock: boolean;
-}
-
-
-interface CatalogBlockProps {
-    cartItems: SelectedProduct[];
-}
-
-const CatalogBlock = ({ cartItems }: CatalogBlockProps) => {
+const CatalogBlock = () => {
     return (
         <CatalogContainer>
             <HeaderBlock>
@@ -103,13 +76,13 @@ const CatalogBlock = ({ cartItems }: CatalogBlockProps) => {
                     </Link>
                 </LinkPath>
                 <CardBlock>
-                    <Link href={{pathname:"/liquid", query: { cartItems: JSON.stringify(cartItems) } }}>
+                    <Link href={{pathname:"/liquid" }}>
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Link>
-                    <Link href={{pathname: "/accessories", query: { cartItems: JSON.stringify(cartItems) } } }>
+                    <Link href={{pathname: "/accessories"} }>
                         <Card text={"Комплектуючі"} imgLink={'component.png'} />
                     </Link>
-                    <Link href={{pathname: "/pods", query: { cartItems: JSON.stringify(cartItems) }}}>
+                    <Link href={{pathname: "/pods"}}>
                         <Card text={"Под системи"} imgLink={'pod.png'} />
                     </Link>
                 </CardBlock>

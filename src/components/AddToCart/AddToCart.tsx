@@ -5,6 +5,7 @@ import Counter from '../Counter/Counter';
 import type { RootState } from '../../store/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '../../store/slice';
+import { selectCart } from '../../store/slice';
 
 const AddContainer = styled.div`
     display: none;
@@ -227,7 +228,7 @@ interface Props {
 
 const AddToCart = ({ product }: Props) => {
 
-
+    const cartProducts = useSelector(selectCart);
 
     const [selectedNico, setSelectedNico] = useState(0);
     const [selectedVolume, setSelectedVolume] = useState(0);
@@ -254,10 +255,20 @@ const AddToCart = ({ product }: Props) => {
           totalQuantity: quantity,
           options: selectedOptions,
         };
-        handleClose();
-        dispatch(addToCart(selectedProduct));
-        console.log(selectedProduct);
+      
+        // Проверяем, существует ли товар с таким же id в корзине
+        const isProductInCart = cartProducts.some(item => item.id === selectedProduct.id);
+      
+        if (!isProductInCart) {
+          handleClose();
+          dispatch(addToCart(selectedProduct));
+        } else {
+          // Товар уже в корзине, можешь выполнить какие-то действия или просто проигнорировать добавление
+          console.log('Этот товар уже есть в корзине');
+        }
       };
+
+    console.log(cartProducts);
 
     return (
         <AddContainer id='add-container'>

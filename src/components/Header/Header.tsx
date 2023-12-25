@@ -7,6 +7,7 @@ import Link from "next/link";
 import Counter from "../Counter/Counter";
 import { useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
+import { selectCart } from "../../store/slice";
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -349,7 +350,8 @@ interface ProductOption {
 
 
 const Header = () => {
-    const cartProducts = useSelector(addToCart);
+    const cartProducts = useSelector(selectCart);
+    console.log(cartProducts);
 
     const [cartOpen, setCart] = useState<boolean>(false);
 
@@ -366,20 +368,20 @@ const Header = () => {
         }));
     };
 
-    // const totalCost = cartItems.reduce((accumulator, product) => {
-    //     const productCost = product.options.startingPrice * (productQuantities[product.id] || product.totalQuantity);
-    //     return accumulator + productCost;
-    // }, 0);
+    const totalCost = cartProducts.reduce((accumulator, product) => {
+        const productCost = product.options.starting_price * (productQuantities[product.id] || product.totalQuantity);
+        return accumulator + productCost;
+    }, 0);
 
-    // const totalSale = cartItems.reduce((accumulator, product) => {
-    //     if (product.options.startingPrice) {
-    //         const productSale = (product.options.startingPrice - product.options.salePrice) * (productQuantities[product.id] || product.totalQuantity);
-    //         return accumulator + productSale;
-    //     }
-    //     return accumulator;
-    // }, 0);
+    const totalSale = cartProducts.reduce((accumulator, product) => {
+        if (product.options.starting_price) {
+            const productSale = (product.options.starting_price - product.options.sale_price) * (productQuantities[product.id] || product.totalQuantity);
+            return accumulator + productSale;
+        }
+        return accumulator;
+    }, 0);
 
-    // const orderCost = totalCost - totalSale;
+    const orderCost = totalCost - totalSale;
 
     return (
         <HeaderBlock>
@@ -420,13 +422,14 @@ const Header = () => {
                             </CartNav>
                         </CartProducts>
                         <Product id="product-block" className="scrol">
-                                <ProductCard>
+                                {cartProducts.map((product) => (
+                                    <ProductCard key={product.id}>
                                     <ImageBlock>
-                                        <Image src={addToCart.image} width={114} height={114} alt="" />
+                                        <Image src={product.image} width={114} height={114} alt="" />
                                     </ImageBlock>
                                     <ProductInfo>
                                         <ProductName>
-                                            {product.name}
+                                            {product.title}
                                         </ProductName>
                                         <ProductID>
                                             Код товару: <Span>{product.code}</Span>
@@ -434,19 +437,20 @@ const Header = () => {
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {product.options.salePrice * (productQuantities[product.id] || product.totalQuantity)}₴
+                                                    {product.options.sale_price * (productQuantities[product.id] || product.totalQuantity)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {product.options.startingPrice ? `${product.options.startingPrice * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
+                                                    {product.options.starting_price ? `${product.options.starting_price * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
-                                            {/* <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                            <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
                                                 handleQuantityChange(product.id, newQuantity)
                                             }
-                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} /> */}
+                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} />
                                         </PriceContainer>
                                     </ProductInfo>
                                 </ProductCard>
+                                ))}
                         </Product>
                         <OrderInfo>
                             <PromoBlock>

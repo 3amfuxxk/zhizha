@@ -5,6 +5,8 @@ import Card from "../../../components/Card/Card";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { setSelectedProduct } from '../../../store/liquidSlice';
 
 const LiquidContainer = styled.div`
     display: flex;
@@ -97,26 +99,6 @@ const ButtonText = styled.p`
     line-height: normal;
 `
 
-interface SelectedProduct {
-    id: string;
-    name: string;
-    code: number;
-    desc: string;
-    ice: boolean;
-    image: string;
-    categories: string[];
-    options: ProductOption;
-    strength: string[];
-    size: string[];
-    totalQuantity: number;
-    selectedStrengthIndex: number;
-    selectedSizeIndex: number;
-}
-
-interface CatalogBlockProps {
-    cartItems: SelectedProduct[];
-}
-
 interface Product {
     id: string;
     title: string;
@@ -128,8 +110,8 @@ interface Product {
     options: ProductOption[];
 }
 interface ProductOption {
-    starting_price: string;
-    sale_price: string;
+    starting_price: number;
+    sale_price: number;
     discount: number;
     in_stock: boolean;
     nico: number;
@@ -137,7 +119,7 @@ interface ProductOption {
 }
 
 
-const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
+const LiquidBlock = () => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
     const toggleExpanded = () => {
@@ -150,8 +132,16 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get<Product[]>('http://18.130.180.167/api/v1/products/');
-                setData(response.data);
-                console.log(response.data);
+                const modifiedData = response.data.map(item => ({
+                    ...item,
+                    options: item.options.map(option => ({
+                        ...option,
+                        starting_price: Number(option.starting_price),
+                        sale_price: Number(option.sale_price),
+                    })),
+                }));
+                setData(modifiedData);
+                console.log(modifiedData);
             } catch (error) {
                 console.error('Ошибка запроса:', error);
             }
@@ -160,27 +150,30 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
         fetchData();
     }, []);
 
-    const productCards = data
-        ? data.map((product: Product) => ({
-            id: product.id,
-            code: product.code,
-            image: '/img/Card/rb.jpg',
-            ice: product.ice,
-            desc: product.desc,
-            name: product.title,
-            categories: product.categories,
-            options: product.options.map((option: ProductOption) => ({
-                startingPrice: option.starting_price,
-                salePrice: option.sale_price,
-                discount: option.discount,
-                inStock: option.in_stock,
-                nico: option.nico,
-                volume: option.volume,
-            })),
-        }))
-        : [];
+    const dispatch = useDispatch();
+    const handleSelectProduct = (selectedProductData: Product) => {
+        // const selectedProductData = {
+        //     id: 'your_id',
+        //     title: 'your_title',
+        //     code: 123123,
+        //     desc: 'descdesc',
+        //     ice: true,
+        //     categories: ['pod', 'liauid'],
+        //     image: '/img/Card/rb.jpg',
+        //     options: [
+        //         {
+        //             starting_price: 100,
+        //             sale_price: 80,
+        //             discount: 20,
+        //             in_stock: true,
+        //             nico: 40,
+        //             volume: 100,
+        //         }
+        //     ]
+        // };
+        dispatch(setSelectedProduct(selectedProductData));
+    };
 
-    console.log(productCards);
     return (
         <LiquidContainer>
             <NameBlock>
@@ -211,25 +204,50 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
                 </LinkPath>
                 <CardContainer expanded={expanded}>
                     <Card
-                        id={"12asd12sa"}
-                        title={'Рідина R@!N BULL (30/60мл)'}
                         code={123123}
                         desc={'def desc'}
                         ice={true}
-                        image='/img/Card/rb.jpg'
                         categories={["pod", "liquid"]}
-                        options={{
-                            starting_price: "100",
-                            sale_price: "80",
-                            discount: 20,
-                            in_stock: true,
-                            nico: 24,
-                            volume: 100,
-                        }}
+                        image='/img/Card/rb.jpg'
+                        options={[
+                            {
+                                starting_price: 100,
+                                sale_price: 80,
+                                discount: 20,
+                                in_stock: true,
+                                nico: 40,
+                                volume: 100,
+                            },
+                            {
+                                starting_price: 300,
+                                sale_price: 270,
+                                discount: 10,
+                                in_stock: true,
+                                nico: 60,
+                                volume: 150,
+                            },
+                        ]}
+                        title={'Рідина R@!N BULL (30/60мл)'}
+                        id={'1'}
                     />
-                    {productCards.length > 0 ? (
+                    { data && data.length > 0 && data.map((product) => (
+                        <Link href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
+                            <Card
+                                key={data[0].id}
+                                code={data[0].code}
+                                desc={data[0].desc}
+                                ice={data[0].ice}
+                                categories={data[0].categories}
+                                image={'/img/Card/rb.jpg'}
+                                title={data[0].title}
+                                id={data[0].id}
+                                options={data[0].options}
+                            />
+                        </Link>
+                    ))}
+                    {/* {productCards.length > 0 ? (
                         productCards.map((product) => (
-                            <Link key={product.id} href={{ pathname: '/product', query: { cartItems: JSON.stringify(cartItems), productData: JSON.stringify(product) } }}>
+                            <Link key={product.id} href={{ pathname: '/product' }}>
                                 <Card
                                     key={product.id}
                                     code={product.code}
@@ -237,22 +255,24 @@ const LiquidBlock = ({ cartItems }: CatalogBlockProps) => {
                                     ice={product.ice}
                                     categories={product.categories}
                                     image={product.image}
-                                    options={{
-                                        startingPrice: product.options.startingPrice,
-                                        salePrice: product.options.salePrice,
+                                    options={
+                                        [
+                                        starting_price: product.options.starting_price,
+                                        sale_price: product.options.sale_price,
                                         discount: product.options.discount,
-                                        inStock: product.options.inStock,
-                                    }}
+                                        inStock: product.options.in_stock,
+                                        nico: product.options.nico,
+                                        volume: product.options.volume
+                                        ]
+                                    }
                                     name={product.name}
                                     id={product.id}
-                                    strength={['5%(50мг)', '6.5%(62мг)']}
-                                    size={['30мл', '60мл']}
                                 />
                             </Link>
                         ))
                     ) : (
                         <p>Loading...</p>
-                    )}
+                    )} */}
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>

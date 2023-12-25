@@ -37,9 +37,9 @@ interface Product {
       addToCart(state, action: PayloadAction<Product>) {
         state.products.push(action.payload);
       },
-      // Добавьте здесь другие действия для удаления товаров из корзины и др.
     },
   });
+  
   
   export const { addToCart } = cartSlice.actions;
   

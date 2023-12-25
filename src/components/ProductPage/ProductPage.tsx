@@ -6,6 +6,10 @@ import Image from "next/image";
 import Counter from "../Counter/Counter";
 import Button from "../Button/Button";
 import { Roboto } from "next/font/google";
+import { selectSelectedProduct, setSelectedProduct } from "../../store/liquidSlice";
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '../../store/slice';
+import { selectCart } from '../../store/slice';
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -275,34 +279,8 @@ const DataValue = styled.p`
 // DataName = Active
 
 
-interface ProductData {
-    id: string;
-    title: string;
-    code: number;
-    desc: string;
-    ice: boolean;
-    image: string;
-    categories: string[];
-    options: ProductOption;
-    strength: string[];
-    size: string[];
-  }
-  interface ProductOption {
-    startingPrice: number;
-    salePrice: number;
-    discount: number;
-    inStock: boolean;
-  }
 
-interface Product {
-    selectedProduct: ProductData;
-}
-
-
-const ProductPage = ({ selectedProduct }: Product) => {
-    console.log(selectedProduct);
-    const [SelecteStrength, setSelecteStrength] = useState(0);
-    const [SelectedSize, setSelectedSize] = useState(0);
+const ProductPage = () => {
 
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
@@ -310,12 +288,8 @@ const ProductPage = ({ selectedProduct }: Product) => {
         setTotalQuantity(newQuantity);
     };
 
-    const handleStrengthClick = (index: number) => {
-        setSelecteStrength(index);
-    };
-    const handleSizeClick = (index: number) => {
-        setSelectedSize(index);
-    };
+    const selectedProduct = useSelector(selectSelectedProduct);
+    console.log(selectedProduct);
 
     return (
         <ProductContainer>
@@ -337,7 +311,7 @@ const ProductPage = ({ selectedProduct }: Product) => {
                 </Link>
                 <Link href={'/'}>
                     <Active>
-                        {selectedProduct.title}
+                        {selectedProduct?.title}
                     </Active>
                 </Link>
             </LinkPath>
@@ -349,24 +323,26 @@ const ProductPage = ({ selectedProduct }: Product) => {
                 </ImageBlock>
                 <ProductInfo>
                     <ProductName>
-                        {selectedProduct.title}
+                        {selectedProduct?.title}
                     </ProductName>
                     <ProductId>
-                        Код товару: <SpanId>{selectedProduct.id}</SpanId>
+                        Код товару: <SpanId>{selectedProduct?.code}</SpanId>
                     </ProductId>
                     <DescBlock>
-                        {selectedProduct.desc}
+                        {selectedProduct?.desc}
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            {selectedProduct.options.startingPrice}
+                            {selectedProduct?.options[0].starting_price}₴
                         </StartingPrice>
                         <SalePrice>
-                            {selectedProduct.options.salePrice}
+                            {selectedProduct?.options[0].sale_price}₴
                         </SalePrice>
-                        <Discount>
-                            {selectedProduct.options.discount}%
-                        </Discount>
+                        {selectedProduct?.options[0].discount !== 0 ? (
+                            <Discount>
+                                {selectedProduct?.options[0].discount}%
+                            </Discount>
+                        ) : null}
                     </ProductPrice>
                     <CategoryText>
                         Міцність:
@@ -417,7 +393,7 @@ const ProductPage = ({ selectedProduct }: Product) => {
             </ImageWhole>
             <FullData>
                 <DescHeader>
-                    Характеристики (Name_Of_Product):
+                    Характеристики {selectedProduct?.title}:
                 </DescHeader>
                 <FullDataBlock className={roboto.className}>
 
