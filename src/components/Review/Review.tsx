@@ -45,7 +45,7 @@ const Review = () => {
                     Відгуки:
                 </HeaderText>
                 <Link href={'/'}>
-                    <Button text="Дивитися всі" />
+                    <Button text="Дивитися всі" width={135} height={38} />
                 </Link>
             </Header>
             <CardContainer>

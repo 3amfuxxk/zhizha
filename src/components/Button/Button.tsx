@@ -37,7 +37,7 @@ const ButtonBlock = styled.div`
 
 const Button = ({text, children, onClick, width, height}: Props) => {
     return (
-        <ButtonContainer onClick={onClick} width={width} height={height}>
+        <ButtonContainer onClick={onClick} width={width} height={height} text={text}>
             <ButtonBlock>
                 {children}
                 <Text>
