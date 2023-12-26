@@ -9,6 +9,7 @@ import Blog from "../components/Blog/Blog";
 import Review from "../components/Review/Review";
 import Pros from "../components/Pros/Pros";
 import Recommendation from "../components/Recommendation/Recommendation";
+import Advertising from "../components/Advertising/Advertising";
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
         <Container>
           <Header/>
           <HomeSection />
+          <Advertising />
           <Pros />
           <Recommendation />
           <Blog />
