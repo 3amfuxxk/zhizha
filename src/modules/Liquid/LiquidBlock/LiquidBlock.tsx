@@ -231,9 +231,8 @@ const LiquidBlock = () => {
                         id={'1'}
                     />
                     { data && data.length > 0 && data.map((product, index) => (
-                        <Link href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
+                        <Link key={index} href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
                             <Card
-                                key={index}
                                 code={product.code}
                                 desc={product.desc}
                                 ice={product.ice}
