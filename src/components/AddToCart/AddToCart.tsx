@@ -268,8 +268,6 @@ const AddToCart = ({ product }: Props) => {
         }
       };
 
-    console.log(cartProducts);
-
     return (
         <AddContainer id='add-container'>
             {product && (
@@ -297,7 +295,7 @@ const AddToCart = ({ product }: Props) => {
                                 <Price>
                                     {product.options[selectedNico]?.sale_price * totalQuantity}₴
                                 </Price>
-                                <Counter width={86} height={28} inpWidth={28} radius={5} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                             </PriceBlock>
                         </InfoBlock>
                     </ProductRow>

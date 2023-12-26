@@ -5,9 +5,11 @@ import NavButton from "../NavButton/NavButton";
 import Language from "../Language/Language";
 import Link from "next/link";
 import Counter from "../Counter/Counter";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
 import { selectCart } from "../../store/slice";
+import { removeFromCart } from '../../store/slice';
+import { Dispatch } from "@reduxjs/toolkit";
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -156,6 +158,8 @@ const ProductCard = styled.div`
     flex-shrink: 0;
     border-radius: 8px;
     background: #1F1E1F;
+    position: relative;
+    overflow: hidden;
 `
 const ImageBlock = styled.div`
     display: flex;
@@ -328,6 +332,60 @@ const OrderText = styled.p`
     font-weight: 800;
     line-height: 130%;
 `
+const FunctionBlock = styled.div`
+    display: flex;
+    width: auto;
+    height: auto;
+    align-items: center;
+    gap: 11px;
+`
+const DeleteBlock = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 29px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #B6020D;
+    cursor: pointer;
+`
+const DeleteConfirm = styled.div`
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    background: #1F1E1F;
+    align-items: center;
+    justify-content: center;
+`
+const ConfirmBlock = styled.div`
+    display: flex;
+    width: 236px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+`
+const ConfirmOptions = styled.div`
+    display: flex;
+    gap: 7px;
+    height: auto;
+`
+const NoBlock = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1px solid #292929;
+    background: #181818;
+`
+
 interface AddToCartProduct {
     id: string;
     title: string;
@@ -351,7 +409,6 @@ interface ProductOption {
 
 const Header = () => {
     const cartProducts = useSelector(selectCart);
-    console.log(cartProducts);
 
     const [cartOpen, setCart] = useState<boolean>(false);
 
@@ -368,6 +425,12 @@ const Header = () => {
         }));
     };
 
+    const dispatch = useDispatch();
+
+    const handleRemoveFromCart = (id: string) => {
+        dispatch(removeFromCart(id));
+      };
+
     const totalCost = cartProducts.reduce((accumulator, product) => {
         const productCost = product.options.starting_price * (productQuantities[product.id] || product.totalQuantity);
         return accumulator + productCost;
@@ -375,7 +438,7 @@ const Header = () => {
 
     const totalSale = cartProducts.reduce((accumulator, product) => {
         if (product.options.starting_price) {
-            const productSale = (product.options.starting_price - product.options.sale_price) * (productQuantities[product.id] || product.totalQuantity);
+            const productSale: number = (product.options.starting_price - product.options.sale_price) * (productQuantities[product.id] || product.totalQuantity);
             return accumulator + productSale;
         }
         return accumulator;
@@ -424,6 +487,13 @@ const Header = () => {
                         <Product id="product-block" className="scrol">
                                 {cartProducts.map((product) => (
                                     <ProductCard key={product.id}>
+                                    {/* <DeleteConfirm>
+                                        <ConfirmBlock>
+                                            <ConfirmOptions>
+                                                <NoBlock />
+                                            </ConfirmOptions>
+                                        </ConfirmBlock>
+                                    </DeleteConfirm> */}
                                     <ImageBlock>
                                         <Image src={product.image} width={114} height={114} alt="" />
                                     </ImageBlock>
@@ -443,10 +513,15 @@ const Header = () => {
                                                     {product.options.starting_price ? `${product.options.starting_price * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
-                                            <Counter width={86} height={28} radius={5} inpWidth={28} onQuantityChange={(newQuantity) =>
-                                                handleQuantityChange(product.id, newQuantity)
-                                            }
-                                                totalQuantity={productQuantities[product.id] || product.totalQuantity} />
+                                            <FunctionBlock>
+                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                    handleQuantityChange(product.id, newQuantity)
+                                                }
+                                                    totalQuantity={productQuantities[product.id] || product.totalQuantity} />
+                                                <DeleteBlock onClick={() => handleRemoveFromCart(product.id)}>
+                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                </DeleteBlock>
+                                            </FunctionBlock>
                                         </PriceContainer>
                                     </ProductInfo>
                                 </ProductCard>

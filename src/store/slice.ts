@@ -37,11 +37,14 @@ interface Product {
       addToCart(state, action: PayloadAction<Product>) {
         state.products.push(action.payload);
       },
+      removeFromCart(state, action: PayloadAction<string>) {
+        state.products = state.products.filter(item => item.id !== action.payload);
+      },
     },
   });
   
   
-  export const { addToCart } = cartSlice.actions;
+  export const { addToCart, removeFromCart } = cartSlice.actions;
   
   export const selectCart = (state: RootState) => state.cart.products;
   

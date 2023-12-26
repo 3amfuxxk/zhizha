@@ -265,7 +265,7 @@ const FullData = styled.div`
 const FullDataBlock = styled.div`
     display: flex;
     width: 100%;
-    height: auto;
+    height: 100%;
     align-items: center;
     justify-content: center;
 `
@@ -276,11 +276,61 @@ const DataValue = styled.p`
     font-weight: 400;
     line-height: 150%;
 `
+const ValueBlock = styled.div`
+    display: flex;
+    height: auto;
+    width: auto;
+    gap: 18px;
+    flex-direction: column;
+`
+const ValueName = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+`
+const ValueRow = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+`
 // DataName = Active
 
+interface AddToCartProduct {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption;
+    totalQuantity: number;
+}
 
+
+interface Product {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption[];
+}
+interface ProductOption {
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
+}
 
 const ProductPage = () => {
+    const [selectedNico, setSelectedNico] = useState(0);
+    const [selectedVolume, setSelectedVolume] = useState(0);
 
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
@@ -289,7 +339,28 @@ const ProductPage = () => {
     };
 
     const selectedProduct = useSelector(selectSelectedProduct);
-    console.log(selectedProduct);
+    const cartProducts = useSelector(selectCart);
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (quantity: number) => {
+        if (selectedProduct) {
+    
+          const selectedOptions: ProductOption = selectedProduct.options[selectedNico];
+          const selectedProductToAdd: AddToCartProduct = {
+            ...selectedProduct,
+            totalQuantity: quantity,
+            options: selectedOptions,
+          };
+    
+          const isProductInCart = cartProducts.some(item => item.id === selectedProductToAdd.id);
+    
+          if (!isProductInCart) {
+            dispatch(addToCart(selectedProductToAdd));
+          } else {
+            console.log('Этот товар уже есть в корзине');
+          }
+        }
+      };
 
     return (
         <ProductContainer>
@@ -333,14 +404,14 @@ const ProductPage = () => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            {selectedProduct?.options[0].starting_price}₴
+                            {selectedProduct?.options && selectedProduct?.options[selectedNico].starting_price * totalQuantity}₴
                         </StartingPrice>
                         <SalePrice>
-                            {selectedProduct?.options[0].sale_price}₴
+                        {selectedProduct?.options && selectedProduct?.options[selectedNico].sale_price * totalQuantity}₴
                         </SalePrice>
-                        {selectedProduct?.options[0].discount !== 0 ? (
+                        {selectedProduct?.options[selectedNico].discount !== 0 ? (
                             <Discount>
-                                {selectedProduct?.options[0].discount}%
+                                {selectedProduct?.options[selectedNico].discount}%
                             </Discount>
                         ) : null}
                     </ProductPrice>
@@ -348,31 +419,39 @@ const ProductPage = () => {
                         Міцність:
                     </CategoryText>
                     <Specs>
-                        {/* {selectedProduct.strength.map((item, index) => (
+                        {selectedProduct?.options.map((item, index) => (
                             <BlockProps
                                 key={index}
-                                isSelected={SelecteStrength === index}
-                                onClick={() => handleStrengthClick(index)}>
-                                <Text>{item}</Text>
+                                isSelected={selectedNico === index}
+                                onClick={() => {
+                                    setSelectedNico(index);
+                                    setSelectedVolume(index);
+                                }}
+                            >
+                                <Text>{item.nico}</Text>
                             </BlockProps>
-                        ))} */}
+                        ))}
                     </Specs>
                     <CategoryText>
                         Об’єм
                     </CategoryText>
                     <Specs>
-                        {/* {selectedProduct.size.map((item, index) => (
+                        {selectedProduct?.options.map((item, index) => (
                             <BlockProps
                                 key={index}
-                                isSelected={SelectedSize === index}
-                                onClick={() => handleSizeClick(index)}>
-                                <Text>{item}</Text>
+                                isSelected={selectedVolume === index}
+                                onClick={() => {
+                                    setSelectedVolume(index);
+                                    setSelectedNico(index);
+                                }}
+                            >
+                                <Text>{item.volume}</Text>
                             </BlockProps>
-                        ))} */}
+                        ))}
                     </Specs>
                     <NavBlock>
-                        <Counter width={138} height={46} inpWidth={46} radius={8} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
-                        <Button text={'В кошик'} width={213} height={46}>
+                        <Counter width={138} height={46} inpWidth={46} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
+                        <Button text={'В кошик'} width={213} height={46} onClick={() => handleAddToCart(totalQuantity)}>
                             <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                         </Button>
                     </NavBlock>
@@ -396,7 +475,24 @@ const ProductPage = () => {
                     Характеристики {selectedProduct?.title}:
                 </DescHeader>
                 <FullDataBlock className={roboto.className}>
-
+                    <ValueBlock>
+                        <ValueRow>
+                            <Active>
+                                Лід
+                            </Active>
+                            <DataValue>
+                                {/* {selectedProduct?.ice} */} Так/ні
+                            </DataValue>
+                        </ValueRow>
+                        <ValueRow>
+                            <Active>
+                                Вага
+                            </Active>
+                            <DataValue>
+                                50 гр
+                            </DataValue>
+                        </ValueRow>
+                    </ValueBlock>
                 </FullDataBlock>
             </FullData>
         </ProductContainer>

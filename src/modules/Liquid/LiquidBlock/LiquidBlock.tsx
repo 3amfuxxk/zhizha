@@ -230,18 +230,18 @@ const LiquidBlock = () => {
                         title={'Рідина R@!N BULL (30/60мл)'}
                         id={'1'}
                     />
-                    { data && data.length > 0 && data.map((product) => (
+                    { data && data.length > 0 && data.map((product, index) => (
                         <Link href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
                             <Card
-                                key={data[0].id}
-                                code={data[0].code}
-                                desc={data[0].desc}
-                                ice={data[0].ice}
-                                categories={data[0].categories}
+                                key={index}
+                                code={product.code}
+                                desc={product.desc}
+                                ice={product.ice}
+                                categories={product.categories}
                                 image={'/img/Card/rb.jpg'}
-                                title={data[0].title}
-                                id={data[0].id}
-                                options={data[0].options}
+                                title={product.title}
+                                id={product.id}
+                                options={product.options}
                             />
                         </Link>
                     ))}
