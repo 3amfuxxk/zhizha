@@ -110,6 +110,7 @@ interface Product {
     options: ProductOption[];
 }
 interface ProductOption {
+    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;
@@ -152,25 +153,6 @@ const LiquidBlock = () => {
 
     const dispatch = useDispatch();
     const handleSelectProduct = (selectedProductData: Product) => {
-        // const selectedProductData = {
-        //     id: 'your_id',
-        //     title: 'your_title',
-        //     code: 123123,
-        //     desc: 'descdesc',
-        //     ice: true,
-        //     categories: ['pod', 'liauid'],
-        //     image: '/img/Card/rb.jpg',
-        //     options: [
-        //         {
-        //             starting_price: 100,
-        //             sale_price: 80,
-        //             discount: 20,
-        //             in_stock: true,
-        //             nico: 40,
-        //             volume: 100,
-        //         }
-        //     ]
-        // };
         dispatch(setSelectedProduct(selectedProductData));
     };
 
@@ -203,33 +185,6 @@ const LiquidBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardContainer expanded={expanded}>
-                    <Card
-                        code={123123}
-                        desc={'def desc'}
-                        ice={true}
-                        categories={["pod", "liquid"]}
-                        image='/img/Card/rb.jpg'
-                        options={[
-                            {
-                                starting_price: 100,
-                                sale_price: 80,
-                                discount: 20,
-                                in_stock: true,
-                                nico: 40,
-                                volume: 100,
-                            },
-                            {
-                                starting_price: 300,
-                                sale_price: 270,
-                                discount: 10,
-                                in_stock: true,
-                                nico: 60,
-                                volume: 150,
-                            },
-                        ]}
-                        title={'Рідина R@!N BULL (30/60мл)'}
-                        id={'1'}
-                    />
                     { data && data.length > 0 && data.map((product, index) => (
                         <Link key={index} href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
                             <Card
@@ -237,41 +192,13 @@ const LiquidBlock = () => {
                                 desc={product.desc}
                                 ice={product.ice}
                                 categories={product.categories}
-                                image={'/img/Card/rb.jpg'}
+                                image={product.image}
                                 title={product.title}
                                 id={product.id}
                                 options={product.options}
                             />
                         </Link>
                     ))}
-                    {/* {productCards.length > 0 ? (
-                        productCards.map((product) => (
-                            <Link key={product.id} href={{ pathname: '/product' }}>
-                                <Card
-                                    key={product.id}
-                                    code={product.code}
-                                    desc={product.desc}
-                                    ice={product.ice}
-                                    categories={product.categories}
-                                    image={product.image}
-                                    options={
-                                        [
-                                        starting_price: product.options.starting_price,
-                                        sale_price: product.options.sale_price,
-                                        discount: product.options.discount,
-                                        inStock: product.options.in_stock,
-                                        nico: product.options.nico,
-                                        volume: product.options.volume
-                                        ]
-                                    }
-                                    name={product.name}
-                                    id={product.id}
-                                />
-                            </Link>
-                        ))
-                    ) : (
-                        <p>Loading...</p>
-                    )} */}
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>

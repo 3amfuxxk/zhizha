@@ -10,6 +10,7 @@ import { selectSelectedProduct, setSelectedProduct } from "../../store/liquidSli
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '../../store/slice';
 import { selectCart } from '../../store/slice';
+import { useEffect } from "react";
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -320,6 +321,7 @@ interface Product {
     options: ProductOption[];
 }
 interface ProductOption {
+    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;
@@ -329,38 +331,73 @@ interface ProductOption {
 }
 
 const ProductPage = () => {
-    const [selectedNico, setSelectedNico] = useState(0);
-    const [selectedVolume, setSelectedVolume] = useState(0);
+    const [selectedNico, setSelectedNico] = useState<number>(-1);
+    const [selectedVolume, setSelectedVolume] = useState<number>(-1);
 
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
+
+    const cartProducts = useSelector(selectCart);
+    const dispatch = useDispatch();
 
     const handleQuantityChange = (newQuantity: number) => {
         setTotalQuantity(newQuantity);
     };
 
     const selectedProduct = useSelector(selectSelectedProduct);
-    const cartProducts = useSelector(selectCart);
-    const dispatch = useDispatch();
+
+    const [uniqueVolumes, setUniqueVolumes] = useState<number[]>([]);
+    const [filteredNicos, setFilteredNicos] = useState<number[]>([]);
+
+    const filterVolumeByNico = (selectedNico: number) => {
+        const filteredOptions = selectedProduct?.options.filter((item) => item.nico === selectedNico);
+        const uniqueVolumes = Array.from(new Set(filteredOptions?.map((item) => item.volume)) || []);
+        setUniqueVolumes(uniqueVolumes);
+    };
+
+    const filterNicoByVolume = (selectedVolume: number) => {
+        const filteredOptions = selectedProduct?.options.filter((item) => item.volume === selectedVolume);
+        const uniqueNicos = Array.from(new Set(filteredOptions?.map((item) => item.nico)) || []);
+        setFilteredNicos(uniqueNicos);
+    };
+
+    const findIdByOptions = (selectedNico: number, selectedVolume: number) => {
+        const selectedOptionID = selectedProduct?.options.find((item) => item.nico === selectedNico && item.volume === selectedVolume);
+        return selectedOptionID?.id || null;
+    };
+
+    const id = findIdByOptions(selectedNico, selectedVolume) || 0;
+    console.log(id);
+
+    const findByID = (id: number) => {
+        const selectedIndex = selectedProduct?.options.findIndex((item) => item.id === id);
+        return selectedIndex !== -1 ? selectedIndex : null;
+    };
+
+    const index = findByID(id) || 0;
+    console.log(index);
 
     const handleAddToCart = (quantity: number) => {
         if (selectedProduct) {
-    
-          const selectedOptions: ProductOption = selectedProduct.options[selectedNico];
-          const selectedProductToAdd: AddToCartProduct = {
-            ...selectedProduct,
-            totalQuantity: quantity,
-            options: selectedOptions,
-          };
-    
-          const isProductInCart = cartProducts.some(item => item.id === selectedProductToAdd.id);
-    
-          if (!isProductInCart) {
-            dispatch(addToCart(selectedProductToAdd));
-          } else {
-            console.log('Этот товар уже есть в корзине');
-          }
+            const selectedOptions: ProductOption = selectedProduct.options[index];
+            const selectedProductToAdd: AddToCartProduct = {
+                ...selectedProduct,
+                totalQuantity: quantity,
+                options: selectedOptions,
+            };
+
+            const isProductInCart = cartProducts.some(
+                item =>
+                  item.id === selectedProductToAdd.id &&
+                  item.options.id === selectedProductToAdd.options.id
+              );
+              
+              if (!isProductInCart) {
+                dispatch(addToCart(selectedProductToAdd));
+              } else {
+                console.log('Этот товар уже есть в корзине');
+              }
         }
-      };
+    };
 
     return (
         <ProductContainer>
@@ -389,7 +426,7 @@ const ProductPage = () => {
             <GeneralInfo>
                 <ImageBlock>
                     <ProductImage>
-                        <Image src={'/img/Card/rb.jpg'} width={512} height={512} alt="" />
+                        <Image src={`${selectedProduct?.image}`} width={512} height={512} alt="" />
                     </ProductImage>
                 </ImageBlock>
                 <ProductInfo>
@@ -404,31 +441,31 @@ const ProductPage = () => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            {selectedProduct?.options && selectedProduct?.options[selectedNico].starting_price * totalQuantity}₴
+                        {((selectedProduct?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
                         </StartingPrice>
                         <SalePrice>
-                        {selectedProduct?.options && selectedProduct?.options[selectedNico].sale_price * totalQuantity}₴
+                            {((selectedProduct?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
                         </SalePrice>
-                        {selectedProduct?.options[selectedNico].discount !== 0 ? (
+                        {selectedProduct?.options[index].discount !== 0 && (
                             <Discount>
-                                {selectedProduct?.options[selectedNico].discount}%
+                                {selectedProduct?.options[index].discount}%
                             </Discount>
-                        ) : null}
+                        )}
                     </ProductPrice>
                     <CategoryText>
                         Міцність:
                     </CategoryText>
                     <Specs>
-                        {selectedProduct?.options.map((item, index) => (
+                        {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : selectedProduct?.options.map((item) => item.nico))).map((uniqueNico, index) => (
                             <BlockProps
                                 key={index}
-                                isSelected={selectedNico === index}
+                                isSelected={selectedNico === uniqueNico}
                                 onClick={() => {
-                                    setSelectedNico(index);
-                                    setSelectedVolume(index);
+                                    setSelectedNico(uniqueNico);
+                                    filterVolumeByNico(uniqueNico);
                                 }}
                             >
-                                <Text>{item.nico}</Text>
+                                <Text>{uniqueNico / 10}%({uniqueNico}мг)</Text>
                             </BlockProps>
                         ))}
                     </Specs>
@@ -436,16 +473,16 @@ const ProductPage = () => {
                         Об’єм
                     </CategoryText>
                     <Specs>
-                        {selectedProduct?.options.map((item, index) => (
+                        {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : selectedProduct?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
                             <BlockProps
                                 key={index}
-                                isSelected={selectedVolume === index}
+                                isSelected={selectedVolume === uniqueVolume}
                                 onClick={() => {
-                                    setSelectedVolume(index);
-                                    setSelectedNico(index);
+                                    setSelectedVolume(uniqueVolume);
+                                    filterNicoByVolume(uniqueVolume);
                                 }}
                             >
-                                <Text>{item.volume}</Text>
+                                <Text>{uniqueVolume}мл</Text>
                             </BlockProps>
                         ))}
                     </Specs>
@@ -470,7 +507,7 @@ const ProductPage = () => {
                     <Image src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
-            <FullData>
+            {/* <FullData>
                 <DescHeader>
                     Характеристики {selectedProduct?.title}:
                 </DescHeader>
@@ -481,7 +518,7 @@ const ProductPage = () => {
                                 Лід
                             </Active>
                             <DataValue>
-                                {/* {selectedProduct?.ice} */} Так/ні
+                                Так/ні
                             </DataValue>
                         </ValueRow>
                         <ValueRow>
@@ -494,7 +531,7 @@ const ProductPage = () => {
                         </ValueRow>
                     </ValueBlock>
                 </FullDataBlock>
-            </FullData>
+            </FullData> */}
         </ProductContainer>
     )
 }

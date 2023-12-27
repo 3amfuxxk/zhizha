@@ -14,6 +14,7 @@ interface Product {
   }
   
   interface ProductOption {
+    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;
@@ -37,8 +38,8 @@ interface Product {
       addToCart(state, action: PayloadAction<Product>) {
         state.products.push(action.payload);
       },
-      removeFromCart(state, action: PayloadAction<string>) {
-        state.products = state.products.filter(item => item.id !== action.payload);
+      removeFromCart(state, action: PayloadAction<number>) {
+        state.products = state.products.filter(item => item.options.id !== action.payload);
       },
     },
   });

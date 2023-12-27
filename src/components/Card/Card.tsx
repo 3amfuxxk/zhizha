@@ -110,6 +110,7 @@ interface Props {
 }
 
 interface ProductOption {
+    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;

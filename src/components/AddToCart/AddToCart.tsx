@@ -200,8 +200,6 @@ interface AddToCartProduct {
     options: ProductOption;
     totalQuantity: number;
 }
-
-
 interface Product {
     id: string;
     title: string;
@@ -213,6 +211,7 @@ interface Product {
     options: ProductOption[];
 }
 interface ProductOption {
+    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;
@@ -229,9 +228,10 @@ interface Props {
 const AddToCart = ({ product }: Props) => {
 
     const cartProducts = useSelector(selectCart);
+    const dispatch = useDispatch();
 
-    const [selectedNico, setSelectedNico] = useState(0);
-    const [selectedVolume, setSelectedVolume] = useState(0);
+    const [selectedNico, setSelectedNico] = useState<number>(-1);
+    const [selectedVolume, setSelectedVolume] = useState<number>(-1);
 
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
@@ -239,34 +239,72 @@ const AddToCart = ({ product }: Props) => {
         setTotalQuantity(newQuantity);
     };
 
+    const [uniqueVolumes, setUniqueVolumes] = useState<number[]>([]);
+    const [filteredNicos, setFilteredNicos] = useState<number[]>([]);
+
+    const filterVolumeByNico = (selectedNico: number) => {
+        const filteredOptions = product?.options.filter((item) => item.nico === selectedNico);
+        const uniqueVolumes = Array.from(new Set(filteredOptions?.map((item) => item.volume)) || []);
+        setUniqueVolumes(uniqueVolumes);
+    };
+
+    const filterNicoByVolume = (selectedVolume: number) => {
+        const filteredOptions = product?.options.filter((item) => item.volume === selectedVolume);
+        const uniqueNicos = Array.from(new Set(filteredOptions?.map((item) => item.nico)) || []);
+        setFilteredNicos(uniqueNicos);
+    };
+
+    const findIdByOptions = (selectedNico: number, selectedVolume: number) => {
+        const selectedOptionID = product?.options.find((item) => item.nico === selectedNico && item.volume === selectedVolume);
+        return selectedOptionID?.id || null;
+    };
+
+    const id = findIdByOptions(selectedNico, selectedVolume) || 0;
+    console.log(id);
+
+    const findByID = (id: number) => {
+        const selectedIndex = product?.options.findIndex((item) => item.id === id);
+        return selectedIndex !== -1 ? selectedIndex : null;
+    };
+
+    const index = findByID(id) || 0;
+    console.log(index);
+
+    const resetValues = () => {
+        setUniqueVolumes([]);
+        setFilteredNicos([]);
+      };
+
+    const handleCart = (product: Product, quantity: number) => {
+        const selectedOptions: ProductOption = product.options[index];
+        const selectedProduct: AddToCartProduct = {
+            ...product,
+            totalQuantity: quantity,
+            options: selectedOptions,
+        };
+
+        const isProductInCart = cartProducts.some(
+            item =>
+                item.id === selectedProduct.id &&
+                item.options.id === selectedProduct.options.id
+        );
+
+        if (!isProductInCart) {
+            dispatch(addToCart(selectedProduct));
+        } else {
+            console.log('Этот товар уже есть в корзине');
+        }
+        resetValues();
+    };
+
     const handleClose = () => {
         const addContainer = document.getElementById('add-container');
         if (addContainer) {
             setTotalQuantity(1);
             addContainer.style.display = 'none';
+            resetValues();
         }
     };
-
-    const dispatch = useDispatch();
-    const handleCart = (product: Product, quantity: number) => {
-        const selectedOptions: ProductOption = product.options[selectedNico];
-        const selectedProduct: AddToCartProduct = {
-          ...product,
-          totalQuantity: quantity,
-          options: selectedOptions,
-        };
-      
-        // Проверяем, существует ли товар с таким же id в корзине
-        const isProductInCart = cartProducts.some(item => item.id === selectedProduct.id);
-      
-        if (!isProductInCart) {
-          handleClose();
-          dispatch(addToCart(selectedProduct));
-        } else {
-          // Товар уже в корзине, можешь выполнить какие-то действия или просто проигнорировать добавление
-          console.log('Этот товар уже есть в корзине');
-        }
-      };
 
     return (
         <AddContainer id='add-container'>
@@ -293,7 +331,7 @@ const AddToCart = ({ product }: Props) => {
                             </IDBlock>
                             <PriceBlock>
                                 <Price>
-                                    {product.options[selectedNico]?.sale_price * totalQuantity}₴
+                                    {((product?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
                                 </Price>
                                 <Counter width={86} height={28} inpWidth={28} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                             </PriceBlock>
@@ -304,16 +342,16 @@ const AddToCart = ({ product }: Props) => {
                             Міцність:
                         </SectName>
                         <Specs>
-                            {product.options.map((option, index) => (
+                            {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : product?.options.map((item) => item.nico))).map((uniqueNico, index) => (
                                 <BlockProps
                                     key={index}
-                                    isSelected={selectedNico === index}
+                                    isSelected={selectedNico === uniqueNico}
                                     onClick={() => {
-                                        setSelectedNico(index);
-                                        setSelectedVolume(index);
+                                        setSelectedNico(uniqueNico);
+                                        filterVolumeByNico(uniqueNico);
                                     }}
                                 >
-                                    <Text>{option.nico}</Text>
+                                    <Text>{uniqueNico / 10}%({uniqueNico}мг)</Text>
                                 </BlockProps>
                             ))}
                         </Specs>
@@ -323,16 +361,16 @@ const AddToCart = ({ product }: Props) => {
                             Об’єм:
                         </SectName>
                         <Specs>
-                            {product.options.map((option, index) => (
+                            {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : product?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
                                 <BlockProps
                                     key={index}
-                                    isSelected={selectedVolume === index}
+                                    isSelected={selectedVolume === uniqueVolume}
                                     onClick={() => {
-                                        setSelectedVolume(index);
-                                        setSelectedNico(index);
+                                        setSelectedVolume(uniqueVolume);
+                                        filterNicoByVolume(uniqueVolume);
                                     }}
                                 >
-                                    <Text>{option.volume}</Text>
+                                    <Text>{uniqueVolume}мл</Text>
                                 </BlockProps>
                             ))}
                         </Specs>

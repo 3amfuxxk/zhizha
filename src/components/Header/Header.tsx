@@ -398,6 +398,7 @@ interface AddToCartProduct {
     totalQuantity: number;
 }
 interface ProductOption {
+    id: number,
     starting_price: number;
     sale_price: number;
     discount: number;
@@ -427,9 +428,9 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const handleRemoveFromCart = (id: string) => {
+    const handleRemoveFromCart = (id: number) => {
         dispatch(removeFromCart(id));
-      };
+    };
 
     const totalCost = cartProducts.reduce((accumulator, product) => {
         const productCost = product.options.starting_price * (productQuantities[product.id] || product.totalQuantity);
@@ -452,7 +453,7 @@ const Header = () => {
                 <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
             </Link>
             <NavBlock>
-                <Link href={{ pathname: '/catalog'}}>
+                <Link href={{ pathname: '/catalog' }}>
                     <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
                 </Link>
                 <NavButton text={'Доставка'} svgLink={'contact.svg'} />
@@ -485,8 +486,8 @@ const Header = () => {
                             </CartNav>
                         </CartProducts>
                         <Product id="product-block" className="scrol">
-                                {cartProducts.map((product) => (
-                                    <ProductCard key={product.id}>
+                            {cartProducts.map((product) => (
+                                <ProductCard key={product.id}>
                                     {/* <DeleteConfirm>
                                         <ConfirmBlock>
                                             <ConfirmOptions>
@@ -507,10 +508,10 @@ const Header = () => {
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {product.options.sale_price * (productQuantities[product.id] || product.totalQuantity)}₴
+                                                    {(product.options.sale_price * (productQuantities[product.id] || product.totalQuantity)).toFixed(2)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {product.options.starting_price ? `${product.options.starting_price * (productQuantities[product.id] || product.totalQuantity)}₴` : null}
+                                                    {product.options.starting_price ? `${(product.options.starting_price * (productQuantities[product.id] || product.totalQuantity)).toFixed(2)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
                                             <FunctionBlock>
@@ -518,14 +519,14 @@ const Header = () => {
                                                     handleQuantityChange(product.id, newQuantity)
                                                 }
                                                     totalQuantity={productQuantities[product.id] || product.totalQuantity} />
-                                                <DeleteBlock onClick={() => handleRemoveFromCart(product.id)}>
+                                                <DeleteBlock onClick={() => handleRemoveFromCart(product.options.id)}>
                                                     <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
                                                 </DeleteBlock>
                                             </FunctionBlock>
                                         </PriceContainer>
                                     </ProductInfo>
                                 </ProductCard>
-                                ))}
+                            ))}
                         </Product>
                         <OrderInfo>
                             <PromoBlock>
@@ -541,7 +542,7 @@ const Header = () => {
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
-                                        {totalCost}₴
+                                        {(totalCost).toFixed(2)}₴
                                     </SummaryText>
                                 </InfoPrice>
                                 <InfoPrice>
@@ -550,7 +551,7 @@ const Header = () => {
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
-                                        {totalSale}₴
+                                        {(totalSale).toFixed(2)}₴
                                     </SummaryText>
                                 </InfoPrice>
                                 <InfoPrice>
@@ -559,7 +560,7 @@ const Header = () => {
                                     </TotalPrice>
                                     <SpanBot />
                                     <TotalPrice>
-                                        {orderCost}₴
+                                        {(orderCost.toFixed(2))}₴
                                     </TotalPrice>
                                 </InfoPrice>
                                 <SubmitOrder>
