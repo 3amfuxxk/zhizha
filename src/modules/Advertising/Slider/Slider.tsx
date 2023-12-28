@@ -34,7 +34,9 @@ const SliderBlock = styled.div`
     height: 352px;
     flex-shrink: 0;
     margin-top: 17px;
-    /* overflow: hidden; */
+    overflow: hidden;
+    gap: 25px;
+    scroll-behavior: smooth;
 `
 const Card = styled.div`
     display: flex;
@@ -196,16 +198,73 @@ const NavArrow = styled.div`
     border-radius: 50%;
     border: 1px solid #292929;
     background: #141414;
+    cursor: pointer;
+    user-select: none;
+`
+const BulletNav = styled.div`
+    display: flex;
+    width: 84px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 26px;
+    border: 1px solid #292929;
+    background: #141414;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+`
+const Bullet = styled.span`
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #2D2D2D;
+    cursor: pointer;
+
+    &.active {
+    background: white;
+  }
 `
 
 const Slider = () => {
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+    const updateBulletColors = () => {
+        const bullets = document.querySelectorAll('.bullet');
+    
+        bullets.forEach((bullet, index) => {
+          if (index === currentSlideIndex) {
+            bullet.classList.add('active');
+          } else {
+            bullet.classList.remove('active');
+          }
+        });
+      };
+
+    const slideLeft = () => {
+        let slider = document.getElementById("slider");
+        if (slider !== null) {
+            slider.scrollLeft = slider.scrollLeft - 738;
+            setCurrentSlideIndex(currentSlideIndex-1);
+            updateBulletColors();
+        }
+    };
+
+    const slideRight = () => {
+        let slider = document.getElementById("slider");
+        if (slider !== null) {
+            slider.scrollLeft = slider.scrollLeft + 738;
+            setCurrentSlideIndex(currentSlideIndex+1);
+            updateBulletColors();
+        }
+    };
 
     return (
         <SliderContainer>
             <HeaderText>
                 Топ продажів цього тижня:
             </HeaderText>
-            <SliderBlock>
+            <SliderBlock id="slider">
                 <Card>
                     <ImageBlock>
                         <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
@@ -230,35 +289,123 @@ const Slider = () => {
                             </NicoOptions>
                         </NicoBlock>
                         <FunctionBlock>
-                                <PriceBlock>
-                                    <StartingPrice>
-                                        350₴
-                                    </StartingPrice>
-                                    <SalePrice>
-                                        300₴
-                                    </SalePrice>
-                                </PriceBlock>
-                                <FuncionBlock>
-                                    <Button text='В кошик' width={135} height={38}>
-                                        <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
-                                    </Button>
-                                    <FavBlock>
-                                        <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
-                                    </FavBlock>
-                                </FuncionBlock>
-                            </FunctionBlock>
+                            <PriceBlock>
+                                <StartingPrice>
+                                    350₴
+                                </StartingPrice>
+                                <SalePrice>
+                                    300₴
+                                </SalePrice>
+                            </PriceBlock>
+                            <FuncionBlock>
+                                <Button text='В кошик' width={135} height={38}>
+                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
+                                </Button>
+                                <FavBlock>
+                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                </FavBlock>
+                            </FuncionBlock>
+                        </FunctionBlock>
                     </ProductInfo>
                 </Card>
                 <Card>
-
+                    <ImageBlock>
+                        <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
+                    </ImageBlock>
+                    <ProductInfo>
+                        <ProductName>
+                            The Product Name Should Be Here With Some Kind Of Specs
+                        </ProductName>
+                        <ShortDesc>
+                            <DescText className={roboto.className}>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde sapiente, cum labore maxime dolor et, velit itaque totam veritatis perspiciatis eos quos optio repellat voluptates cumque pariatur ad maiores!
+                            </DescText>
+                        </ShortDesc>
+                        <NicoBlock>
+                            <NicoName>
+                                Міцність:
+                            </NicoName>
+                            <NicoOptions>
+                                <BlockProps>
+                                    <Text>0%(0мг)</Text>
+                                </BlockProps>
+                            </NicoOptions>
+                        </NicoBlock>
+                        <FunctionBlock>
+                            <PriceBlock>
+                                <StartingPrice>
+                                    350₴
+                                </StartingPrice>
+                                <SalePrice>
+                                    300₴
+                                </SalePrice>
+                            </PriceBlock>
+                            <FuncionBlock>
+                                <Button text='В кошик' width={135} height={38}>
+                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
+                                </Button>
+                                <FavBlock>
+                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                </FavBlock>
+                            </FuncionBlock>
+                        </FunctionBlock>
+                    </ProductInfo>
+                </Card>
+                <Card>
+                    <ImageBlock>
+                        <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
+                    </ImageBlock>
+                    <ProductInfo>
+                        <ProductName>
+                            The Product Name Should Be Here With Some Kind Of Specs
+                        </ProductName>
+                        <ShortDesc>
+                            <DescText className={roboto.className}>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde sapiente, cum labore maxime dolor et, velit itaque totam veritatis perspiciatis eos quos optio repellat voluptates cumque pariatur ad maiores!
+                            </DescText>
+                        </ShortDesc>
+                        <NicoBlock>
+                            <NicoName>
+                                Міцність:
+                            </NicoName>
+                            <NicoOptions>
+                                <BlockProps>
+                                    <Text>0%(0мг)</Text>
+                                </BlockProps>
+                            </NicoOptions>
+                        </NicoBlock>
+                        <FunctionBlock>
+                            <PriceBlock>
+                                <StartingPrice>
+                                    350₴
+                                </StartingPrice>
+                                <SalePrice>
+                                    300₴
+                                </SalePrice>
+                            </PriceBlock>
+                            <FuncionBlock>
+                                <Button text='В кошик' width={135} height={38}>
+                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
+                                </Button>
+                                <FavBlock>
+                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                </FavBlock>
+                            </FuncionBlock>
+                        </FunctionBlock>
+                    </ProductInfo>
                 </Card>
             </SliderBlock>
             <NavSlider>
-                <NavArrow>
-
+                <NavArrow onClick={slideLeft}>
+                    <Image src={'/img/Advertising/Slider/arrow-left.svg'} width={4} height={8} alt="" />
                 </NavArrow>
-                <NavArrow>
-                    
+                <BulletNav>
+                    <Bullet className={currentSlideIndex === 0 ? 'bullet active' : 'bullet'} />
+                    <Bullet className={currentSlideIndex === 1 ? 'bullet active' : 'bullet'} />
+                    <Bullet className={currentSlideIndex === 2 ? 'bullet active' : 'bullet'} />
+                </BulletNav>
+                <NavArrow onClick={slideRight}>
+                    <Image src={'/img/Advertising/Slider/arrow-right.svg'} width={4} height={8} alt="" />
                 </NavArrow>
             </NavSlider>
         </SliderContainer>
