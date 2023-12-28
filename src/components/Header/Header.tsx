@@ -563,11 +563,13 @@ const Header = () => {
                                         {(orderCost.toFixed(2))}₴
                                     </TotalPrice>
                                 </InfoPrice>
-                                <SubmitOrder>
-                                    <OrderText>
-                                        Оформити замовлення
-                                    </OrderText>
-                                </SubmitOrder>
+                                <Link href={'/order'}>
+                                    <SubmitOrder>
+                                        <OrderText>
+                                            Оформити замовлення
+                                        </OrderText>
+                                    </SubmitOrder>
+                                </Link>
                             </OrderPrice>
                         </OrderInfo>
                     </CartBlock>

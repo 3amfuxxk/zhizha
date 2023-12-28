@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
+import axios from "axios";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
@@ -23,7 +24,7 @@ const ChatContainer = styled.div`
 const MessageOne = styled.div`
     display: flex;
     width: 262px;
-    height: 62px;
+    max-height: 62px;
     flex-shrink: 0;
     border-radius: 12px 12px 1px 12px;
     background: #1F1E1F;
@@ -94,13 +95,37 @@ const MessageTwo = styled.div`
     flex-direction: column;
     gap: 1px;
 `
+interface Chat {
+    id: number,
+    main_image: string,
+    chat_message1: string,
+    chat_message2: string,
+    chat_photo: string,
+}
 
 const Chat = () => {
+    const [chatData, setChatData] = useState<Chat | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://18.132.12.234/api/v1/controller/');
+                const data: Chat = response.data;
+                setChatData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <ChatContainer>
             <MessageOne>
                 <MessageText className={roboto.className}>
-                    Не знаю, вже всі смаки скуштував, все якесь однакове і нудне...
+                    {chatData?.chat_message1}
+                    {/* Не знаю, вже всі смаки скуштував, все якесь однакове і нудне... */}
                 </MessageText>
                 <MessageInfo>
                     <Time>
@@ -110,7 +135,7 @@ const Chat = () => {
                 </MessageInfo>
             </MessageOne>
             <ImageBlock>
-                <Image src={"/img/Card/rb.jpg"} width={315} height={315} alt="" />
+                <Image src={"/img/Advertising/Chat/stalker.jpg"} width={315} height={315} alt="" />
                 <ImageTime>
                     <ImageText>
                         19:03
@@ -119,7 +144,8 @@ const Chat = () => {
             </ImageBlock>
             <MessageTwo>
                 <MessageText className={roboto.className}>
-                    Добре, схоже що не всі)
+                    {chatData?.chat_message2}
+                    {/* Добре, схоже що не всі) */}
                 </MessageText>
                 <MessageInfo>
                     <Time>
