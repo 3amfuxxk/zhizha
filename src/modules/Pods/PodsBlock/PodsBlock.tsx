@@ -132,33 +132,7 @@ const PodsBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardContainer expanded={expanded}>
-                <Card
-                        code={123123}
-                        desc={'def desc'}
-                        ice={true}
-                        categories={["pod", "liquid"]}
-                        image='/img/Card/rb.jpg'
-                        options={[
-                            {
-                                starting_price: 100,
-                                sale_price: 80,
-                                discount: 20,
-                                in_stock: true,
-                                nico: 40,
-                                volume: 100,
-                            },
-                            {
-                                starting_price: 300,
-                                sale_price: 270,
-                                discount: 10,
-                                in_stock: true,
-                                nico: 60,
-                                volume: 150,
-                            },
-                        ]}
-                        title={'Рідина R@!N BULL (30/60мл)'}
-                        id={'1'}
-                    />
+                
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>
