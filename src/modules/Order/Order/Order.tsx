@@ -283,7 +283,7 @@ const Order = () => {
                             </Block>
                         </Structure>
                         <UnderText className={roboto.className}>
-                            Після оформлення замовлення протягом доби з Вами зв'яжеться наша команда
+                            Після оформлення замовлення протягом доби з Вами зв&apos;яжеться наша команда
                         </UnderText>
                         <Button type="submit" disabled={isSubmitting || !isValid} isValid={isValid}>
                             Підтвердити
