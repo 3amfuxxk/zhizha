@@ -132,10 +132,10 @@ interface ProductOption {
 const LiquidBlock = () => {
     let defaultHeight = 1754;
     let increaseHeight = 1764;
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
         defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
     }
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
         const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
     }
 

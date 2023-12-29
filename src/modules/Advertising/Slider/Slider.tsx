@@ -276,56 +276,62 @@ const Imgs = styled(Image)`
 const Slider = () => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [isSlideMoving, setSlideMoving] = useState(false);
-    const slider = document.getElementById("slider");
+    if (typeof document !== 'undefined') {
+        const slider = document.getElementById("slider");
 
-    if (slider !== null) {
-        slider.addEventListener('scroll', () => {
-            setSlideMoving(true);
-
-            // По завершении скролла:
-            setTimeout(() => {
-                setSlideMoving(false);
-            }, 800);
-        });
+        if (slider !== null) {
+            slider.addEventListener('scroll', () => {
+                setSlideMoving(true);
+                setTimeout(() => {
+                    setSlideMoving(false);
+                }, 800);
+            });
+        }
     }
 
 
     const updateBulletColors = () => {
-        const bullets = document.querySelectorAll('.bullet');
+        if (typeof document !== 'undefined') {
+            const bullets = document.querySelectorAll('.bullet');
 
-        bullets.forEach((bullet, index) => {
-            if (index === currentSlideIndex) {
-                bullet.classList.add('active');
-            } else {
-                bullet.classList.remove('active');
-            }
-        });
+            bullets.forEach((bullet, index) => {
+                if (index === currentSlideIndex) {
+                    bullet.classList.add('active');
+                } else {
+                    bullet.classList.remove('active');
+                }
+            });
+        }
     };
 
     const slideLeft = () => {
-        if (!isSlideMoving) {
-            let slider = document.getElementById("slider");
-            let slideWidth = window.innerWidth <= 430 ? 401 : 738;
-            let newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
-
-            if (slider !== null) {
-                slider.scrollLeft = slider.scrollLeft - slideWidth;
-                setCurrentSlideIndex(newIndex);
-                updateBulletColors();
+        if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+            if (!isSlideMoving) {
+                let slider = document.getElementById("slider");
+                let slideWidth = window.innerWidth <= 430 ? 401 : 738;
+                let newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
+    
+                if (slider !== null) {
+                    slider.scrollLeft = slider.scrollLeft - slideWidth;
+                    setCurrentSlideIndex(newIndex);
+                    updateBulletColors();
+                }
             }
         }
     };
 
     const slideRight = () => {
-        if (!isSlideMoving) {
-            let slider = document.getElementById("slider");
-            let slideWidth = window.innerWidth <= 430 ? 401 : 738;
-            let newIndex = currentSlideIndex + 1 > 2 ? 2 : currentSlideIndex + 1;
-
-            if (slider !== null) {
-                slider.scrollLeft = slider.scrollLeft + slideWidth;
-                setCurrentSlideIndex(newIndex);
-                updateBulletColors();
+        if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+            if (!isSlideMoving) {
+                let slider = document.getElementById("slider");
+                let slideWidth = window.innerWidth <= 430 ? 401 : 738;
+                let newIndex = currentSlideIndex + 1 > 2 ? 2 : currentSlideIndex + 1;
+    
+                if (slider !== null) {
+                    slider.scrollLeft = slider.scrollLeft + slideWidth;
+                    setCurrentSlideIndex(newIndex);
+                    updateBulletColors();
+                }
             }
         }
     };
