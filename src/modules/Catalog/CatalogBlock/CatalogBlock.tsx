@@ -12,6 +12,9 @@ const CatalogContainer = styled.div`
     margin-top: 140px;
     justify-content: center;
     gap: 13px;
+    @media (max-width:430px) {
+        justify-content: unset;
+    }
 `
 const HeaderBlock = styled.div`
     display: flex;
@@ -26,6 +29,9 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 110%;
+    @media (max-width:430px) {
+        font-size: 32px;   
+    }
 `
 const TextInactive = styled.p`
     color: rgba(255, 255, 255, 0.50);
@@ -47,11 +53,18 @@ const PageChoice = styled.div`
     width: 1159px;
     gap: 18px;
     margin: 0 auto;
+    @media (max-width:430px) {
+        width: 100%;
+    }
 `
 const CardBlock = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    @media (max-width:430px) {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 `
 
 const CatalogBlock = () => {

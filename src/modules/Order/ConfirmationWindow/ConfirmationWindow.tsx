@@ -19,6 +19,11 @@ const ConfirmationContainer = styled.div<Confirm>`
     background: #181818;
     padding: 29px;
     align-items: center;
+    @media (max-width:430px) {
+        width: 100%;
+        height: 620px;
+        padding: 25px;
+    }
 `
 const TickBlock = styled.div`
     display: flex;
@@ -40,6 +45,9 @@ const OrderText = styled.p`
     font-weight: 800;
     line-height: 130%;
     margin-top: 31px;
+    @media (max-width:430px) {
+        font-size: 24px;   
+    }
 `
 const SmallText = styled.p`
     color: rgba(255, 255, 255, 0.50);
@@ -50,6 +58,9 @@ const SmallText = styled.p`
     line-height: normal;
     margin-top: 10px;
     width: 401px;
+    @media (max-width:430px) {
+        font-size: 14px;   
+    }
 `
 const OpsText = styled.p`
     color: #FFF;

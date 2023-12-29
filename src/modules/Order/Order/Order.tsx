@@ -31,6 +31,10 @@ const Forms = styled(Form) <{ isVisible: boolean }>`
     background: #181818;
     flex-direction: column;
     padding: 57px 29px 29px 29px;
+    @media (max-width: 430px) {
+        width: 100%;
+        padding: 62px 17px 27px 17px;   
+    }
 `
 const HeadText = styled.p`
     color: #FFF;
@@ -39,6 +43,9 @@ const HeadText = styled.p`
     font-weight: 800;
     line-height: 130%;
     text-align: center;
+    @media (max-width: 430px) {
+        font-size: 24px;   
+    }
 `
 const Structure = styled.div`
     display: flex;
@@ -46,6 +53,9 @@ const Structure = styled.div`
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    @media (max-width: 430px) {
+        margin-top: 27px;   
+    }
 `
 const Block = styled.div`
     display: flex;
@@ -64,6 +74,17 @@ const Label = styled.label`
     transition: all 0.5s ease;
     &.error {
         color: #B6020D;
+    }
+`
+const UnderText = styled.p`
+    color: rgba(255, 255, 255, 0.50);
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    @media (max-width:430px) {
+        margin-top: 22px;
     }
 `
 const Fields = styled(Field)`
@@ -99,6 +120,9 @@ const Fields = styled(Field)`
         background: rgba(182, 2, 13, 0.10);
         border-color: #B6020D;
     }
+    @media (max-width: 430px) {
+        width: 100%;   
+    }
 `
 const Span = styled.span`
     color: rgba(255, 255, 255, 0.50);
@@ -124,6 +148,9 @@ const Button = styled.button<{ isValid: boolean }>`
     border: none;
     transition: all 0.5s ease;
     cursor: ${(props) => (props.isValid ? 'pointer' : 'unset')};
+    @media (max-width: 430px) {
+        margin-top: 38px;   
+    }
 `
 const Error = styled(ErrorMessage)`
     position: absolute;
@@ -255,7 +282,9 @@ const Order = () => {
                                 )}
                             </Block>
                         </Structure>
-
+                        <UnderText className={roboto.className}>
+                            Після оформлення замовлення протягом доби з Вами зв'яжеться наша команда
+                        </UnderText>
                         <Button type="submit" disabled={isSubmitting || !isValid} isValid={isValid}>
                             Підтвердити
                         </Button>

@@ -22,11 +22,19 @@ const Card = styled.div`
     flex-direction: column;
     padding: 14px;
     gap: 11px;
+    @media (max-width: 430px) {
+        width: 376px;
+        height: 407px;
+    }
 `
 const Img = styled(Image)`
     flex-shrink: 0;
     border-radius: 6px;
     background: #181818;
+    @media (max-width: 430px) {
+        width: 350px;
+        height: 197px;
+    }
 `
 const TextInfo = styled.p`
     color: #FFF;

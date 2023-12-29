@@ -23,6 +23,13 @@ const FooterContainer = styled.div`
     margin: 0 auto;
     margin-top: 318px;
     margin-bottom: 102px;
+    @media (max-width: 430px) {
+        margin-top: 143px;
+        width: 100%;
+        height: auto;
+        gap: 59px;
+        margin-bottom: 70px;
+    }
 `
 
 const FooterBlock = styled.div`
@@ -35,6 +42,11 @@ const FooterBlock = styled.div`
         "div1 div2"
         "div3 div4"
         "div3 div5";
+    @media (max-width: 430px) {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 `;
 const InfoBlock = styled.div`
     grid-area: div1;
@@ -47,6 +59,11 @@ const InfoBlock = styled.div`
     flex-shrink: 0;
     border-radius: 18px;
     background: #181818;
+    @media (max-width: 430px) {
+        width: 100%;
+        padding: 17px;
+        height: 78px;
+    }
 `
 const InfoRow = styled.div`
     display: flex;
@@ -73,6 +90,23 @@ const UpBlock = styled.div`
     cursor: pointer;
     justify-content: center;
     align-items: center;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 78px;   
+    }
+`
+const Img = styled(Image)`
+   @media (max-width: 430px) {
+    width: 37px;
+    height: 44.769px;
+   }
+`
+const Imgs = styled(Image)`
+    @media (max-width: 430px) {
+        width: 26px;
+        height: 13px;
+        margin-top: 5px;
+    }
 `
 const UpBlockRow = styled.div`
     display: flex;
@@ -90,6 +124,10 @@ const SocialContainer = styled.div`
     display: flex;
     gap: 14px;
     grid-area: div5;
+    @media (max-width: 430px) {
+        width: 100%;
+        gap: 10px;
+    }
 `
 const CreditsBlock = styled.div`
     display: flex;
@@ -114,7 +152,7 @@ const ScrollTop = () => {
     window.scrollTo({
         top: 0,
         behavior: 'smooth',
-      });
+    });
 }
 
 const Footer = () => {
@@ -122,7 +160,7 @@ const Footer = () => {
         <FooterContainer>
             <FooterBlock>
                 <InfoBlock>
-                    <Image src={'/img/Footer/svg/logo.svg'} width={26} height={32} alt='' />
+                    <Img src={'/img/Footer/svg/logo.svg'} width={26} height={32} alt='' />
                     <InfoRow>
                         <InfoText className={roboto.className}>
                             With Love For Ukraine
@@ -130,14 +168,14 @@ const Footer = () => {
                         <Image src={'/img/Footer/svg/flag.svg'} width={27} height={18} alt='' />
                     </InfoRow>
                 </InfoBlock>
-                    <UpBlock onClick={ScrollTop}>
-                        <UpBlockRow>
-                            <HeadText>
-                                Вгору
-                            </HeadText>
-                            <Image src={'img/Footer/svg/arrow-up.svg'} width={18} height={9} alt="" />
-                        </UpBlockRow>
-                    </UpBlock>
+                <UpBlock onClick={ScrollTop}>
+                    <UpBlockRow>
+                        <HeadText>
+                            Вгору
+                        </HeadText>
+                        <Imgs src={'img/Footer/svg/arrow-up.svg'} width={18} height={9} alt="" />
+                    </UpBlockRow>
+                </UpBlock>
                 <ListBlock />
                 <SocialContainer>
                     <SocialMediaBlock imgLink="/img/Footer/svg/tg.svg" />

@@ -116,6 +116,11 @@ const CartBlock = styled.div<{ cartOpen: boolean }>`
     flex-direction: column;
     padding: 29px;
     gap: 16px;
+    @media (max-width: 430px) {
+        width: 410px;
+        flex-shrink: 1;
+        padding: 29px 17px;
+    }
 `
 const CartProducts = styled.div`
     display: flex;

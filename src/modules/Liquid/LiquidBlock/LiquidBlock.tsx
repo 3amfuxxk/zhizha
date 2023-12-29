@@ -29,6 +29,9 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 110%;
+    @media (max-width:430px) {
+        font-size: 32px;
+    }
 `
 const PodText = styled.p`
     color: rgba(255, 255, 255, 0.80);
@@ -69,7 +72,13 @@ const CardContainer = styled.div<{ maxHeight: number }>`
     gap: 10px 10px; 
     grid-template-areas: 
         ". . . ."
-        ". . . ."; 
+        ". . . .";
+    @media (max-width:430px) {
+       display: flex;
+       width: 100%;
+       flex-wrap: wrap;
+       gap: 10px;
+    }
 `
 const ButtonRow = styled.div`
     display: flex;
@@ -121,8 +130,8 @@ interface ProductOption {
 
 
 const LiquidBlock = () => {
-    const defaultHeight = 1754;
-    const increaseHeight = 1764;
+    const defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
+    const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
 
     const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 

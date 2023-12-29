@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Roboto } from "next/font/google";
+import Link from 'next/link';
 
 const roboto = Roboto({
     weight: ['400', '500'],
@@ -27,6 +28,11 @@ const NavBlock = styled.div`
     border-radius: 18px;
     background: #181818;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: auto;
+        padding: 23px 20px;
+    }
 `
 const NavBlockRow = styled.div`
     display: flex;
@@ -63,23 +69,31 @@ const ListBlock = () => {
                     </HeadText>
                     <ListHolder>
                         <LinkBlock className={roboto.className}>
-                            <ListText>
-                                Каталог
-                            </ListText>
+                            <Link href="/catalog">
+                                <ListText>
+                                    Каталог
+                                </ListText>
+                            </Link>
                             <ListText>
                                 Відгуки
                             </ListText>
-                            <ListText>
-                                Компоненти
-                            </ListText>
+                            <Link href="/accessories">
+                                <ListText>
+                                    Компоненти
+                                </ListText>
+                            </Link>
                         </LinkBlock>
                         <LinkBlock className={roboto.className}>
-                            <ListText>
-                                Под системи
-                            </ListText>
-                            <ListText>
-                                Набори
-                            </ListText>
+                            <Link href="/pods">
+                                <ListText>
+                                    Под системи
+                                </ListText>
+                            </Link>
+                            <Link href="/liquid">
+                                <ListText>
+                                    Набори
+                                </ListText>
+                            </Link>
                         </LinkBlock>
                     </ListHolder>
                 </NavBlockRow>

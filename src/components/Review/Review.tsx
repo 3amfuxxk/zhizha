@@ -14,6 +14,11 @@ const ReviewContainer = styled.div`
     margin-top: 12px;
     padding: 34px 29px 29px 29px;
     flex-direction: column;
+    @media (max-width: 430px) {
+        height: 845px;
+        flex-direction: column;
+        padding: 19px 17px 17px 17px;
+    }
 `
 const HeaderText = styled.p`
     color: #FFF;
@@ -35,6 +40,11 @@ const CardContainer = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 17px;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        justify-content: unset;
+        gap: 11px;
+    }
 `
 
 const Review = () => {

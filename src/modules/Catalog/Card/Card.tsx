@@ -11,6 +11,18 @@ const CardBlock = styled.div`
     border-radius: 12px;
     border: 1px solid #282828;
     background: #141414;
+    @media (max-width:430px) {
+        width: 200px;
+        height: 238px;
+        padding: 9px;
+        gap: 12px;
+    }
+`
+const Img = styled(Image)`
+    @media (max-width:430px) {
+        width: 182px;
+        height: 182px;
+    }
 `
 const ImgBlock = styled.div`
     display: flex;
@@ -20,6 +32,10 @@ const ImgBlock = styled.div`
     flex-shrink: 0;
     border-radius: 6px;
     background: #181818;
+    @media (max-width:430px) {
+        width: 182px;
+        height: 182px;
+    }
 `
 const TextBlock = styled.div`
     display: flex;
@@ -33,6 +49,9 @@ const Text = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width:430px) {
+       font-size: 16px;
+    }
 `
 
 interface Props {
@@ -44,7 +63,7 @@ const Card = ({imgLink, text}: Props) => {
     return (
         <CardBlock>
             <ImgBlock>
-                <Image src={`/img/CardChoice/${imgLink}`} width={298} height={298} alt="" />
+                <Img src={`/img/CardChoice/${imgLink}`} width={298} height={298} alt="" />
             </ImgBlock>
             <TextBlock>
                 <Text>

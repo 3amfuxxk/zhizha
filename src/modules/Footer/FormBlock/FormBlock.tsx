@@ -22,6 +22,11 @@ const FormContainer = styled.div`
     background: #181818;
     padding: 24px 28px;
     flex-direction: column;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 249px;
+        padding: 22px 17px 17px 17px;   
+    }
 `
 const HeadText = styled.p`
     color: rgba(255, 255, 255, 0.30);
@@ -29,6 +34,9 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;
+    }
 `
 const White = styled.span`
     color: rgba(255, 255, 255, 1);
@@ -102,6 +110,9 @@ const ButtonText = styled.p`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    @media (max-width: 430px) {
+        font-size: 14px;   
+    }
 `
 const Button = styled.button`
     width: 159px;
@@ -117,6 +128,9 @@ const Button = styled.button`
 
     :focus {
         outline: none;
+    }
+    @media (max-width: 430px) {
+        width: 126px;
     }
 `
 

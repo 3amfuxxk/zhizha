@@ -19,6 +19,11 @@ const CardContainer = styled.div`
     background: #1F1E1F;
     flex-direction: column;
     padding: 15px 13px 13px 13px;
+    @media (max-width: 430px) {
+        padding: 13px;
+        width: 100%;
+        height: 242px;   
+    }
 `
 const ImageBlock = styled.div`
     display: flex;

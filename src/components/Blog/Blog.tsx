@@ -16,6 +16,13 @@ const BlogContainer = styled.div`
     margin-top: 111px;
     gap: 17px;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 100%;
+        flex-direction: column;
+        height: 1336px;
+        padding: 22px 17px 17px 17px;
+        margin-top: 85px;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -37,6 +44,9 @@ const Text = styled.p<TextSize>`
 const BlogLink = styled.div`
     display: flex;
     gap: 8px;
+    @media (max-width: 430px) {
+       margin-top: 4px; 
+    }
 `
 const Img = styled(Image)`
     margin-top: 6px;
@@ -48,6 +58,12 @@ const CardContainer = styled.div`
     width: 100%;
     height: auto;
     overflow: hidden;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        flex-wrap: unset;
+        justify-content: unset;
+        gap: 11px;
+    }
 `
 
 const Blog = () => {

@@ -13,6 +13,10 @@ const Block = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    @media (max-width: 430px) {
+        width: 130px;
+        height: 130px;   
+    }
 `
 const BlockContainer = styled.div`
     display: flex;
