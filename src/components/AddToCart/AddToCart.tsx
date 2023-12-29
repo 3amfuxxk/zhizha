@@ -32,6 +32,11 @@ const AddCard = styled.div`
     padding: 29px;
     flex-direction: column;
     gap: 14px;
+    @media (max-width: 430px) {
+        width: 410px;
+        height: 470px;
+        padding: 29px 17px 17px 17px;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -132,6 +137,9 @@ const BlockProps = styled.div<BlockProps>`
     background-color: ${(props) => (props.isSelected ? '#272727' : '#141414')};
     cursor: pointer;
     transition: all 0.3s ease;
+    @media (max-width: 430px) {
+        padding: 0 14.5px;
+    }
 `
 const SectName = styled.p`
     color: #FFF;
@@ -140,6 +148,9 @@ const SectName = styled.p`
     font-weight: 800;
     line-height: 100%;
     margin-left: 3px;
+    @media (max-width: 430px) {
+        font-size: 16px;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -147,6 +158,9 @@ const Text = styled.p`
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
+    @media (max-width: 430px) {
+        font-size: 15px;
+    }
 `
 const NavBlock = styled.div`
     display: flex;
@@ -170,6 +184,9 @@ const Leave = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    @media (max-width: 430px) {
+        height: 42px;
+    }
 `
 const Add = styled.div`
     display: flex;
@@ -188,6 +205,10 @@ const Add = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    @media (max-width: 430px) {
+        width: 183px;
+        height: 42px;
+    }
 `
 interface AddToCartProduct {
     id: string;

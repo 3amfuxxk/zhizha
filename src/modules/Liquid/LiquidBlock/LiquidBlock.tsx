@@ -58,10 +58,10 @@ const Active = styled.p`
     font-weight: 600;
     line-height: 130%;
 `
-const CardContainer = styled.div<{ expanded: boolean }>`
+const CardContainer = styled.div<{ maxHeight: number }>`
     display: grid;
     overflow: hidden;
-    max-height: ${(props) => (props.expanded ? '1754px' : '3518px')};
+    max-height: ${(props) => `${props.maxHeight}px`};
     transition: max-height 0.3s ease;
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr 1fr; 
@@ -121,11 +121,14 @@ interface ProductOption {
 
 
 const LiquidBlock = () => {
-    const [expanded, setExpanded] = useState<boolean>(false);
+    const defaultHeight = 1754;
+    const increaseHeight = 1764;
+
+    const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 
     const toggleExpanded = () => {
-        setExpanded((prevExpanded) => !prevExpanded);
-    };
+        setMaxHeight((prevHeight) => prevHeight + increaseHeight);
+      };
 
     const [data, setData] = useState<Product[] | null>(null);
 
@@ -184,9 +187,9 @@ const LiquidBlock = () => {
                         </Active>
                     </Link>
                 </LinkPath>
-                <CardContainer expanded={expanded}>
-                    { data && data.length > 0 && data.map((product, index) => (
-                        <Link key={index} href={{ pathname: '/product', }} onClick={ () => handleSelectProduct(product)}>
+                <CardContainer maxHeight={maxHeight}>
+                    {data && data.length > 0 && data.map((product, index) => (
+                        <Link key={index} href={{ pathname: '/product', }} onClick={() => handleSelectProduct(product)}>
                             <Card
                                 code={product.code}
                                 desc={product.desc}

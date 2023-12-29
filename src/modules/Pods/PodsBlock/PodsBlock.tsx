@@ -55,10 +55,10 @@ const Active = styled.p`
     font-weight: 600;
     line-height: 130%;
 `
-const CardContainer = styled.div<{ expanded: boolean }>`
+const CardContainer = styled.div<{ maxHeight: number}>`
     display: grid;
     overflow: hidden;
-    max-height: ${(props) => (props.expanded ? '1754px' : '3518px')};
+    max-height: ${(props) => `${props.maxHeight}px`};
     transition: max-height 0.3s ease;
     width: 100%;
     grid-template-columns: 1fr 1fr 1fr 1fr; 
@@ -97,17 +97,20 @@ const ButtonText = styled.p`
 `
 
 const PodsBlock = () => {
-    const [expanded, setExpanded] = useState<boolean>(false);
+    const defaultHeight = 1754;
+    const increaseHeight = 1764;
+
+    const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 
     const toggleExpanded = () => {
-        setExpanded((prevExpanded) => !prevExpanded);
-    };
+        setMaxHeight((prevHeight) => prevHeight + increaseHeight);
+      };
 
     return (
         <LiquidContainer>
             <NameBlock>
                 <HeadText>
-                    Набори
+                    Под-системи
                 </HeadText>
                 <PodText>
                     Підберіть набор на свій смак, кожен з котрих має свій унікальний смак
@@ -131,7 +134,7 @@ const PodsBlock = () => {
                         </Active>
                     </Link>
                 </LinkPath>
-                <CardContainer expanded={expanded}>
+                <CardContainer maxHeight={maxHeight}>
                 
                 </CardContainer>
                 <ButtonRow>
