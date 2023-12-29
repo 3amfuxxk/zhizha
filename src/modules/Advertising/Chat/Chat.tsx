@@ -20,6 +20,11 @@ const ChatContainer = styled.div`
     padding: 29px;
     flex-direction: column;
     justify-content: space-between;
+    @media (max-width: 430px) {
+        padding: 17px;
+        height: 476px;
+        width: 100%;
+    }
 `
 const MessageOne = styled.div`
     display: flex;

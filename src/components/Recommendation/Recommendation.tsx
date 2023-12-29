@@ -44,12 +44,18 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;
+    }
 `
 const HeaderRight = styled.div`
     display: flex;
     gap: 8px;
     width: auto;
     align-items: center;
+    @media (max-width: 430px) {
+        margin-top: 4px;
+    }
 `
 const LinkText = styled.p`
     color: #FFF;
@@ -69,7 +75,15 @@ const CardContainer = styled.div<{ expanded: boolean }>`
     gap: 10px 10px; 
     grid-template-areas: 
         ". . . ."
-        ". . . ."; 
+        ". . . .";
+    @media (max-width: 430px) {
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: 
+        ". ."
+        ". .";
+        max-height: ${(props) => (props.expanded ? '1332px' : '666px')};
+    }
 `
 // max-height: ${({ expanded }) => (expanded ? '1754px' : '872px')};
 const ButtonRow = styled.div`
@@ -179,6 +193,7 @@ const Recommendation = () => {
                 <AddToCart product={showProduct} />
                 {data && data.length > 0 && data.map((product, index) => (
                     <Card
+                        key={index}
                         code={product.code}
                         desc={product.desc}
                         ice={product.ice}
@@ -190,7 +205,7 @@ const Recommendation = () => {
                         onAddToCart={handleToAddToCart}
                     />
                 ))}
-                
+
             </CardContainer>
             <ButtonRow>
                 <ButtonMore onClick={toggleExpanded}>

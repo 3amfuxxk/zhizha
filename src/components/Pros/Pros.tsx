@@ -13,6 +13,13 @@ const ProsContainer = styled.div`
     background: #141414;
     padding: 34px 29px;
     margin-top: 12px;
+    @media (max-width: 430px) {
+        height: 304px;
+        width: 100%;
+        flex-direction: column;
+        padding: 22px 17px;
+        gap: 40px;
+    }
 `
 const HeaderText = styled.p`
     color: #FFF;
@@ -20,12 +27,19 @@ const HeaderText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;
+    }
 `
 const ProsBlock = styled.div`
     display: flex;
     width: 100%;
     padding: 0px 15px;
     justify-content: space-between;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        flex: 1;
+    }
 `
 
 

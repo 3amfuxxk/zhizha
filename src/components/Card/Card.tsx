@@ -14,6 +14,11 @@ const CardContainer = styled.div`
     background: #1F1E1F;
     padding: 15px 14px;
     flex-direction: column;
+    @media (max-width: 430px) {
+        width: 200px;
+        height: 328px;
+        padding: 9px;
+    }
 `
 const ImgBlock = styled.div`
     display: flex;
@@ -22,6 +27,16 @@ const ImgBlock = styled.div`
     height: 280px;
     border-radius: 6px;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 182px;
+        height: 182px;
+    }
+`
+const Img = styled(Image)`
+    @media (max-width: 430px) {
+        width: 182px;
+        height: 182px;
+    }
 `
 const NameBlock = styled.div`
     display: -webkit-box;
@@ -38,6 +53,9 @@ const NameText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 14px;
+    }
 `
 const InfoBlock = styled.div`
     display: flex;
@@ -129,17 +147,23 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
     };
 
     const handleAddToCart = () => {
-        const product = { id, title, code, desc, ice, image, categories, options};
+        const product = { id, title, code, desc, ice, image, categories, options };
         if (onAddToCart) {
             onAddToCart(product);
         }
         handleOpen();
     };
 
+    const isMobile = window.innerWidth <= 430;
+
+    const buttonProps = isMobile
+        ? { text: '', width: 38, height: 38 }
+        : { text: 'В кошик', width: 135, height: 38 };
+
     return (
         <CardContainer>
             <ImgBlock>
-                <Image src={image} width={280} height={280} alt="" />
+                <Img src={image} width={280} height={280} alt="" />
             </ImgBlock>
             <NameBlock>
                 <NameText>
@@ -158,7 +182,7 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                     )}
                 </PriceBlock>
                 <AddBlock>
-                    <Button onClick={handleAddToCart} text={'В кошик'} width={135} height={38} >
+                    <Button onClick={handleAddToCart} {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock>

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { Formik, Form, Field, ErrorMessage, validateYupSchema } from 'formik';
 import * as Yup from 'yup';
 import { Roboto } from "next/font/google";
-import css from "styled-jsx/css";
-import { red } from "@mui/material/colors";
 import ConfirmationWindow from "../ConfirmationWindow/ConfirmationWindow";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCart, clearCart } from "../../../store/slice";
@@ -212,7 +210,7 @@ const Order = () => {
                         </HeadText>
                         <Structure>
                             <Block>
-                                <Label htmlFor="name" className={`${errors.name && touched.name ? 'error' : ''}`}>Ваше ім’я:</Label>
+                                <Label htmlFor="name" className={`${errors.name && touched.name ? 'error' : ''}`}>Ваше ім&apos;я:</Label>
                                 <Fields className={`${roboto.className} ${errors.name && touched.name ? 'error' : ''}`} type="text" name="name" placeholder={'П.І.Б.'} />
                                 {errors.name && touched.name && (
                                     <Error name="name" component="div" className="error" />
@@ -233,7 +231,7 @@ const Order = () => {
                                 )}
                             </Block>
                             <Block>
-                                <Label htmlFor="telegramNick">Ваш телеграм <Span>(не обов'язково)</Span></Label>
+                                <Label htmlFor="telegramNick">Ваш телеграм <Span>(не обов&apos;язково)</Span></Label>
                                 <Fields className={roboto.className} type="text" name="telegramNick" placeholder={'@nickname'} />
                                 <Error name="telegramNick" component="div" className="error" />
                             </Block>

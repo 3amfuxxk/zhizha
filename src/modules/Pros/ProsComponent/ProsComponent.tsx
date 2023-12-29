@@ -15,6 +15,9 @@ const Pros = styled.div`
     width: auto;
     height: auto;
     align-items: center;
+    @media (max-width: 430px) {
+        
+    }
 `
 const TextBlock = styled.div`
     display: flex;

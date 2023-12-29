@@ -160,6 +160,10 @@ const BlockProps = styled.div`
     background-color: #141414;
     cursor: pointer;
     transition: all 0.3s ease;
+    @media (max-width: 430px) {
+        height: 40px;
+        padding: 0px 16px;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -167,6 +171,9 @@ const Text = styled.p`
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
+    @media (max-width: 430px) {
+     font-size: 15px;   
+    }
 `
 const PriceBlock = styled.div`
     display: flex;
@@ -260,40 +267,68 @@ const Bullet = styled.span`
     background: white;
   }
 `
-
+const Imgs = styled(Image)`
+    @media (max-width: 430px) {
+        width: 16px;
+        height: 18px;
+    }
+`
 const Slider = () => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+    const [isSlideMoving, setSlideMoving] = useState(false);
+    const slider = document.getElementById("slider");
+
+    if (slider !== null) {
+        slider.addEventListener('scroll', () => {
+            setSlideMoving(true);
+
+            // По завершении скролла:
+            setTimeout(() => {
+                setSlideMoving(false);
+            }, 800);
+        });
+    }
+
 
     const updateBulletColors = () => {
         const bullets = document.querySelectorAll('.bullet');
-    
+
         bullets.forEach((bullet, index) => {
-          if (index === currentSlideIndex) {
-            bullet.classList.add('active');
-          } else {
-            bullet.classList.remove('active');
-          }
+            if (index === currentSlideIndex) {
+                bullet.classList.add('active');
+            } else {
+                bullet.classList.remove('active');
+            }
         });
-      };
+    };
 
     const slideLeft = () => {
-        let slider = document.getElementById("slider");
-        if (slider !== null) {
-            slider.scrollLeft = slider.scrollLeft - 738;
-            setCurrentSlideIndex(currentSlideIndex-1);
-            updateBulletColors();
+        if (!isSlideMoving) {
+            let slider = document.getElementById("slider");
+            let slideWidth = window.innerWidth <= 430 ? 401 : 738;
+            let newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
+
+            if (slider !== null) {
+                slider.scrollLeft = slider.scrollLeft - slideWidth;
+                setCurrentSlideIndex(newIndex);
+                updateBulletColors();
+            }
         }
     };
 
     const slideRight = () => {
-        let slider = document.getElementById("slider");
-        if (slider !== null) {
-            slider.scrollLeft = slider.scrollLeft + 738;
-            setCurrentSlideIndex(currentSlideIndex+1);
-            updateBulletColors();
+        if (!isSlideMoving) {
+            let slider = document.getElementById("slider");
+            let slideWidth = window.innerWidth <= 430 ? 401 : 738;
+            let newIndex = currentSlideIndex + 1 > 2 ? 2 : currentSlideIndex + 1;
+
+            if (slider !== null) {
+                slider.scrollLeft = slider.scrollLeft + slideWidth;
+                setCurrentSlideIndex(newIndex);
+                updateBulletColors();
+            }
         }
     };
-
     return (
         <SliderContainer>
             <HeaderText>
@@ -337,7 +372,7 @@ const Slider = () => {
                                     <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
                                 </Button>
                                 <FavBlock>
-                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                    <Imgs src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
                                 </FavBlock>
                             </FuncionBlock>
                         </FunctionBlock>
