@@ -130,14 +130,20 @@ interface ProductOption {
 
 
 const LiquidBlock = () => {
-    const defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
-    const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
+    let defaultHeight = 1754;
+    let increaseHeight = 1764;
+    if (typeof window !== 'undefined') {
+        defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
+    }
+    if (typeof window !== 'undefined') {
+        const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
+    }
 
     const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 
     const toggleExpanded = () => {
         setMaxHeight((prevHeight) => prevHeight + increaseHeight);
-      };
+    };
 
     const [data, setData] = useState<Product[] | null>(null);
 
