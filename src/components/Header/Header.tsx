@@ -26,11 +26,18 @@ const HeaderBlock = styled.div`
     left: 0;
     height: 96px;
     z-index: 5;
+    @media (max-width: 430px) {
+        justify-content: space-between;
+        padding: 0px 10px 0px 18px;
+    }
 `
 const NavBlock = styled.div`
     display: flex;
     gap: 12px;
     padding: 0px 180px;
+    @media (max-width: 430px) {
+        padding: 0px;
+    }
 `
 const Bar = styled.div`
     display: flex;
@@ -488,13 +495,6 @@ const Header = () => {
                         <Product id="product-block" className="scrol">
                             {cartProducts.map((product) => (
                                 <ProductCard key={product.id}>
-                                    {/* <DeleteConfirm>
-                                        <ConfirmBlock>
-                                            <ConfirmOptions>
-                                                <NoBlock />
-                                            </ConfirmOptions>
-                                        </ConfirmBlock>
-                                    </DeleteConfirm> */}
                                     <ImageBlock>
                                         <Image src={product.image} width={114} height={114} alt="" />
                                     </ImageBlock>

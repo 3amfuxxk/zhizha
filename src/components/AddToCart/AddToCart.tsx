@@ -260,7 +260,6 @@ const AddToCart = ({ product }: Props) => {
     };
 
     const id = findIdByOptions(selectedNico, selectedVolume) || 0;
-    console.log(id);
 
     const findByID = (id: number) => {
         const selectedIndex = product?.options.findIndex((item) => item.id === id);
@@ -268,7 +267,6 @@ const AddToCart = ({ product }: Props) => {
     };
 
     const index = findByID(id) || 0;
-    console.log(index);
 
     const resetValues = () => {
         setUniqueVolumes([]);
@@ -381,7 +379,7 @@ const AddToCart = ({ product }: Props) => {
                                 Назад до магазину
                             </p>
                         </Leave>
-                        <Add onClick={() => handleCart(product, totalQuantity)}>
+                        <Add onClick={() => {handleCart(product, totalQuantity); handleClose();}}>
                             <Image src={'/img/Card/svg/cart.svg'} width="13" height={16} alt="" />
                             <p>
                                 Додати в кошик

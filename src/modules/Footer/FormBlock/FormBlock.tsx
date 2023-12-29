@@ -5,6 +5,7 @@ import { Roboto } from "next/font/google";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import '../../../app/globals.css'
+import axios from 'axios';
 
 const roboto = Roboto({
     weight: ['400', '500'],
@@ -111,6 +112,7 @@ const Button = styled.button`
     position: absolute;
     top: 0;
     right: 0;
+    cursor: pointer;
     border: none;
 
     :focus {
@@ -123,9 +125,15 @@ const FormBlock = () => {
         email: Yup.string().email('Введите корректный email').required('Обязательное поле'),
     });
 
-    const handleSubmit = (values: { email: string }, { resetForm }: { resetForm: () => void }) => {
-        console.log('Отправка формы:', values.email);
-        resetForm();
+    const handleSubmit = async (values: { email: string }, { resetForm }: { resetForm: () => void }) => {
+        try {
+            const response = await axios.post('http://18.132.12.234/api/v1/emails/', { email: values.email });
+            console.log('POST request successful:', response.data);
+            resetForm();
+        } catch (error) {
+            console.error('Error sending POST request:', error);
+        }
+        console.log(values.email);
     };
 
     return (

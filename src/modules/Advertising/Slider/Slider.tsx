@@ -20,6 +20,12 @@ const SliderContainer = styled.div`
     background: #141414;
     padding: 29px 29px 14px 29px;
     flex-direction: column;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 845px;
+        flex-direction: column;
+        padding: 22px 17px 17px 17px;
+    }
 `
 const HeaderText = styled.p`
     color: #FFF;
@@ -27,6 +33,9 @@ const HeaderText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;   
+    }
 `
 const SliderBlock = styled.div`
     display: flex;
@@ -37,6 +46,10 @@ const SliderBlock = styled.div`
     overflow: hidden;
     gap: 25px;
     scroll-behavior: smooth;
+    @media (max-width: 430px) {
+        height: 707px;
+        margin-top: 13px;
+    }
 `
 const Card = styled.div`
     display: flex;
@@ -48,6 +61,12 @@ const Card = styled.div`
     background: #1F1E1F;
     padding: 14px;
     gap: 17px;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        padding: 13px;
+        width: 100%;   
+        gap: 7px;
+    }
 `
 const ImageBlock = styled.div`
     display: flex;
@@ -57,12 +76,25 @@ const ImageBlock = styled.div`
     border-radius: 6px;
     background: #181818;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 350px;
+        height: 350px;
+    }
+`
+const Img = styled(Image)`
+    @media (max-width: 430px) {
+        width: 350px;
+        height: 350px;   
+    }
 `
 const ProductInfo = styled.div`
     display: flex;
     flex: 1;
     flex-direction: column;
     padding: 8px 0px;
+    @media (max-width: 430px) {
+        padding: 0px;   
+    }
 `
 const ProductName = styled.p`
     color: #FFF;
@@ -93,6 +125,9 @@ const NicoBlock = styled.div`
     width: 100%;
     height: auto;
     margin-top: 9px;
+    @media (max-width: 430px) {
+        margin-top: 19px;
+    }
 `
 const NicoName = styled.p`
     color: #FFF;
@@ -267,7 +302,7 @@ const Slider = () => {
             <SliderBlock id="slider">
                 <Card>
                     <ImageBlock>
-                        <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
+                        <Img src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
                     </ImageBlock>
                     <ProductInfo>
                         <ProductName>

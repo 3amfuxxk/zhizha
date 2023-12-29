@@ -14,6 +14,10 @@ interface ContainerProps {
     margin: 0 auto;
     position: relative;
     height: auto;
+
+    @media (max-width: 430px) {
+      width: 410px;
+    } 
   `;
   
   export default Container;

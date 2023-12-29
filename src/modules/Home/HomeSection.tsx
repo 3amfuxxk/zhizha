@@ -31,6 +31,12 @@ const RbBlock = styled.div`
     right: 0;
     top: 0;
     opacity: 0.5;
+    @media (max-width: 430px) {
+        width: 159.22px;
+        height: 159.22px;
+        right: -70px;
+        top: 150px;
+    }
 `
 
 const RevoBlock = styled.div`
@@ -44,6 +50,12 @@ const RevoBlock = styled.div`
     left: 0;
     top: 0;
     opacity: 0.5;
+    @media (max-width: 430px) {
+        width: 186.655px;
+        height: 186.655px;
+        left: -70px;
+        top: 160px;
+    }
 `
 
 const StalkerBlock = styled.div`
@@ -57,6 +69,12 @@ const StalkerBlock = styled.div`
     right: 300px;
     bottom: 0;
     opacity: 0.5;
+    @media (max-width: 430px) {
+        width: 143.847px;
+        height: 143.847px;
+        right: 0px;
+        bottom: 100px;
+    }
 `
 
 const WelcomeText = styled.p`
@@ -67,6 +85,10 @@ const WelcomeText = styled.p`
     font-weight: 800;
     line-height: 110%;
     width: 685px;
+    @media (max-width: 430px) {
+        width: 390px;
+        font-size: 32px;
+    }
 `
 
 const SmallText = styled.p`
@@ -78,6 +100,10 @@ const SmallText = styled.p`
     line-height: 130%;
     width: 494px;
     margin-top: 22px;
+    @media (max-width: 430px) {
+        width: 354px;
+        margin-top: 24px;   
+    }
 `
 
 const Button = styled.div`
@@ -90,6 +116,9 @@ const Button = styled.div`
     background: #B6020D;
     justify-content: center;
     margin-top: 86px;
+    @media (max-width: 430px) {
+        margin-top: 123px;
+    }
 `
 const ButtonText = styled.p`
     color: #FFF;

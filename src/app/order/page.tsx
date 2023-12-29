@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Container from "../../components/Container/Container";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Order from "../../modules/Order/Order";
+import Order from "../../modules/Order/Order/Order";
 
 export default function Home() {
 

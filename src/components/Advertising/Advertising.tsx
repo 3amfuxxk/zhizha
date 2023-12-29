@@ -9,6 +9,10 @@ const AdvertisingContainer = styled.div`
     height: 500px;
     gap: 12px;
     margin-top: 12px;
+    @media (max-width: 430px) {
+        height: auto;
+        flex-direction: column;
+    }
 `
 
 const Advertising = () => {

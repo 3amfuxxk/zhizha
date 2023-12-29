@@ -41,11 +41,14 @@ interface Product {
       removeFromCart(state, action: PayloadAction<number>) {
         state.products = state.products.filter(item => item.options.id !== action.payload);
       },
+      clearCart(state) {
+        state.products = [];
+      },
     },
   });
   
   
-  export const { addToCart, removeFromCart } = cartSlice.actions;
+  export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
   
   export const selectCart = (state: RootState) => state.cart.products;
   

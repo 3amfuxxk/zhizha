@@ -33,6 +33,10 @@ const ButtonBlock = styled.div`
     &:hover ${RoundBlock} {
         width: 100%;
     }
+
+    @media (max-width: 430px) {
+        display: none;
+    }
 `
 
 const Text = styled.p`
