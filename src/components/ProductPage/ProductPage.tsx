@@ -45,6 +45,12 @@ const GeneralInfo = styled.div`
     justify-content: space-between;
     height: 620px;
     padding-top: 6px;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        justify-content: unset;
+        gap: 12px;
+        height: auto;
+    }
 `
 const ImageBlock = styled.div`
     display: flex;
@@ -54,8 +60,17 @@ const ImageBlock = styled.div`
     flex-shrink: 0;
     border-radius: 18px;
     background: #141414;
-
     flex-direction: column;
+    @media (max-width: 430px) {
+        width: 100%;
+        padding: 11px;
+    }
+`
+const Img = styled(Image)`
+    @media (max-width: 430px) {
+        width: 388px;
+    height: 388px;
+    }
 `
 const ProductImage = styled.div`
     display: flex;
@@ -65,6 +80,12 @@ const ProductImage = styled.div`
     border-radius: 6px;
     background: #181818;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 100%;
+        flex-direction: column;
+        height: auto;
+        gap: 6px;
+    }
 `
 const ProductInfo = styled.div`
     display: flex;
@@ -75,7 +96,11 @@ const ProductInfo = styled.div`
     border-radius: 18px;
     background: #141414;
     flex-direction: column;
-    /* justify-content: space-between; */
+    @media (max-width: 430px) {
+        width: 100%;
+        height: auto;
+        padding: 23px 17px 17px 17px;
+    }
 `
 const ProductName = styled.div`
     display: -webkit-box;
@@ -89,6 +114,10 @@ const ProductName = styled.div`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        height: auto;
+        max-height: 84px;   
+    }
 `
 const ProductId = styled.p`
     margin-top: 12px;
@@ -97,6 +126,9 @@ const ProductId = styled.p`
     font-style: normal;
     font-weight: 700;
     line-height: 150%;
+    @media (max-width: 430px) {
+        margin-top: 14px;   
+    }
 `
 const SpanId = styled.span`
     color: rgba(255, 255, 255, 0.60);
@@ -115,12 +147,20 @@ const DescBlock = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
+    @media (max-width: 430px) {
+        height: auto;
+        max-height: 84px;
+        -webkit-line-clamp: 3;  
+    }
 `
 const ProductPrice = styled.div`
     display: flex;
     margin-top: 23px;
     width: 100%;
     align-items: center;
+    @media (max-width: 430px) {
+        margin-top: 26px;
+    }
 `
 const SalePrice = styled.p`
     color: #FFF;
@@ -173,6 +213,10 @@ const BlockProps = styled.div<BlockProps>`
     background-color: ${(props) => (props.isSelected ? '#272727' : '#141414')};
     cursor: pointer;
     transition: all 0.3s ease;
+    @media (max-width: 430px) {
+        padding: 0px 16px;
+        height: 40px;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -202,6 +246,11 @@ const NavBlock = styled.div`
     width: 100%;
     gap: 9px;
     margin-top: auto;
+    @media (max-width: 430px) {
+        flex-direction: column;
+        margin-top: 35px;
+        gap: 29px;   
+    }
 `
 const DescWhole = styled.div`
     display: flex;
@@ -213,6 +262,11 @@ const DescWhole = styled.div`
     flex-shrink: 0;
     border-radius: 18px;
     background: #141414;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: auto;
+        padding: 22px 17px 17px 17px;   
+    }
 `
 const DescHeader = styled.p`
     color: #FFF;
@@ -234,6 +288,9 @@ const FullBlock = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
+    @media (max-width: 430px) {
+        display: flex;   
+    }
 `
 const ImageWhole = styled.div`
     display: flex;
@@ -243,6 +300,11 @@ const ImageWhole = styled.div`
     border-radius: 18px;
     background: #141414;
     padding: 29px;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 264px;
+        padding: 17px;   
+    }
 `
 const ImageFull = styled.div`
     display: flex;
@@ -252,6 +314,12 @@ const ImageFull = styled.div`
     border-radius: 12px;
     background: #1F1E1F;
     overflow: hidden;
+`
+const Imgfull = styled(Image)`
+    @media (max-width: 430px) {
+        width: 376px;
+        height: 230px;
+    }
 `
 const FullData = styled.div`
     display: flex;
@@ -426,7 +494,7 @@ const ProductPage = () => {
             <GeneralInfo>
                 <ImageBlock>
                     <ProductImage>
-                        <Image src={`${selectedProduct?.image}`} width={512} height={512} alt="" />
+                        <Img src={selectedProduct?.image ? `${selectedProduct.image}` : '/img/Card/rb.jpg'} width={512} height={512} alt="" />
                     </ProductImage>
                 </ImageBlock>
                 <ProductInfo>
@@ -504,7 +572,7 @@ const ProductPage = () => {
             </DescWhole>
             <ImageWhole>
                 <ImageFull>
-                    <Image src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
+                    <Imgfull src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
             {/* <FullData>

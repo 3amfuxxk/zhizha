@@ -63,6 +63,7 @@ const InfoBlock = styled.div`
         width: 100%;
         padding: 17px;
         height: 78px;
+        order: -2;
     }
 `
 const InfoRow = styled.div`
@@ -92,7 +93,8 @@ const UpBlock = styled.div`
     align-items: center;
     @media (max-width: 430px) {
         width: 100%;
-        height: 78px;   
+        height: 78px;
+        order: -3;
     }
 `
 const Img = styled(Image)`

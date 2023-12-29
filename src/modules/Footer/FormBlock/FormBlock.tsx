@@ -25,7 +25,8 @@ const FormContainer = styled.div`
     @media (max-width: 430px) {
         width: 100%;
         height: 249px;
-        padding: 22px 17px 17px 17px;   
+        padding: 22px 17px 17px 17px;
+        order: -1;
     }
 `
 const HeadText = styled.p`
