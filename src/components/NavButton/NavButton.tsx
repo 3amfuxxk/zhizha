@@ -50,9 +50,10 @@ const Text = styled.p`
 interface Props {
     svgLink: string;
     text: string;
+    onClick?: (event: Event) => void;
 }
 
-const NavButton = ({text, svgLink}: Props) => {
+const NavButton = ({text, svgLink, onClick}: Props) => {
     return (
         <ButtonBlock>
             <RoundBlock>

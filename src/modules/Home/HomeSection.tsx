@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Roboto } from "next/font/google";
 import NavButton from "../../components/NavButton/NavButton";
+import Contact from "../Contact/Contact";
 
 const roboto = Roboto({
     weight: ["400"],
@@ -209,10 +210,28 @@ const ButtonBlock = styled.div`
     gap: 9px;
     align-items: center;
 `
+const BlurBack = styled.div`
+        display: none;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.20);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        justify-content: center;
+        align-items: center;
+`
+
 
 const HomeSection = () => {
     return (
         <HomeBlock>
+            <BlurBack id="blur-back">
+                <Contact />
+            </BlurBack>
             <MenuMobile id="menu-mobile">
                 <NavCont>
                     <LikeNav>

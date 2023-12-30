@@ -485,6 +485,13 @@ const Header = () => {
         }
     }
 
+    const showContact = () => {
+        const contact = document.getElementById('blur-back');
+        if (contact) {
+            contact.style.display = 'flex';
+        }
+    }
+
     const dispatch = useDispatch();
 
     const handleRemoveFromCart = (id: number) => {
@@ -515,8 +522,10 @@ const Header = () => {
                 <Link href={{ pathname: '/catalog' }}>
                     <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
                 </Link>
-                <NavButton text={'Доставка'} svgLink={'contact.svg'} />
-                <NavButton text={'Контакти'} svgLink={'order.svg'} />
+                <Link href={'/shipping'}>
+                    <NavButton text={'Доставка'} svgLink={'contact.svg'} />
+                </Link>
+                <NavButton text={'Контакти'} svgLink={'order.svg'} onClick={() => showContact()} />
             </NavBlock>
             <Bar>
                 <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} id="burger-menu" />

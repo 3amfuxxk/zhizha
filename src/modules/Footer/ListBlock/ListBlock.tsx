@@ -118,9 +118,11 @@ const ListBlock = () => {
                     </HeadText>
                     <ListHolder>
                         <LinkBlock className={roboto.className}>
-                            <ListText>
-                                Оплата та доставка
-                            </ListText>
+                            <Link href="/shipping">
+                                <ListText>
+                                    Оплата та доставка
+                                </ListText>
+                            </Link>
                             <ListText>
                                 Політика безпеки
                             </ListText>
