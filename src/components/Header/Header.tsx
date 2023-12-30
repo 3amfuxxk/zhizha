@@ -127,7 +127,8 @@ const CartBlock = styled.div<{ cartOpen: boolean }>`
     right: 0;
     top: 80px;
     @media (max-width: 430px) {
-        width: 410px;
+        left: -273%;
+        width: 375px;
         flex-shrink: 1;
         padding: 29px 17px;
     }
@@ -363,6 +364,9 @@ const FunctionBlock = styled.div`
     height: auto;
     align-items: center;
     gap: 11px;
+    @media (max-width: 430px) {
+        gap:5px;
+    }
 `
 const DeleteBlock = styled.div`
     display: flex;
