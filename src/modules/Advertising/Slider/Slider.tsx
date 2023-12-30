@@ -365,9 +365,9 @@ const Slider = () => {
         setShowProduct(item);
     };
     const handleOpen = () => {
-        const addContainer = document.getElementById('add-container-slider');
-        if (addContainer) {
-            addContainer.style.display = 'flex';
+        const menu = document.getElementById('menu-mobile');
+        if (menu) {
+            menu.style.display = 'flex';
         }
     };
     const handleAll = () => {

@@ -43,6 +43,7 @@ const Bar = styled.div`
     display: flex;
     position: relative;
     width: 297px;
+    align-items: center;
 `
 const Img = styled(Image)`
     cursor: pointer;
@@ -92,6 +93,9 @@ const Search = styled.div`
     align-items: center;
     display: flex;
     cursor: pointer;
+    @media (max-width: 430px) {
+        margin-left: 100px;
+    }
 `
 const Cart = styled.div`
     display: flex;
@@ -150,6 +154,9 @@ const CartContainer = styled.div`
     gap: 8px;
     right: 0;
     z-index: 3;
+    @media (max-width: 430px) {
+        right: 50px;
+    }
 `
 const Product = styled.div`
     display: flex;
@@ -400,6 +407,14 @@ const NoBlock = styled.div`
     border: 1px solid #292929;
     background: #181818;
 `
+const Burger = styled(Image)`
+    display: none;
+    @media (max-width: 430px) {
+        position: absolute;
+        right: 0;
+        display: flex;   
+    }
+`
 
 interface AddToCartProduct {
     id: string;
@@ -441,6 +456,13 @@ const Header = () => {
         }));
     };
 
+    const showMenu = () => {
+        const addContainer = document.getElementById('add-container-slider');
+        if (addContainer) {
+            addContainer.style.display = 'flex';
+        }
+    };
+
     const dispatch = useDispatch();
 
     const handleRemoveFromCart = (id: number) => {
@@ -475,6 +497,7 @@ const Header = () => {
                 <NavButton text={'Контакти'} svgLink={'order.svg'} />
             </NavBlock>
             <Bar>
+                <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} />
                 <Search>
                     <Image src={'/img/Header/search.svg'} width={16} height={16} alt="" />
                 </Search>
