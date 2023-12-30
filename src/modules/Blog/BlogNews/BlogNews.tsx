@@ -122,7 +122,6 @@ const BlogNews = () => {
     const toggleExpanded = () => {
         setMaxHeight((prevHeight) => prevHeight + increaseHeight);
     };
-    console.log(window.innerWidth);
 
     return (
         <NewsContainer>
