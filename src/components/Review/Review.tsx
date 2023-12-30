@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import Link from 'next/link';
 import Card from '../../modules/Review/Card/Card';
+import axios from 'axios';
 
 const ReviewContainer = styled.div`
     display: flex;
@@ -46,22 +47,55 @@ const CardContainer = styled.div`
         gap: 11px;
     }
 `
+interface Reviews {
+    id: number;
+    author_name: string;
+    author_photo: string;
+    product_image1: string;
+    product_image2: string;
+    text: string;
+}
 
 const Review = () => {
+    const [reviews, setReviews] = useState<Reviews[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/reviews/`);
+                const reviewsData = response.data as Reviews[];
+                setReviews(reviewsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setReviews(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    console.log(reviews);
     return (
         <ReviewContainer>
             <Header>
                 <HeaderText>
                     Відгуки:
                 </HeaderText>
-                <Link href={'/'}>
+                {/* <Link href={'/'}>
                     <Button text="Дивитися всі" width={135} height={38} />
-                </Link>
+                </Link> */}
             </Header>
             <CardContainer>
-                <Card imgLink1='demo.jpg' imgLink2='demo.jpg' userLink='demo.jpg' userName='Роман' text='Отримав посилку, залишу відгук. Порадувала упаковка, смак теж добрий. Кількість та якість бомбічна. За таку ціну просто ідеал. Тепер братиму у вас, так вигідніше 😉' />
-                <Card imgLink1='demo.jpg' imgLink2='demo.jpg' userLink='demo.jpg' userName='Роман' text='Отримав посилку, залишу відгук. Порадувала упаковка, смак теж добрий. Кількість та якість бомбічна. За таку ціну просто ідеал. Тепер братиму у вас, так вигідніше 😉' />
-                <Card imgLink1='demo.jpg' imgLink2='demo.jpg' userLink='demo.jpg' userName='Роман' text='Отримав посилку, залишу відгук. Порадувала упаковка, смак теж добрий. Кількість та якість бомбічна. За таку ціну просто ідеал. Тепер братиму у вас, так вигідніше 😉' />
+                {reviews?.map((item, index) => (
+                    <Card
+                        key={index}
+                        id={item.id}
+                        imgLink1={item.product_image1}
+                        imgLink2={item.product_image2}
+                        userLink={item.author_photo}
+                        userName={item.author_name}
+                        text={item.text} />
+                ))}
             </CardContainer>
         </ReviewContainer>
     )

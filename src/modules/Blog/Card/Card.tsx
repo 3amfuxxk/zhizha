@@ -11,10 +11,10 @@ const roboto = Roboto({
     subsets: ['cyrillic', 'latin'],
 })
 
-const Card = styled.div`
+const Card = styled.div<{width?: number, height?: number}>`
     display: flex;
-    width: 394px;
-    height: 418px;
+    width: ${(props) => props.width ? props.width : 394}px;
+    height: ${(props) => props.height ? props.height : 418}px;
     flex-shrink: 0;
     border-radius: 12px;
     border: 1px solid #282828;
@@ -23,7 +23,7 @@ const Card = styled.div`
     padding: 14px;
     gap: 11px;
     @media (max-width: 430px) {
-        width: 376px;
+        width: 100%;
         height: 407px;
     }
 `
@@ -32,7 +32,8 @@ const Img = styled(Image)`
     border-radius: 6px;
     background: #181818;
     @media (max-width: 430px) {
-        width: 350px;
+        width: 430px;
+        max-width: 100%;
         height: 197px;
     }
 `
@@ -125,6 +126,7 @@ const DateContainer = styled.div`
 `
 
 interface Props {
+    id: string;
     imgLink: string;
     title: string;
     time: number;
@@ -132,12 +134,14 @@ interface Props {
     topicText: string;
     link: string;
     date: string;
+    width?: number;
+    height?: number;
 }
 
-const CardBlog = ({imgLink,title,time, topicName, topicText, link, date}: Props) => {
+const CardBlog = ({imgLink,title,time, topicName, topicText, link, date, width, height, id}: Props) => {
     return (
-        <Card>
-            <Img src={`/img/Blog/Cards/${imgLink}`} alt='' width={366} height={206} />
+        <Card width={width} height={height}>
+            <Img src={imgLink} alt='' width={366} height={206} />
             <InfoBlock>
                 <TextInfo>
                     {title}
@@ -158,7 +162,7 @@ const CardBlog = ({imgLink,title,time, topicName, topicText, link, date}: Props)
                 </TopicText>
             </PreviewBlock>
             <Nav>
-                <Link href={link}>
+                <Link href={{pathname: `${link}`, query: {id: id}}}>
                     <Button />
                 </Link>
                 <Date>

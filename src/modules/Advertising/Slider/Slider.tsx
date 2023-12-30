@@ -273,6 +273,7 @@ const Imgs = styled(Image)`
         height: 18px;
     }
 `
+
 const Slider = () => {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [isSlideMoving, setSlideMoving] = useState(false);

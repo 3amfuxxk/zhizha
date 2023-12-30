@@ -16,7 +16,8 @@ interface ContainerProps {
     height: auto;
 
     @media (max-width: 430px) {
-      width: 410px;
+      width: 100%;
+      padding: 0px 10px;
     } 
   `;
   

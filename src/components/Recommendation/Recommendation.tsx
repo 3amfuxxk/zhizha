@@ -151,7 +151,7 @@ const Recommendation = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<Product[]>('http://18.132.12.234/api/v1/products/recommendations/');
+                const response = await axios.get<Product[]>('http://35.180.189.210/api/v1/products/recommendations/');
                 const modifiedData = response.data.map(item => ({
                     ...item,
                     options: item.options.map(option => ({

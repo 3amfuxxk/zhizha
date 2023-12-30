@@ -62,7 +62,7 @@ const UserBlock = styled.div`
     gap: 8px;
     width: 100%;
     align-items: center;
-    margin-top: 14px;
+    margin-top: auto;
 `
 const UserImage = styled.div`
     width: 50px;
@@ -99,17 +99,18 @@ interface Props {
     text: string;
     userLink: string;
     userName: string;
+    id: number;
 }
 
-const Card = ({imgLink1, imgLink2, text, userLink, userName}: Props) => {
+const Card = ({imgLink1, imgLink2, text, userLink, userName, id}: Props) => {
     return (
         <CardContainer>
             <ImageBlock>
                 <ImageContainer>
-                    <Image src={`/img/Review/product/${imgLink1}`} width={60} height={60} alt="" />
+                    <Image src={imgLink1} width={59} height={59} alt="" />
                 </ImageContainer>
                 <ImageContainer>
-                    <Image src={`/img/Review/product/${imgLink2}`} width={60} height={60} alt="" />
+                    <Image src={imgLink2} width={59} height={59} alt="" />
                 </ImageContainer>
             </ImageBlock>
             <ReviewText>
@@ -119,7 +120,7 @@ const Card = ({imgLink1, imgLink2, text, userLink, userName}: Props) => {
             </ReviewText>
             <UserBlock>
                 <UserImage>
-                    <Image src={`/img/Review/user/${userLink}`} width={60} height={60} alt="" />
+                    <Image src={userLink} width={49} height={49} alt="" />
                 </UserImage>
                 <UserInfo>
                     <UserName>

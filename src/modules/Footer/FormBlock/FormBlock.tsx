@@ -24,7 +24,7 @@ const FormContainer = styled.div`
     flex-direction: column;
     @media (max-width: 430px) {
         width: 100%;
-        height: 249px;
+        height: auto;
         padding: 22px 17px 17px 17px;
         order: -1;
     }
@@ -131,7 +131,8 @@ const Button = styled.button`
         outline: none;
     }
     @media (max-width: 430px) {
-        width: 126px;
+        width: auto;
+        padding: 0px 19px;
     }
 `
 

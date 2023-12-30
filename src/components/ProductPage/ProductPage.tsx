@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '../../store/slice';
 import { selectCart } from '../../store/slice';
 import { useEffect } from "react";
+import axios from "axios";
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -383,6 +384,7 @@ interface Product {
     title: string;
     code: number;
     desc: string;
+    short_desc: string;
     ice: boolean;
     image: string;
     categories: string[];
@@ -398,7 +400,32 @@ interface ProductOption {
     volume: number;
 }
 
-const ProductPage = () => {
+interface GetId {
+    idp: string;
+}
+
+const ProductPage = ({idp}: GetId) => {
+    console.log(idp);
+
+    const [product, setProduct] = useState<Product | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/products/${idp}`);
+                const productData = response.data as Product;
+                setProduct(productData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setProduct(null);
+            }
+        };
+
+        fetchProduct();
+    }, [idp]);
+
+    console.log(product);
+
     const [selectedNico, setSelectedNico] = useState<number>(-1);
     const [selectedVolume, setSelectedVolume] = useState<number>(-1);
 
@@ -417,19 +444,19 @@ const ProductPage = () => {
     const [filteredNicos, setFilteredNicos] = useState<number[]>([]);
 
     const filterVolumeByNico = (selectedNico: number) => {
-        const filteredOptions = selectedProduct?.options.filter((item) => item.nico === selectedNico);
+        const filteredOptions = product?.options.filter((item) => item.nico === selectedNico);
         const uniqueVolumes = Array.from(new Set(filteredOptions?.map((item) => item.volume)) || []);
         setUniqueVolumes(uniqueVolumes);
     };
 
     const filterNicoByVolume = (selectedVolume: number) => {
-        const filteredOptions = selectedProduct?.options.filter((item) => item.volume === selectedVolume);
+        const filteredOptions = product?.options.filter((item) => item.volume === selectedVolume);
         const uniqueNicos = Array.from(new Set(filteredOptions?.map((item) => item.nico)) || []);
         setFilteredNicos(uniqueNicos);
     };
 
     const findIdByOptions = (selectedNico: number, selectedVolume: number) => {
-        const selectedOptionID = selectedProduct?.options.find((item) => item.nico === selectedNico && item.volume === selectedVolume);
+        const selectedOptionID = product?.options.find((item) => item.nico === selectedNico && item.volume === selectedVolume);
         return selectedOptionID?.id || null;
     };
 
@@ -437,7 +464,7 @@ const ProductPage = () => {
     console.log(id);
 
     const findByID = (id: number) => {
-        const selectedIndex = selectedProduct?.options.findIndex((item) => item.id === id);
+        const selectedIndex = product?.options.findIndex((item) => item.id === id);
         return selectedIndex !== -1 ? selectedIndex : null;
     };
 
@@ -445,10 +472,10 @@ const ProductPage = () => {
     console.log(index);
 
     const handleAddToCart = (quantity: number) => {
-        if (selectedProduct) {
-            const selectedOptions: ProductOption = selectedProduct.options[index];
+        if (product) {
+            const selectedOptions: ProductOption = product?.options[index];
             const selectedProductToAdd: AddToCartProduct = {
-                ...selectedProduct,
+                ...product,
                 totalQuantity: quantity,
                 options: selectedOptions,
             };
@@ -487,36 +514,36 @@ const ProductPage = () => {
                 </Link>
                 <Link href={'/'}>
                     <Active>
-                        {selectedProduct?.title}
+                        {product?.title}
                     </Active>
                 </Link>
             </LinkPath>
             <GeneralInfo>
                 <ImageBlock>
                     <ProductImage>
-                        <Img src={selectedProduct?.image ? `${selectedProduct.image}` : '/img/Card/rb.jpg'} width={512} height={512} alt="" />
+                        <Img src={product?.image ? `${product.image}` : '/img/Card/rb.jpg'} width={512} height={512} alt="" />
                     </ProductImage>
                 </ImageBlock>
                 <ProductInfo>
                     <ProductName>
-                        {selectedProduct?.title}
+                        {product?.title}
                     </ProductName>
                     <ProductId>
-                        Код товару: <SpanId>{selectedProduct?.code}</SpanId>
+                        Код товару: <SpanId>{product?.code}</SpanId>
                     </ProductId>
                     <DescBlock>
-                        {selectedProduct?.desc}
+                        {product?.short_desc}
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                        {((selectedProduct?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
+                        {((product?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
                         </StartingPrice>
                         <SalePrice>
-                            {((selectedProduct?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
+                            {((product?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
                         </SalePrice>
-                        {selectedProduct?.options[index].discount !== 0 && (
+                        {product?.options[index].discount !== 0 && (
                             <Discount>
-                                {selectedProduct?.options[index].discount}%
+                                {product?.options[index].discount}%
                             </Discount>
                         )}
                     </ProductPrice>
@@ -524,7 +551,7 @@ const ProductPage = () => {
                         Міцність:
                     </CategoryText>
                     <Specs>
-                        {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : selectedProduct?.options.map((item) => item.nico))).map((uniqueNico, index) => (
+                        {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : product?.options.map((item) => item.nico))).map((uniqueNico, index) => (
                             <BlockProps
                                 key={index}
                                 isSelected={selectedNico === uniqueNico}
@@ -541,7 +568,7 @@ const ProductPage = () => {
                         Об’єм
                     </CategoryText>
                     <Specs>
-                        {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : selectedProduct?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
+                        {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : product?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
                             <BlockProps
                                 key={index}
                                 isSelected={selectedVolume === uniqueVolume}
@@ -567,7 +594,7 @@ const ProductPage = () => {
                     Опис товару:
                 </DescHeader>
                 <FullBlock className={roboto.className}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt vero neque sunt eos iusto nulla repudiandae voluptas sit autem suscipit et assumenda, vel beatae? Voluptatem ullam pariatur quidem vitae ipsam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus dolor magnam id recusandae atque, vitae repellat. Laudantium et natus deleniti odio, non in excepturi, praesentium nemo aperiam porro quam. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum corporis fuga alias consequuntur quas iure pariatur impedit repudiandae nulla cumque ducimus perferendis est assumenda maiores dolore dolor, atque ratione nesciunt!
+                        {product?.desc}
                 </FullBlock>
             </DescWhole>
             <ImageWhole>

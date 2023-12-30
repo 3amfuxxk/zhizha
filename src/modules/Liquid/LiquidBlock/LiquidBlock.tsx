@@ -150,7 +150,7 @@ const LiquidBlock = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<Product[]>('http://18.132.12.234/api/v1/products/');
+                const response = await axios.get<Product[]>('http://35.180.189.210/api/v1/products/');
                 const modifiedData = response.data.map(item => ({
                     ...item,
                     options: item.options.map(option => ({
@@ -204,7 +204,7 @@ const LiquidBlock = () => {
                 </LinkPath>
                 <CardContainer maxHeight={maxHeight}>
                     {data && data.length > 0 && data.map((product, index) => (
-                        <Link key={index} href={{ pathname: '/product', }} onClick={() => handleSelectProduct(product)}>
+                        <Link key={index} href={{ pathname: '/product', query: { id: product.id} }} onClick={() => handleSelectProduct(product)}>
                             <Card
                                 code={product.code}
                                 desc={product.desc}

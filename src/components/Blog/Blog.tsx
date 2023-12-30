@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import Link from "next/link";
 import Image from "next/image";
 import CardBlog from "../../modules/Blog/Card/Card";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 
 const BlogContainer = styled.div`
     display: flex;
@@ -65,15 +68,45 @@ const CardContainer = styled.div`
         gap: 11px;
     }
 `
+interface Blog {
+    id: string;
+    title: string;
+    category: string;
+    date_posted: string;
+    to_read: number;
+    paragraph1: string;
+    paragraph2: string;
+    image: string;
+}
 
 const Blog = () => {
+
+    const [blog, setBlog] = useState<Blog[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/news`);
+                const blogData = response.data as Blog[];
+                setBlog(blogData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setBlog(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    console.log(blog);
+
     return (
         <BlogContainer>
             <Header>
                 <Text>
                     Останні новини:
                 </Text>
-                <Link href={'/'}>
+                <Link href={'/blog'}>
                     <BlogLink>
                         <Text fontSize="16px" fontWeight={500}>
                             Наш блог
@@ -83,9 +116,18 @@ const Blog = () => {
                 </Link>
             </Header>
             <CardContainer>
-                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
-                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
-                <CardBlog imgLink="1.jpg" title="Вейпшоп" time={10} link="/" date="9 квітня, 2023" topicName="Ми запускаємо роботу нашого особистого вебсайту" topicText="Раді презентувати вам наш новий онлайн магазин, і тепер точно можна сказати що ми виходмо на новий рівень" />
+                {blog && Array.isArray(blog) && blog.slice(0, 3).map((item, index) => (
+                    <CardBlog
+                        key={index}
+                        id={item.id}
+                        imgLink={item.image}
+                        title={item.category}
+                        time={item.to_read}
+                        date={item.date_posted}
+                        topicName={item.title}
+                        topicText={item.paragraph1}
+                        link={'/singleblog'} />
+                ))}
             </CardContainer>
         </BlogContainer>
     )

@@ -14,7 +14,8 @@ const Block = styled.div`
     align-items: center;
     cursor: pointer;
     @media (max-width: 430px) {
-        width: 130px;
+        width: 31.5%;
+        max-width: 130px;
         height: 130px;   
     }
 `

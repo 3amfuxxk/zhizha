@@ -128,7 +128,8 @@ const SocialContainer = styled.div`
     grid-area: div5;
     @media (max-width: 430px) {
         width: 100%;
-        gap: 10px;
+        justify-content: space-between;
+        gap: unset;
     }
 `
 const CreditsBlock = styled.div`
