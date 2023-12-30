@@ -98,8 +98,6 @@ const Blog = () => {
         fetchProduct();
     }, []);
 
-    console.log(blog);
-
     return (
         <BlogContainer>
             <Header>

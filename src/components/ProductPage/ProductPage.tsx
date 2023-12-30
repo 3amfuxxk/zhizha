@@ -404,7 +404,7 @@ interface GetId {
     idp: string;
 }
 
-const ProductPage = ({idp}: GetId) => {
+const ProductPage = ({ idp }: GetId) => {
     console.log(idp);
 
     const [product, setProduct] = useState<Product | null>(null);
@@ -482,15 +482,15 @@ const ProductPage = ({idp}: GetId) => {
 
             const isProductInCart = cartProducts.some(
                 item =>
-                  item.id === selectedProductToAdd.id &&
-                  item.options.id === selectedProductToAdd.options.id
-              );
-              
-              if (!isProductInCart) {
+                    item.id === selectedProductToAdd.id &&
+                    item.options.id === selectedProductToAdd.options.id
+            );
+
+            if (!isProductInCart) {
                 dispatch(addToCart(selectedProductToAdd));
-              } else {
+            } else {
                 console.log('Этот товар уже есть в корзине');
-              }
+            }
         }
     };
 
@@ -536,7 +536,7 @@ const ProductPage = ({idp}: GetId) => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                        {((product?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
+                            {((product?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
                         </StartingPrice>
                         <SalePrice>
                             {((product?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
@@ -594,7 +594,7 @@ const ProductPage = ({idp}: GetId) => {
                     Опис товару:
                 </DescHeader>
                 <FullBlock className={roboto.className}>
-                        {product?.desc}
+                    {product?.desc}
                 </FullBlock>
             </DescWhole>
             <ImageWhole>

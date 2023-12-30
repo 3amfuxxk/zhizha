@@ -1,9 +1,11 @@
 import React from "react";
 import styled from 'styled-components';
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
 import Button from "../../../components/Button/Button";
+import SliderAddToCart from "../../../components/SliderAddToCart/SliderAddToCart";
+import axios from "axios";
 
 const roboto = Roboto({
     weight: ["100", "300", "400"],
@@ -144,10 +146,10 @@ const NicoOptions = styled.div`
     max-height: 68px;
     width: 100%;
 `
-// interface BlockProps {
-//     isSelected: boolean;
-// }
-const BlockProps = styled.div`
+interface BlockProps {
+    isSelected: boolean;
+}
+const BlockProps = styled.div<BlockProps>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,13 +158,13 @@ const BlockProps = styled.div`
     padding: 0px 13px;
     flex-shrink: 0;
     border-radius: 8px;
-    border: 1px solid #292929;
-    background-color: #141414;
+    border: 1px solid ${(props) => (props.isSelected ? 'rgba(255, 255, 255, 0.70)' : '#292929')};
+    background-color: ${(props) => (props.isSelected ? '#272727' : '#141414')};
     cursor: pointer;
     transition: all 0.3s ease;
     @media (max-width: 430px) {
-        height: 40px;
         padding: 0px 16px;
+        height: 40px;
     }
 `
 const Text = styled.p`
@@ -273,8 +275,88 @@ const Imgs = styled(Image)`
         height: 18px;
     }
 `
+interface Product {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    ice: boolean;
+    image: string;
+    categories: string[];
+    options: ProductOption[];
+}
+interface ProductOption {
+    id: number;
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    nico: number;
+    volume: number;
+}
 
 const Slider = () => {
+
+    const [products, setProducts] = useState<Product[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/products/slider/`);
+                const productsData = response.data as Product[];
+                setProducts(productsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setProducts(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    console.log(products);
+
+    const [selectedNico, setSelectedNico] = useState<number>(-1);
+
+    const [uniqueNico, setUniqueNico] = useState<number[]>([]);
+    useEffect(() => {
+        if (products) {
+            const allNico = products.reduce((acc, product) => {
+                if (product.options) {
+                    product.options.forEach(option => {
+                        if (option.nico !==undefined && !acc.includes(option.nico)) {
+                            acc.push(option.nico);
+                        }
+                    });
+                }
+                return acc;
+            }, [] as number[]);
+    
+            const uniqueNicoSet = new Set(allNico);
+            const uniqueNicoArray = Array.from(uniqueNicoSet);
+    
+            setUniqueNico(uniqueNicoArray);
+        }
+    }, [products]);
+    console.log(uniqueNico);
+
+    const [showProduct, setShowProduct] = useState<any>(null);
+    const handleToAddToCart = (item: Product) => {
+        setShowProduct(item);
+        console.log(showProduct);
+    };
+    const handleOpen = () => {
+        const addContainer = document.getElementById('add-container-slider');
+        if (addContainer) {
+            addContainer.style.display = 'flex';
+        }
+        console.log('a');
+    };
+    const handleAll = () => {
+        handleOpen();
+        console.log(showProduct);
+    }
+
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [isSlideMoving, setSlideMoving] = useState(false);
     if (typeof document !== 'undefined') {
@@ -341,18 +423,20 @@ const Slider = () => {
             <HeaderText>
                 Топ продажів цього тижня:
             </HeaderText>
+            <SliderAddToCart product={showProduct} />
             <SliderBlock id="slider">
-                <Card>
+                {products?.map((item, index) => (
+                    <Card key={index}>
                     <ImageBlock>
-                        <Img src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
+                        <Img src={item.image} width={324} height={324} alt="" />
                     </ImageBlock>
                     <ProductInfo>
                         <ProductName>
-                            The Product Name Should Be Here With Some Kind Of Specs
+                            {item.title}
                         </ProductName>
                         <ShortDesc>
                             <DescText className={roboto.className}>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde sapiente, cum labore maxime dolor et, velit itaque totam veritatis perspiciatis eos quos optio repellat voluptates cumque pariatur ad maiores!
+                                {item.desc}
                             </DescText>
                         </ShortDesc>
                         <NicoBlock>
@@ -360,22 +444,29 @@ const Slider = () => {
                                 Міцність:
                             </NicoName>
                             <NicoOptions>
-                                <BlockProps>
-                                    <Text>0%(0мг)</Text>
-                                </BlockProps>
+                                {uniqueNico.map((nico, index) => (
+                                    <BlockProps 
+                                    key={index}
+                                    isSelected={selectedNico === nico}
+                                    onClick={() => setSelectedNico(nico)}>
+                                        <Text>
+                                        <Text>{nico / 10}%({nico}мг)</Text>
+                                        </Text>
+                                    </BlockProps>
+                                ))}
                             </NicoOptions>
                         </NicoBlock>
                         <FunctionBlock>
                             <PriceBlock>
                                 <StartingPrice>
-                                    350₴
+                                    {item.options[0].starting_price}
                                 </StartingPrice>
                                 <SalePrice>
-                                    300₴
+                                    {item.options[0].sale_price}
                                 </SalePrice>
                             </PriceBlock>
                             <FuncionBlock>
-                                <Button text='В кошик' width={135} height={38}>
+                                <Button text='В кошик' width={135} height={38} onClick={() => {handleToAddToCart(item); handleOpen()}}>
                                     <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
                                 </Button>
                                 <FavBlock>
@@ -385,92 +476,7 @@ const Slider = () => {
                         </FunctionBlock>
                     </ProductInfo>
                 </Card>
-                <Card>
-                    <ImageBlock>
-                        <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
-                    </ImageBlock>
-                    <ProductInfo>
-                        <ProductName>
-                            The Product Name Should Be Here With Some Kind Of Specs
-                        </ProductName>
-                        <ShortDesc>
-                            <DescText className={roboto.className}>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde sapiente, cum labore maxime dolor et, velit itaque totam veritatis perspiciatis eos quos optio repellat voluptates cumque pariatur ad maiores!
-                            </DescText>
-                        </ShortDesc>
-                        <NicoBlock>
-                            <NicoName>
-                                Міцність:
-                            </NicoName>
-                            <NicoOptions>
-                                <BlockProps>
-                                    <Text>0%(0мг)</Text>
-                                </BlockProps>
-                            </NicoOptions>
-                        </NicoBlock>
-                        <FunctionBlock>
-                            <PriceBlock>
-                                <StartingPrice>
-                                    350₴
-                                </StartingPrice>
-                                <SalePrice>
-                                    300₴
-                                </SalePrice>
-                            </PriceBlock>
-                            <FuncionBlock>
-                                <Button text='В кошик' width={135} height={38}>
-                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
-                                </Button>
-                                <FavBlock>
-                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
-                                </FavBlock>
-                            </FuncionBlock>
-                        </FunctionBlock>
-                    </ProductInfo>
-                </Card>
-                <Card>
-                    <ImageBlock>
-                        <Image src={'/img/Card/rb.jpg'} width={324} height={324} alt="" />
-                    </ImageBlock>
-                    <ProductInfo>
-                        <ProductName>
-                            The Product Name Should Be Here With Some Kind Of Specs
-                        </ProductName>
-                        <ShortDesc>
-                            <DescText className={roboto.className}>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde sapiente, cum labore maxime dolor et, velit itaque totam veritatis perspiciatis eos quos optio repellat voluptates cumque pariatur ad maiores!
-                            </DescText>
-                        </ShortDesc>
-                        <NicoBlock>
-                            <NicoName>
-                                Міцність:
-                            </NicoName>
-                            <NicoOptions>
-                                <BlockProps>
-                                    <Text>0%(0мг)</Text>
-                                </BlockProps>
-                            </NicoOptions>
-                        </NicoBlock>
-                        <FunctionBlock>
-                            <PriceBlock>
-                                <StartingPrice>
-                                    350₴
-                                </StartingPrice>
-                                <SalePrice>
-                                    300₴
-                                </SalePrice>
-                            </PriceBlock>
-                            <FuncionBlock>
-                                <Button text='В кошик' width={135} height={38}>
-                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
-                                </Button>
-                                <FavBlock>
-                                    <Image src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
-                                </FavBlock>
-                            </FuncionBlock>
-                        </FunctionBlock>
-                    </ProductInfo>
-                </Card>
+                ))}
             </SliderBlock>
             <NavSlider>
                 <NavArrow onClick={slideLeft}>

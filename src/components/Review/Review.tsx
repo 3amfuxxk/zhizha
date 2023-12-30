@@ -73,8 +73,6 @@ const Review = () => {
 
         fetchProduct();
     }, []);
-
-    console.log(reviews);
     return (
         <ReviewContainer>
             <Header>

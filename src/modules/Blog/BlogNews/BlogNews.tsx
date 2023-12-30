@@ -108,8 +108,6 @@ const BlogNews = () => {
         fetchProduct();
     }, []);
 
-    console.log(blog);
-
     let defaultHeight = 1754;
     let increaseHeight = 1764;
     if (typeof document !== 'undefined' && typeof window !== 'undefined') {
