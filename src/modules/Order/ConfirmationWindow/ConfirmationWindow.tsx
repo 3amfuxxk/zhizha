@@ -21,8 +21,8 @@ const ConfirmationContainer = styled.div<Confirm>`
     align-items: center;
     @media (max-width:430px) {
         width: 100%;
-        height: 620px;
-        padding: 25px;
+        height: 650px;
+        padding: 15px;
     }
 `
 const TickBlock = styled.div`
@@ -60,6 +60,7 @@ const SmallText = styled.p`
     width: 401px;
     @media (max-width:430px) {
         font-size: 14px;   
+        width: 98%;
     }
 `
 const OpsText = styled.p`

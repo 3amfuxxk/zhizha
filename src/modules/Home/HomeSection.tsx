@@ -244,7 +244,7 @@ const HomeSection = () => {
             <BlurBack id="blur-back">
                 <Contact />
             </BlurBack>
-            <MenuMobile id="menu-mobile">
+            {/* <MenuMobile id="menu-mobile">
                 <NavCont>
                     <LikeNav>
                         <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
@@ -278,7 +278,7 @@ const HomeSection = () => {
                         </Text>
                     </NavPart>
                 </NavCont>
-            </MenuMobile>
+            </MenuMobile> */}
             <RbBlock />
             <RevoBlock />
             <StalkerBlock />
