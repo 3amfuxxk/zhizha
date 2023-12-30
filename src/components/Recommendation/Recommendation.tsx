@@ -164,7 +164,7 @@ const Recommendation = () => {
                 }));
                 setData(modifiedData);
             } catch (error) {
-                console.error('Ошибка запроса:', error);
+                
             }
         };
 

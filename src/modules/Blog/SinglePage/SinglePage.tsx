@@ -103,7 +103,6 @@ interface BlogId {
 }
 
 const SinglePage = ({idb}: BlogId) => {
-    console.log(idb);
     const [blog, setProduct] = useState<Blog | null>(null);
 
     useEffect(() => {
@@ -113,15 +112,12 @@ const SinglePage = ({idb}: BlogId) => {
                 const blogData = response.data as Blog;
                 setProduct(blogData);
             } catch (error) {
-                console.error('Ошибка при запросе продукта:', error);
                 setProduct(null);
             }
         };
 
         fetchProduct();
     }, [idb]);
-
-    console.log(blog);
     return (
         <PageBlock>
             <WideImage>

@@ -39,7 +39,9 @@ const Button = ({text, children, onClick, width, height}: Props) => {
         <ButtonContainer onClick={onClick} width={width} height={height} text={text}>
             <ButtonBlock>
                 {children}
-                {text ? <Text>{text}</Text> : null}
+                <Text>
+                    {text}
+                </Text>
             </ButtonBlock>
         </ButtonContainer>
     )

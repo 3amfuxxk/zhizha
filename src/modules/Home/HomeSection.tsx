@@ -108,19 +108,16 @@ const SmallText = styled.p`
     }
 `
 const MenuMobile = styled.div`
-    display: none;
-    @media (max-width: 430px) {
         display: none;
         position: fixed;
-        width: 100%;
-        height: 100%;
-        z-index: 3;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
         top: 0;
         left: 0;
         background: rgba(0, 0, 0, 0.90);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
-    }
 `
 const RoundBlock = styled.div`
     display: flex;
@@ -177,6 +174,7 @@ const Text = styled.p`
     margin: 0px 27px 0px 60px;
 `
 const NavCont = styled.div`
+    margin-top: 200px;
     display: flex;
     flex-direction: column;
     gap: 24px;

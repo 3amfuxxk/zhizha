@@ -415,6 +415,14 @@ const Burger = styled(Image)`
         display: flex;   
     }
 `
+const Cross = styled(Image)`
+    display: none;
+    @media (max-width: 430px) {
+        position: absolute;
+        right: 0;
+        display: none;   
+    }
+`
 
 interface AddToCartProduct {
     id: string;
@@ -457,11 +465,25 @@ const Header = () => {
     };
 
     const showMenu = () => {
-        const addContainer = document.getElementById('add-container-slider');
-        if (addContainer) {
-            addContainer.style.display = 'flex';
+        const showMenuCont = document.getElementById('menu-mobile');
+        const burger = document.getElementById('burger-menu');
+        const cross = document.getElementById('cross-menu');
+        if (showMenuCont && burger && cross) {
+            showMenuCont.style.display = 'flex';
+            burger.style.display = 'none';
+            cross.style.display = 'flex';
         }
     };
+    const hideMenu = () => {
+        const hideMenuCont = document.getElementById('menu-mobile');
+        const burger = document.getElementById('burger-menu');
+        const cross = document.getElementById('cross-menu');
+        if (hideMenuCont && burger && cross) {
+            hideMenuCont.style.display = 'none';
+            burger.style.display = 'flex';
+            cross.style.display = 'none';
+        }
+    }
 
     const dispatch = useDispatch();
 
@@ -497,7 +519,8 @@ const Header = () => {
                 <NavButton text={'Контакти'} svgLink={'order.svg'} />
             </NavBlock>
             <Bar>
-                <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} />
+                <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} id="burger-menu" />
+                <Cross src={'/img/Header/cross.svg'} width={40} height={40} alt="" onClick={hideMenu} id="cross-menu" />
                 <Search>
                     <Image src={'/img/Header/search.svg'} width={16} height={16} alt="" />
                 </Search>

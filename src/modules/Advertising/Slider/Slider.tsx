@@ -329,7 +329,6 @@ const Slider = () => {
                 const productsData = response.data as Product[];
                 setProducts(productsData);
             } catch (error) {
-                console.error('Ошибка при запросе продукта:', error);
                 setProducts(null);
             }
         };
@@ -410,7 +409,6 @@ const Slider = () => {
                 const slide = document.querySelector('.slide-slide');
                 if (slide) {
                     const slideWidth = slide.getBoundingClientRect().width;
-                    console.log(slideWidth);
                     const slider = document.getElementById('slider');
 
                     const newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
@@ -477,7 +475,7 @@ const Slider = () => {
                                             isSelected={selectedNico === nico}
                                             onClick={() => setSelectedNico(nico)}>
                                             <Text>
-                                                <Text>{nico / 10}%({nico}мг)</Text>
+                                                {nico / 10}%({nico}мг)
                                             </Text>
                                         </BlockProps>
                                     ))}
