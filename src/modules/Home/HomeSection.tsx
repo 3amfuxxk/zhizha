@@ -227,6 +227,18 @@ const BlurBack = styled.div`
 
 
 const HomeSection = () => {
+    const showContact = () => {
+        const menu = document.getElementById('menu-mobile');
+        const contact = document.getElementById('blur-back');
+        const burger = document.getElementById('burger-menu');
+        const cross = document.getElementById('cross-menu');
+        if (menu && contact && burger && cross) {
+            menu.style.display = 'none';
+            contact.style.display = 'flex';
+            cross.style.display = 'none';
+            burger.style.display = 'flex';
+        }
+    }
     return (
         <HomeBlock>
             <BlurBack id="blur-back">
@@ -247,15 +259,17 @@ const HomeSection = () => {
                             </Text>
                         </NavPart>
                     </Link>
-                    <NavPart>
-                        <RoundBlock>
-                            <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
-                        </RoundBlock>
-                        <Text>
-                            Доставка
-                        </Text>
-                    </NavPart>
-                    <NavPart>
+                    <Link href={'/shipping'}>
+                        <NavPart>
+                            <RoundBlock>
+                                <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
+                            </RoundBlock>
+                            <Text>
+                                Доставка
+                            </Text>
+                        </NavPart>
+                    </Link>
+                    <NavPart onClick={showContact}>
                         <RoundBlock>
                             <Image src={`/img/Header/order.svg`} width={20} height={20} alt='Catalog' />
                         </RoundBlock>

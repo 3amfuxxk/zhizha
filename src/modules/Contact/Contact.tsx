@@ -129,13 +129,19 @@ const TgText = styled.p`
 `
 
 const Contact = () => {
+    const showContact = () => {
+        const contacts = document.getElementById('blur-back');
+        if (contacts) {
+            contacts.style.display = 'none';
+        }
+    }
     return (
         <ContactBlock>
             <HeaderBlock>
                 <HeaderContact>
                     Зв’язок з нами:
                 </HeaderContact>
-                <Imgs src={'/img/Header/close.svg'} width={14} height={14} alt="" />
+                <Imgs src={'/img/Header/close.svg'} width={14} height={14} alt="" onClick={showContact} />
             </HeaderBlock>
             <ContactBlockMain>
                 <ContactSection>

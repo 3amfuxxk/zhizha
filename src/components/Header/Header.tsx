@@ -114,6 +114,7 @@ const Cart = styled.div`
     user-select: none;
 `
 const CartBlock = styled.div<{ cartOpen: boolean }>`
+    position: absolute;
     width: 459px;
     height: 648px;
     flex-shrink: 0;
@@ -123,6 +124,8 @@ const CartBlock = styled.div<{ cartOpen: boolean }>`
     flex-direction: column;
     padding: 29px;
     gap: 16px;
+    right: 0;
+    top: 80px;
     @media (max-width: 430px) {
         width: 410px;
         flex-shrink: 1;
@@ -486,9 +489,9 @@ const Header = () => {
     }
 
     const showContact = () => {
-        const contact = document.getElementById('blur-back');
-        if (contact) {
-            contact.style.display = 'flex';
+        const contacts = document.getElementById('blur-back');
+        if (contacts) {
+            contacts.style.display = 'flex';
         }
     }
 
@@ -525,7 +528,9 @@ const Header = () => {
                 <Link href={'/shipping'}>
                     <NavButton text={'Доставка'} svgLink={'contact.svg'} />
                 </Link>
-                <NavButton text={'Контакти'} svgLink={'order.svg'} onClick={() => showContact()} />
+                <span onClick={showContact}>
+                    <NavButton text={'Контакти'} svgLink={'order.svg'} />
+                </span>
             </NavBlock>
             <Bar>
                 <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} id="burger-menu" />
