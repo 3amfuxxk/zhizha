@@ -77,6 +77,9 @@ const Like = styled.div`
     display: flex;
     cursor: pointer;
     margin-left: 95px;
+    @media (max-width: 430px) {
+        display: none;
+    }
 `
 const Search = styled.div`
     width: 50px;

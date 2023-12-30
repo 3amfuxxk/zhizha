@@ -74,9 +74,13 @@ const CardContainer = styled.div<{ maxHeight: number }>`
         ". . . ."
         ". . . .";
     @media (max-width:430px) {
-       display: flex;
-       width: 100%;
-       flex-wrap: wrap;
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        grid-template-areas: 
+        ". ."
+        ". ."
+        ". ."
+        ". .";
        gap: 10px;
     }
 `

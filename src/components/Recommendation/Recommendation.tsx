@@ -45,7 +45,7 @@ const HeadText = styled.p`
     font-weight: 800;
     line-height: 130%;
     @media (max-width: 430px) {
-        font-size: 24px;
+        font-size: 20px;
     }
 `
 const HeaderRight = styled.div`
@@ -78,14 +78,16 @@ const CardContainer = styled.div<{ expanded: boolean }>`
         ". . . .";
     @media (max-width: 430px) {
         grid-template-columns: 1fr 1fr; 
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        gap: 10px 10px; 
         grid-template-areas: 
+        ". ."
+        ". ."
         ". ."
         ". .";
         max-height: ${(props) => (props.expanded ? '1332px' : '666px')};
     }
 `
-// max-height: ${({ expanded }) => (expanded ? '1754px' : '872px')};
 const ButtonRow = styled.div`
     display: flex;
     width: 100%;

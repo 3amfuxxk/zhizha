@@ -86,7 +86,7 @@ const WelcomeText = styled.p`
     line-height: 110%;
     width: 685px;
     @media (max-width: 430px) {
-        width: 390px;
+        width: 98%;
         font-size: 32px;
     }
 `
@@ -101,7 +101,7 @@ const SmallText = styled.p`
     width: 494px;
     margin-top: 22px;
     @media (max-width: 430px) {
-        width: 354px;
+        width: 90%;
         margin-top: 24px;   
     }
 `

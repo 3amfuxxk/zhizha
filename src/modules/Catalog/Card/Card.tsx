@@ -12,15 +12,17 @@ const CardBlock = styled.div`
     border: 1px solid #282828;
     background: #141414;
     @media (max-width:430px) {
-        width: 200px;
+        width: 100%;
         height: 238px;
         padding: 9px;
         gap: 12px;
+        justify-content: unset;
     }
 `
 const Img = styled(Image)`
     @media (max-width:430px) {
-        width: 182px;
+        width: 300px;
+        max-width: 100%;
         height: 182px;
     }
 `
@@ -33,7 +35,7 @@ const ImgBlock = styled.div`
     border-radius: 6px;
     background: #181818;
     @media (max-width:430px) {
-        width: 182px;
+        width: 100%;
         height: 182px;
     }
 `

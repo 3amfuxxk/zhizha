@@ -69,8 +69,9 @@ const ImageBlock = styled.div`
 `
 const Img = styled(Image)`
     @media (max-width: 430px) {
+        max-width: 100%;
         width: 388px;
-    height: 388px;
+        height: 388px;
     }
 `
 const ProductImage = styled.div`
@@ -364,7 +365,30 @@ const ValueRow = styled.div`
     align-items: center;
     gap: 18px;
 `
-// DataName = Active
+const ButtonContainer = styled.div`
+        display: flex;
+        flex-shrink: 0;
+        border-radius: 8px;
+        background: #B6020D;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 46px;
+    }
+`
+const TextButton = styled.p`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+`
+const ButtonBlock = styled.div`
+    display: flex;
+    gap: 7px;
+`
 
 interface AddToCartProduct {
     id: string;

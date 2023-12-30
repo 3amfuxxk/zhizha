@@ -15,7 +15,7 @@ const CardContainer = styled.div`
     padding: 15px 14px;
     flex-direction: column;
     @media (max-width: 430px) {
-        width: 200px;
+        width: 100%;
         height: 328px;
         padding: 9px;
     }
@@ -28,13 +28,14 @@ const ImgBlock = styled.div`
     border-radius: 6px;
     overflow: hidden;
     @media (max-width: 430px) {
-        width: 182px;
+        width: 100%;
         height: 182px;
     }
 `
 const Img = styled(Image)`
     @media (max-width: 430px) {
-        width: 182px;
+        width: 300px;
+        max-width: 100%;
         height: 182px;
     }
 `
@@ -75,6 +76,9 @@ const PriceText = styled.p`
     font-weight: 800;
     line-height: 130%;
     letter-spacing: 1px;
+    @media (max-width: 430px) {
+        font-size: 17px;
+    }
 `
 const SaleText = styled.p`
     color: #8F8E8F;
@@ -84,12 +88,21 @@ const SaleText = styled.p`
     line-height: 130%;
     letter-spacing: 1px;
     text-decoration: line-through;
+    @media (max-width: 430px) {
+        font-size: 17px;   
+    }
 `
 const AddBlock = styled.div`
     display: flex;
     gap: 8px;
     width: auto;
     align-items: center;
+    @media (max-width: 400px) {
+        gap: 1px !important;
+    }
+    @media (max-width: 430px) {
+        gap: 3px;
+    }
 `
 const LikeBlock = styled.div`
     display: flex;
@@ -157,7 +170,7 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
     const isMobile = window.innerWidth <= 430;
 
     const buttonProps = isMobile
-        ? { text: '', width: 38, height: 38 }
+        ? { width: 38, height: 38 }
         : { text: 'В кошик', width: 135, height: 38 };
 
     return (

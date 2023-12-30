@@ -67,6 +67,9 @@ const ImageBlock = styled.div`
     border: 1px solid #B6020D;
     overflow: hidden;
     position: relative;
+    @media (max-width: 430px) {
+        width: 90%;
+    }
 `
 const ImageTime = styled.div`
     display: flex;
@@ -80,6 +83,11 @@ const ImageTime = styled.div`
     flex-shrink: 0;
     border-radius: 9.5px;
     background: #B6020D;
+`
+const Img = styled(Image)`
+    @media (max-width: 430px) {
+        max-width: 100%;
+    }
 `
 const ImageText = styled.p`
     color: rgba(255, 255, 255, 0.70);
@@ -114,7 +122,7 @@ const Chat = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://18.132.12.234/api/v1/controller/');
+                const response = await axios.get('http://35.180.189.210/api/v1/controller/');
                 const data: Chat = response.data;
                 setChatData(data);
             } catch (error) {
@@ -140,7 +148,7 @@ const Chat = () => {
                 </MessageInfo>
             </MessageOne>
             <ImageBlock>
-                <Image src={"/img/Advertising/Chat/stalker.jpg"} width={315} height={315} alt="" />
+                <Img src={chatData?.chat_photo ? chatData.chat_photo : '/img/Advertising/Chat/stalker.jpg'} width={315} height={315} alt="" />
                 <ImageTime>
                     <ImageText>
                         19:03

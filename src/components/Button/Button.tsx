@@ -32,9 +32,6 @@ const Text = styled.p`
 const ButtonBlock = styled.div`
     display: flex;
     gap: 7px;
-    @media (max-width: 430px) {
-        gap: 0px;
-    }
 `
 
 const Button = ({text, children, onClick, width, height}: Props) => {
@@ -42,9 +39,7 @@ const Button = ({text, children, onClick, width, height}: Props) => {
         <ButtonContainer onClick={onClick} width={width} height={height} text={text}>
             <ButtonBlock>
                 {children}
-                <Text>
-                    {text}
-                </Text>
+                {text ? <Text>{text}</Text> : null}
             </ButtonBlock>
         </ButtonContainer>
     )

@@ -44,6 +44,26 @@ const Text = styled.p<TextSize>`
     font-weight: ${(props) => (props.fontWeight ? props.fontWeight : '800')};
     line-height: 130%;
 `
+const HeaderText = styled.p`
+    color: #FFF;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 22px;
+    }
+`
+const SmallText = styled.p`
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 16px;
+    }
+`
 const BlogLink = styled.div`
     display: flex;
     gap: 8px;
@@ -101,14 +121,14 @@ const Blog = () => {
     return (
         <BlogContainer>
             <Header>
-                <Text>
+                <HeaderText>
                     Останні новини:
-                </Text>
+                </HeaderText>
                 <Link href={'/blog'}>
                     <BlogLink>
-                        <Text fontSize="16px" fontWeight={500}>
+                        <SmallText>
                             Наш блог
-                        </Text>
+                        </SmallText>
                         <Img src={'/img/Blog/svg/arrow-right.svg'} width={14} height={10} alt="" />
                     </BlogLink>
                 </Link>

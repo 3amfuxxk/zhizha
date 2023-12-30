@@ -14,6 +14,7 @@ const CatalogContainer = styled.div`
     gap: 13px;
     @media (max-width:430px) {
         justify-content: unset;
+
     }
 `
 const HeaderBlock = styled.div`
@@ -61,12 +62,17 @@ const CardBlock = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
-    @media (max-width:430px) {
+    @media (max-width: 430px) {
         flex-wrap: wrap;
-        gap: 10px;
+        justify-content: unset;
+        gap: 6px;
     }
 `
-
+const Linked = styled(Link)`
+    @media (max-width: 430px) {
+        width: 49%;
+    }
+`
 const CatalogBlock = () => {
     return (
         <CatalogContainer>
@@ -89,15 +95,15 @@ const CatalogBlock = () => {
                     </Link>
                 </LinkPath>
                 <CardBlock>
-                    <Link href={{pathname:"/liquid" }}>
+                    <Linked href="/liquid">
                         <Card text={"Набори"} imgLink={'liquid.png'} />
-                    </Link>
-                    <Link href={{pathname: "/accessories"} }>
+                    </Linked>
+                    <Linked href={{pathname: "/accessories"} }>
                         <Card text={"Комплектуючі"} imgLink={'component.png'} />
-                    </Link>
-                    <Link href={{pathname: "/pods"}}>
+                    </Linked>
+                    <Linked href={{pathname: "/pods"}}>
                         <Card text={"Под системи"} imgLink={'pod.png'} />
-                    </Link>
+                    </Linked>
                 </CardBlock>
             </PageChoice>
         </CatalogContainer>

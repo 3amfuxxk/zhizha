@@ -24,7 +24,7 @@ const SliderContainer = styled.div`
     flex-direction: column;
     @media (max-width: 430px) {
         width: 100%;
-        height: 845px;
+        height: auto;
         flex-direction: column;
         padding: 22px 17px 17px 17px;
     }
@@ -46,7 +46,7 @@ const SliderBlock = styled.div`
     flex-shrink: 0;
     margin-top: 17px;
     overflow: hidden;
-    gap: 25px;
+    gap: 0px;
     scroll-behavior: smooth;
     @media (max-width: 430px) {
         height: 707px;
@@ -79,12 +79,13 @@ const ImageBlock = styled.div`
     background: #181818;
     overflow: hidden;
     @media (max-width: 430px) {
-        width: 350px;
+        width: 100%;
         height: 350px;
     }
 `
 const Img = styled(Image)`
     @media (max-width: 430px) {
+        max-width: 100%;
         width: 350px;
         height: 350px;   
     }
@@ -269,6 +270,28 @@ const Bullet = styled.span`
     background: white;
   }
 `
+const ButtonContainer = styled.div`
+    display: flex;
+    width: 142px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #B6020D;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+`
+const TextButton = styled.p`
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+`
+const ButtonBlock = styled.div`
+    display: flex;
+    gap: 7px;
+`
 const Imgs = styled(Image)`
     @media (max-width: 430px) {
         width: 16px;
@@ -314,8 +337,6 @@ const Slider = () => {
         fetchProduct();
     }, []);
 
-    console.log(products);
-
     const [selectedNico, setSelectedNico] = useState<number>(-1);
 
     const [uniqueNico, setUniqueNico] = useState<number[]>([]);
@@ -324,37 +345,33 @@ const Slider = () => {
             const allNico = products.reduce((acc, product) => {
                 if (product.options) {
                     product.options.forEach(option => {
-                        if (option.nico !==undefined && !acc.includes(option.nico)) {
+                        if (option.nico !== undefined && !acc.includes(option.nico)) {
                             acc.push(option.nico);
                         }
                     });
                 }
                 return acc;
             }, [] as number[]);
-    
+
             const uniqueNicoSet = new Set(allNico);
             const uniqueNicoArray = Array.from(uniqueNicoSet);
-    
+
             setUniqueNico(uniqueNicoArray);
         }
     }, [products]);
-    console.log(uniqueNico);
 
     const [showProduct, setShowProduct] = useState<any>(null);
     const handleToAddToCart = (item: Product) => {
         setShowProduct(item);
-        console.log(showProduct);
     };
     const handleOpen = () => {
         const addContainer = document.getElementById('add-container-slider');
         if (addContainer) {
             addContainer.style.display = 'flex';
         }
-        console.log('a');
     };
     const handleAll = () => {
         handleOpen();
-        console.log(showProduct);
     }
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -390,14 +407,19 @@ const Slider = () => {
     const slideLeft = () => {
         if (typeof document !== 'undefined' && typeof window !== 'undefined') {
             if (!isSlideMoving) {
-                let slider = document.getElementById("slider");
-                let slideWidth = window.innerWidth <= 430 ? 401 : 738;
-                let newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
-    
-                if (slider !== null) {
-                    slider.scrollLeft = slider.scrollLeft - slideWidth;
-                    setCurrentSlideIndex(newIndex);
-                    updateBulletColors();
+                const slide = document.querySelector('.slide-slide');
+                if (slide) {
+                    const slideWidth = slide.getBoundingClientRect().width;
+                    console.log(slideWidth);
+                    const slider = document.getElementById('slider');
+
+                    const newIndex = currentSlideIndex - 1 < 0 ? 0 : currentSlideIndex - 1;
+
+                    if (slider !== null) {
+                        slider.scrollLeft = slider.scrollLeft - slideWidth;
+                        setCurrentSlideIndex(newIndex);
+                        updateBulletColors();
+                    }
                 }
             }
         }
@@ -406,18 +428,23 @@ const Slider = () => {
     const slideRight = () => {
         if (typeof document !== 'undefined' && typeof window !== 'undefined') {
             if (!isSlideMoving) {
-                let slider = document.getElementById("slider");
-                let slideWidth = window.innerWidth <= 430 ? 401 : 738;
-                let newIndex = currentSlideIndex + 1 > 2 ? 2 : currentSlideIndex + 1;
-    
-                if (slider !== null) {
-                    slider.scrollLeft = slider.scrollLeft + slideWidth;
-                    setCurrentSlideIndex(newIndex);
-                    updateBulletColors();
+                const slide = document.querySelector('.slide-slide');
+                if (slide) {
+                    const slideWidth = slide.getBoundingClientRect().width;
+                    const slider = document.getElementById('slider');
+
+                    const newIndex = currentSlideIndex + 1 > 2 ? 2 : currentSlideIndex + 1;
+
+                    if (slider !== null) {
+                        slider.scrollLeft = slider.scrollLeft + slideWidth;
+                        setCurrentSlideIndex(newIndex);
+                        updateBulletColors();
+                    }
                 }
             }
         }
     };
+
     return (
         <SliderContainer>
             <HeaderText>
@@ -426,56 +453,64 @@ const Slider = () => {
             <SliderAddToCart product={showProduct} />
             <SliderBlock id="slider">
                 {products?.map((item, index) => (
-                    <Card key={index}>
-                    <ImageBlock>
-                        <Img src={item.image} width={324} height={324} alt="" />
-                    </ImageBlock>
-                    <ProductInfo>
-                        <ProductName>
-                            {item.title}
-                        </ProductName>
-                        <ShortDesc>
-                            <DescText className={roboto.className}>
-                                {item.desc}
-                            </DescText>
-                        </ShortDesc>
-                        <NicoBlock>
-                            <NicoName>
-                                Міцність:
-                            </NicoName>
-                            <NicoOptions>
-                                {uniqueNico.map((nico, index) => (
-                                    <BlockProps 
-                                    key={index}
-                                    isSelected={selectedNico === nico}
-                                    onClick={() => setSelectedNico(nico)}>
-                                        <Text>
-                                        <Text>{nico / 10}%({nico}мг)</Text>
-                                        </Text>
-                                    </BlockProps>
-                                ))}
-                            </NicoOptions>
-                        </NicoBlock>
-                        <FunctionBlock>
-                            <PriceBlock>
-                                <StartingPrice>
-                                    {item.options[0].starting_price}
-                                </StartingPrice>
-                                <SalePrice>
-                                    {item.options[0].sale_price}
-                                </SalePrice>
-                            </PriceBlock>
-                            <FuncionBlock>
-                                <Button text='В кошик' width={135} height={38} onClick={() => {handleToAddToCart(item); handleOpen()}}>
-                                    <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
-                                </Button>
-                                <FavBlock>
-                                    <Imgs src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
-                                </FavBlock>
-                            </FuncionBlock>
-                        </FunctionBlock>
-                    </ProductInfo>
-                </Card>
+                    <Card key={index} className="slide-slide">
+                        <ImageBlock>
+                            <Img src={item.image} width={324} height={324} alt="" />
+                        </ImageBlock>
+                        <ProductInfo>
+                            <ProductName>
+                                {item.title}
+                            </ProductName>
+                            <ShortDesc>
+                                <DescText className={roboto.className}>
+                                    {item.desc}
+                                </DescText>
+                            </ShortDesc>
+                            <NicoBlock>
+                                <NicoName>
+                                    Міцність:
+                                </NicoName>
+                                <NicoOptions>
+                                    {uniqueNico.map((nico, index) => (
+                                        <BlockProps
+                                            key={index}
+                                            isSelected={selectedNico === nico}
+                                            onClick={() => setSelectedNico(nico)}>
+                                            <Text>
+                                                <Text>{nico / 10}%({nico}мг)</Text>
+                                            </Text>
+                                        </BlockProps>
+                                    ))}
+                                </NicoOptions>
+                            </NicoBlock>
+                            <FunctionBlock>
+                                <PriceBlock>
+                                    <StartingPrice>
+                                        {item.options[0].starting_price}
+                                    </StartingPrice>
+                                    <SalePrice>
+                                        {item.options[0].sale_price}
+                                    </SalePrice>
+                                </PriceBlock>
+                                <FuncionBlock>
+                                    <ButtonContainer onClick={() => { handleToAddToCart(item); handleOpen() }}>
+                                        <ButtonBlock>
+                                            <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
+                                            <TextButton>
+                                                В кошик
+                                            </TextButton>
+                                        </ButtonBlock>
+                                    </ButtonContainer>
+                                    {/* <Button text='В кошик' width={135} height={38} onClick={() => { handleToAddToCart(item); handleOpen() }}>
+                                        <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
+                                    </Button> */}
+                                    <FavBlock>
+                                        <Imgs src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                    </FavBlock>
+                                </FuncionBlock>
+                            </FunctionBlock>
+                        </ProductInfo>
+                    </Card>
                 ))}
             </SliderBlock>
             <NavSlider>
