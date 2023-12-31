@@ -241,44 +241,10 @@ const HomeSection = () => {
     }
     return (
         <HomeBlock>
+            <script src="https://app.embed.im/snow.js" defer></script>
             <BlurBack id="blur-back">
                 <Contact />
             </BlurBack>
-            {/* <MenuMobile id="menu-mobile">
-                <NavCont>
-                    <LikeNav>
-                        <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
-                    </LikeNav>
-                    <Link href={{ pathname: '/catalog' }}>
-                        <NavPart>
-                            <RoundBlock>
-                                <Image src={`/img/Header/catalog.svg`} width={20} height={20} alt='Catalog' />
-                            </RoundBlock>
-                            <Text>
-                                Каталог
-                            </Text>
-                        </NavPart>
-                    </Link>
-                    <Link href={'/shipping'}>
-                        <NavPart>
-                            <RoundBlock>
-                                <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
-                            </RoundBlock>
-                            <Text>
-                                Доставка
-                            </Text>
-                        </NavPart>
-                    </Link>
-                    <NavPart onClick={showContact}>
-                        <RoundBlock>
-                            <Image src={`/img/Header/order.svg`} width={20} height={20} alt='Catalog' />
-                        </RoundBlock>
-                        <Text>
-                            Контакти
-                        </Text>
-                    </NavPart>
-                </NavCont>
-            </MenuMobile> */}
             <RbBlock />
             <RevoBlock />
             <StalkerBlock />
