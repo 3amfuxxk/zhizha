@@ -15,8 +15,10 @@ const LanguageBlock = styled.div`
     transition: height 0.3s ease;
     position: absolute;
     left: 62px;
+    top:0;
     @media (max-width: 430px) {
         left: 22px;
+        top: -24px;
     }
 `
 
