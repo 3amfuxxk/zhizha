@@ -28,6 +28,9 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 110%;
+    @media (max-width:430px) {
+        font-size: 32px;
+    }
 `
 const PodText = styled.p`
     color: rgba(255, 255, 255, 0.80);
@@ -69,6 +72,16 @@ const CardContainer = styled.div<{ maxHeight: number}>`
     grid-template-areas: 
         ". . . ."
         ". . . ."; 
+        @media (max-width:430px) {
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        grid-template-areas: 
+        ". ."
+        ". ."
+        ". ."
+        ". .";
+       gap: 10px;
+        }
 `
 const ButtonRow = styled.div`
     display: flex;

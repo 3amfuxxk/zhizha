@@ -28,6 +28,9 @@ const HeadText = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 110%;
+    @media (max-width:430px) {
+        font-size: 32px;
+    }
 `
 const PodText = styled.p`
     color: rgba(255, 255, 255, 0.80);
@@ -57,7 +60,7 @@ const Active = styled.p`
     font-weight: 600;
     line-height: 130%;
 `
-const CardContainer = styled.div<{ maxHeight: number}>`
+const CardContainer = styled.div<{ maxHeight: number }>`
     display: grid;
     overflow: hidden;
     max-height: ${(props) => `${props.maxHeight}px`};
@@ -68,7 +71,17 @@ const CardContainer = styled.div<{ maxHeight: number}>`
     gap: 10px 10px; 
     grid-template-areas: 
         ". . . ."
-        ". . . ."; 
+        ". . . .";
+        @media (max-width:430px) {
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        grid-template-areas: 
+        ". ."
+        ". ."
+        ". ."
+        ". .";
+       gap: 10px;
+        }
 `
 const ButtonRow = styled.div`
     display: flex;
@@ -184,7 +197,7 @@ const PodsBlock = () => {
                 </LinkPath>
                 <CardContainer maxHeight={maxHeight}>
                     {data?.map((item, index) => (
-                        <Link key={index} href={{pathname: '/podsproduct', query: { id: item.id}}}>
+                        <Link key={index} href={{ pathname: '/podsproduct', query: { id: item.id } }}>
                             <PodCard
                                 id={item.id}
                                 code={item.code}
@@ -199,7 +212,7 @@ const PodsBlock = () => {
                                 wide_image={item.wide_image}
                                 categories={item.categories}
                                 chars={item.chars}
-                                />
+                            />
                         </Link>
                     ))}
                 </CardContainer>

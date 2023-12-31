@@ -276,6 +276,9 @@ const DescHeader = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;
+    }
 `
 const FullBlock = styled.div`
     display: -webkit-box;
@@ -332,6 +335,9 @@ const FullData = styled.div`
     background: #141414;
     padding: 34px 29px 29px 29px;
     flex-direction: column;
+    @media (max-width: 430px) {
+        padding: 22px 17px;
+    }
 `
 const FullDataBlock = styled.div`
     display: flex;
@@ -339,13 +345,16 @@ const FullDataBlock = styled.div`
     height: 100%;
     align-items: center;
     justify-content: center;
+    @media (max-width: 430px) {
+        margin-top: 30px;
+    }
 `
 const DataValue = styled.p`
     color: rgba(255, 255, 255, 0.80);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%;
+    line-height: 130%;
 `
 const ValueBlock = styled.div`
     display: flex;

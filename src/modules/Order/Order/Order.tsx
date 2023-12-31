@@ -218,7 +218,7 @@ const Order = () => {
 
     const orderConfirm = async (payload: any) => {
         try {
-            const response = await axios.post('http://18.132.12.234/api/v1/orders/', payload);
+            const response = await axios.post('http://35.180.189.210/api/v1/orders/', payload);
             console.log('POST request successful:', response.data);
             dispatch(clearCart());
         } catch (error) {
@@ -236,7 +236,7 @@ const Order = () => {
             region: values.location,
             city: values.city,
             post_number: values.post,
-            liquids: liquid,
+            items: liquid,
             pods: pods,
             details: details,
         };

@@ -10,6 +10,7 @@ import Review from "../components/Review/Review";
 import Pros from "../components/Pros/Pros";
 import Recommendation from "../components/Recommendation/Recommendation";
 import Advertising from "../components/Advertising/Advertising";
+import Stories from "../components/Stories/Stories";
 
 export default function Home() {
 
