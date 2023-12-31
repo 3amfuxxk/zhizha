@@ -58,6 +58,9 @@ const NavSlider = styled.div`
     height: auto;
     gap: 9px;
     margin-top: 14px;
+    @media (max-width: 430px) {
+        margin-top:0px;
+    }
 `
 const NavArrow = styled.div`
     display: flex;
