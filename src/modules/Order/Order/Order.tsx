@@ -206,12 +206,12 @@ const Order = () => {
         quantity: product.totalQuantity,
     }));
     const pods = cartPods.map((pod) => ({
-        pod_id: pod.id,
-        color_id: pod.chars.id,
+        product_id: pod.id,
+        option_id: pod.chars.id,
         quantity: pod.totalQuantity,
     }))
     const details = cartDetails.map((detail) => ({
-        detail_id: detail.id,
+        product_id: detail.id,
         quantity: detail.totalQuantity,
     }))
     const [isVisible, setIsVisible] = useState(false);
@@ -236,7 +236,7 @@ const Order = () => {
             region: values.location,
             city: values.city,
             post_number: values.post,
-            items: liquid,
+            products: liquid,
             pods: pods,
             details: details,
         };
