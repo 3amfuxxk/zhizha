@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import LinkPath from "../../../components/LinkPath/LinkPath";
 import Card from "../../../components/Card/Card";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
+import PodCard from '../../../components/PodCard/PodCard';
 
 const LiquidContainer = styled.div`
     display: flex;
@@ -96,15 +98,60 @@ const ButtonText = styled.p`
     line-height: normal;
 `
 
+interface Pods {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    short_desc: string;
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    image: string;
+    categories: string[];
+    chars: Chars[];
+    options: any[];
+}
+
+interface Chars {
+    id: number;
+    color: string;
+}
+
 const PodsBlock = () => {
-    const defaultHeight = 1754;
-    const increaseHeight = 1764;
+    let defaultHeight = 1754;
+    let increaseHeight = 1764;
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+        defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
+    }
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+        const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
+    }
 
     const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 
     const toggleExpanded = () => {
         setMaxHeight((prevHeight) => prevHeight + increaseHeight);
-      };
+    };
+
+    const [data, setData] = useState<Pods[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/pods`);
+                const blogData = response.data as Pods[];
+                setData(blogData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setData(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+    console.log(data);
 
     return (
         <LiquidContainer>
@@ -128,14 +175,31 @@ const PodsBlock = () => {
                             Каталог
                         </TextInactive>
                     </Link>
-                    <Link href={"/liquid"} >
+                    <Link href={"/podsproduct"} >
                         <Active>
                             Поди
                         </Active>
                     </Link>
                 </LinkPath>
                 <CardContainer maxHeight={maxHeight}>
-                
+                    {data?.map((item, index) => (
+                        <Link key={index} href={{pathname: '/podsproduct', query: { id: item.id}}}>
+                            <PodCard
+                                id={item.id}
+                                code={item.code}
+                                title={item.title}
+                                desc={item.desc}
+                                short_desc={item.short_desc}
+                                starting_price={item.starting_price}
+                                sale_price={item.sale_price}
+                                discount={item.discount}
+                                in_stock={item.in_stock}
+                                image={item.image}
+                                categories={item.categories}
+                                chars={item.chars}
+                                />
+                        </Link>
+                    ))}
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>

@@ -7,8 +7,8 @@ import Link from "next/link";
 import Counter from "../Counter/Counter";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
-import { selectCart } from "../../store/slice";
-import { removeFromCart } from '../../store/slice';
+import { selectCart, selectPods } from "../../store/slice";
+import { removeFromCart, removePodFromCart } from '../../store/slice';
 import { Dispatch } from "@reduxjs/toolkit";
 
 const HeaderBlock = styled.div`
@@ -533,6 +533,8 @@ const NavPart = styled.div`
 const Header = () => {
     const cartProducts = useSelector(selectCart);
 
+    const cartPods = useSelector(selectPods);
+
     const [cartOpen, setCart] = useState<boolean>(false);
 
     const toggleOpen = () => {
@@ -541,10 +543,17 @@ const Header = () => {
 
     const [productQuantities, setProductQuantities] = useState<{ [key: string]: number }>({});
 
-    const handleQuantityChange = (productId: string, newQuantity: number) => {
+    const handleQuantityChange = (productId: number, newQuantity: number) => {
         setProductQuantities((prevQuantities) => ({
             ...prevQuantities,
             [productId]: newQuantity,
+        }));
+    };
+
+    const handlePodQuantityChange = (charsId: number, newQuantity: number) => {
+        setProductQuantities((prevQuantities) => ({
+            ...prevQuantities,
+            [charsId]: newQuantity,
         }));
     };
 
@@ -582,20 +591,37 @@ const Header = () => {
         dispatch(removeFromCart(id));
     };
 
+    const handleRemovePod = (id: number) => {
+        dispatch(removePodFromCart(id));
+    }
+
     const totalCost = cartProducts.reduce((accumulator, product) => {
-        const productCost = product.options.starting_price * (productQuantities[product.id] || product.totalQuantity);
+        const productCost = product.options.starting_price * (productQuantities[product.options.id] || product.totalQuantity);
         return accumulator + productCost;
     }, 0);
 
-    const totalSale = cartProducts.reduce((accumulator, product) => {
-        if (product.options.starting_price) {
-            const productSale: number = (product.options.starting_price - product.options.sale_price) * (productQuantities[product.id] || product.totalQuantity);
+    const totalPodCost = cartPods.reduce((accumulator, pod) => {
+        const podCost = pod.starting_price * (productQuantities[pod.chars.id] || pod.totalQuantity);
+        return accumulator + podCost;
+    }, 0);
+
+    const totalPodSale = cartPods.reduce((accumulator, pod) => {
+        if (pod.starting_price) {
+            const productSale: number = (pod.starting_price - pod.sale_price) * (productQuantities[pod.chars.id] || pod.totalQuantity);
             return accumulator + productSale;
         }
         return accumulator;
     }, 0);
 
-    const orderCost = totalCost - totalSale;
+    const totalSale = cartProducts.reduce((accumulator, product) => {
+        if (product.options.starting_price) {
+            const productSale: number = (product.options.starting_price - product.options.sale_price) * (productQuantities[product.options.id] || product.totalQuantity);
+            return accumulator + productSale;
+        }
+        return accumulator;
+    }, 0);
+
+    const orderCost = totalCost + totalPodCost - totalSale - totalPodSale;
 
     return (
         <HeaderBlock>
@@ -627,7 +653,7 @@ const Header = () => {
                     <Cart onClick={toggleOpen}>
                         <RoundCount>
                             <ItemsCount>
-                                {cartProducts.length}
+                                {cartProducts.length + cartPods.length}
                             </ItemsCount>
                         </RoundCount>
                         <Image src={'/img/Header/shop-bag.svg'} alt={''} width={18} height={21} />
@@ -665,10 +691,44 @@ const Header = () => {
                                             </PriceBlock>
                                             <FunctionBlock>
                                                 <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
-                                                    handleQuantityChange(product.id, newQuantity)
+                                                    handleQuantityChange(product.options.id, newQuantity)
                                                 }
-                                                    totalQuantity={productQuantities[product.id] || product.totalQuantity} />
+                                                    totalQuantity={productQuantities[product.options.id] || product.totalQuantity} />
                                                 <DeleteBlock onClick={() => handleRemoveFromCart(product.options.id)}>
+                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                </DeleteBlock>
+                                            </FunctionBlock>
+                                        </PriceContainer>
+                                    </ProductInfo>
+                                </ProductCard>
+                            ))}
+                            {cartPods.map((pod) => (
+                                <ProductCard key={pod.id}>
+                                    <ImageBlock>
+                                        <Image src={pod.image} width={114} height={114} alt="" />
+                                    </ImageBlock>
+                                    <ProductInfo>
+                                        <ProductName>
+                                            {pod.title}
+                                        </ProductName>
+                                        <ProductID>
+                                            Код товару: <Span>{pod.code}</Span>
+                                        </ProductID>
+                                        <PriceContainer>
+                                            <PriceBlock>
+                                                <ProductPrice>
+                                                    {(pod.sale_price * (productQuantities[pod.id] || pod.totalQuantity)).toFixed(2)}₴
+                                                </ProductPrice>
+                                                <ProductSale>
+                                                    {pod.starting_price ? `${(pod.starting_price * (productQuantities[pod.id] || pod.totalQuantity)).toFixed(2)}₴` : null}
+                                                </ProductSale>
+                                            </PriceBlock>
+                                            <FunctionBlock>
+                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                    handlePodQuantityChange(pod.chars.id, newQuantity)
+                                                }
+                                                    totalQuantity={productQuantities[pod.chars.id] || pod.totalQuantity} />
+                                                <DeleteBlock onClick={() => handleRemovePod(pod.chars.id)}>
                                                     <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
                                                 </DeleteBlock>
                                             </FunctionBlock>
@@ -691,7 +751,7 @@ const Header = () => {
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
-                                        {(totalCost).toFixed(2)}₴
+                                        {(totalCost + totalPodCost).toFixed(2)}₴
                                     </SummaryText>
                                 </InfoPrice>
                                 <InfoPrice>
@@ -700,7 +760,7 @@ const Header = () => {
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
-                                        {(totalSale).toFixed(2)}₴
+                                        {(totalSale + totalPodSale).toFixed(2)}₴
                                     </SummaryText>
                                 </InfoPrice>
                                 <InfoPrice>

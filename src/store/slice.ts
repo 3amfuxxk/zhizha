@@ -22,13 +22,30 @@ interface Product {
     nico: number;
     volume: number;
   }
+  interface PodProduct {
+    id: string;
+    title: string;
+    code: number;
+    image: string;
+    starting_price: number;
+    sale_price: number;
+    chars: Chars;
+    totalQuantity: number;
+  }
+
+  interface Chars {
+    id: number;
+    color: string;
+  }
   
   interface CartState {
     products: Product[];
+    pods: PodProduct[];
   }
   
   const initialState: CartState = {
     products: [],
+    pods: [],
   };
   
   const cartSlice = createSlice({
@@ -37,6 +54,12 @@ interface Product {
     reducers: {
       addToCart(state, action: PayloadAction<Product>) {
         state.products.push(action.payload);
+      },
+      addPodToCart(state, action: PayloadAction<PodProduct>) {
+        state.pods.push(action.payload);
+      },
+      removePodFromCart(state, action: PayloadAction<number>) {
+        state.pods = state.pods.filter(item => item.chars.id !== action.payload);
       },
       removeFromCart(state, action: PayloadAction<number>) {
         state.products = state.products.filter(item => item.options.id !== action.payload);
@@ -48,8 +71,9 @@ interface Product {
   });
   
   
-  export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+  export const { addToCart, removeFromCart, clearCart, addPodToCart, removePodFromCart } = cartSlice.actions;
   
   export const selectCart = (state: RootState) => state.cart.products;
+  export const selectPods = (state: RootState) => state.cart.pods;
   
   export default cartSlice.reducer;
