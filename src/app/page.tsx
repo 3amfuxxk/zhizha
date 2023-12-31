@@ -11,6 +11,7 @@ import Pros from "../components/Pros/Pros";
 import Recommendation from "../components/Recommendation/Recommendation";
 import Advertising from "../components/Advertising/Advertising";
 import Stories from "../components/Stories/Stories";
+import HotSlider from "../components/HotSlider/HotSlider";
 
 export default function Home() {
 
@@ -19,8 +20,10 @@ export default function Home() {
         <Container>
           <Header/>
           <HomeSection />
+          <Stories />
           <Advertising />
           <Pros />
+          <HotSlider />
           <Recommendation />
           <Blog />
           <Review />
