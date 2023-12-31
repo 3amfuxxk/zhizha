@@ -5,7 +5,7 @@ import Container from "../../components/Container/Container";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
-import PodsPage from "../../components/PodsPage/PodsPage";
+import DetailsPage from "../../components/DetailsPage/DetailsPage";
 
 export default function Home() {
   const searchParams = useSearchParams()
@@ -15,7 +15,7 @@ export default function Home() {
     <div>
       <Container>
         <Header />
-        <PodsPage idp={id !== null ? id : ''} />
+        <DetailsPage idp={id !== null ? id : ''} />
         <Footer />
       </Container>
     </div>

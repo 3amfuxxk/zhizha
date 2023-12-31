@@ -8,8 +8,8 @@ import Button from "../Button/Button";
 import { Roboto } from "next/font/google";
 import { selectSelectedProduct, setSelectedProduct } from "../../store/liquidSlice";
 import { useSelector, useDispatch } from 'react-redux'
-import { addPodToCart } from '../../store/slice';
-import { selectPods } from '../../store/slice';
+import { addDetailToCart } from '../../store/slice';
+import { selectDetails } from '../../store/slice';
 import { useEffect } from "react";
 import axios from "axios";
 
@@ -326,7 +326,7 @@ const Imgfull = styled(Image)`
 const FullData = styled.div`
     display: flex;
     width: 100%;
-    height: 542px;
+    height: auto;
     flex-shrink: 0;
     border-radius: 18px;
     background: #141414;
@@ -378,41 +378,21 @@ const ButtonContainer = styled.div`
         height: 46px;
     }
 `
-const TextButton = styled.p`
-    color: #FFF;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-`
-const ButtonBlock = styled.div`
+
+const LeftPart = styled.div`
+    width: auto;
+    height: 100%;
     display: flex;
-    gap: 7px;
+    flex-direction: column;
 `
-interface BlockProps {
-    isSelected: boolean;
-}
-const ColorBlock = styled.div<BlockProps>`
+const RightPart = styled.div`
+    width: auto;
+    height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid ${(props) => (props.isSelected ? 'rgba(255, 255, 255, 0.70)' : '#292929')};
-    background-color: ${(props) => (props.isSelected ? '#272727' : '#141414')};
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 50%;
-`
-const Color = styled.div`
-    display: flex;
-    background: red;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    flex-direction: column;
 `
 
-interface Pods {
+interface Details {
     id: string;
     title: string;
     code: number;
@@ -426,13 +406,13 @@ interface Pods {
     wide_image: string;
     categories: string[];
     chars: Chars[];
-    options: any[];
 }
 
 interface Chars {
-    id: number;
-    color: string;
+    key: string;
+    value: string;
 }
+
 
 interface GetId {
     idp: string;
@@ -445,20 +425,18 @@ interface AddToCartProduct {
     image: string;
     starting_price: number;
     sale_price: number;
-    chars: Chars;
     totalQuantity: number;
 }
 
-const PodsPage = ({ idp }: GetId) => {
-    console.log(idp);
+const DetailsPage = ({ idp }: GetId) => {
 
-    const [product, setProduct] = useState<Pods | null>(null);
+    const [product, setProduct] = useState<Details | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/pods/${idp}`);
-                const productData = response.data as Pods;
+                const response = await axios.get(`http://35.180.189.210/api/v1/details/${idp}`);
+                const productData = response.data as Details;
                 setProduct(productData);
             } catch (error) {
                 console.error('Ошибка при запросе продукта:', error);
@@ -469,51 +447,29 @@ const PodsPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    console.log(product);
-
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
-    const cartPods = useSelector(selectPods);
+    const cartDetails = useSelector(selectDetails);
     const dispatch = useDispatch();
 
     const handleQuantityChange = (newQuantity: number) => {
         setTotalQuantity(newQuantity);
     };
 
-    const [selectedColor, setSelectedColor] = useState<string>('none');
-
-    const findByColor = (selectedColor: string) => {
-        const selectedColorId = product && product.chars ? product.chars.find((item) => item.color === selectedColor) : null;
-        return selectedColorId?.id || null;
-    };
-
-    const id = findByColor(selectedColor) || 0;
-    console.log(id);
-
-    const findByID = (id: number) => {
-        const selectedIndex = product?.chars.findIndex((item) => item.id === id);
-        return selectedIndex !== -1 ? selectedIndex : null;
-    };
-
-    const index = findByID(id) || 0;
-    console.log(index);
-
     const handleAddToCart = (quantity: number) => {
         if (product) {
-            const SelectedColor: Chars = product?.chars[index];
-            const SelectedPodToAdd: AddToCartProduct = {
+            const SelectedDetailToAdd: AddToCartProduct = {
                 ...product,
                 totalQuantity: quantity,
-                chars: SelectedColor,
             };
-            const isProductInCart = cartPods.some(
+            const isProductInCart = cartDetails.some(
                 item =>
-                    item.id === SelectedPodToAdd.id &&
-                    item.chars.id === SelectedPodToAdd.chars.id
+                    item.id === SelectedDetailToAdd.id
             );
 
             if (!isProductInCart) {
-                dispatch(addPodToCart(SelectedPodToAdd));
+                dispatch(addDetailToCart(SelectedDetailToAdd));
+                console.log(SelectedDetailToAdd);
             } else {
                 console.log('Этот товар уже есть в корзине');
             }
@@ -533,9 +489,9 @@ const PodsPage = ({ idp }: GetId) => {
                         Каталог
                     </TextInactive>
                 </Link>
-                <Link href={"/pods"} >
+                <Link href={"/accessories"} >
                     <TextInactive>
-                        Поди
+                        Комплектуючі
                     </TextInactive>
                 </Link>
                 <Link href={'/'}>
@@ -573,22 +529,6 @@ const PodsPage = ({ idp }: GetId) => {
                             </Discount>
                         )}
                     </ProductPrice>
-                    <CategoryText>
-                        Колір
-                    </CategoryText>
-                    <Specs>
-                        {product?.chars.map((charItem, index) => (
-                            <ColorBlock
-                                key={index}
-                                isSelected={selectedColor === charItem.color}
-                                onClick={() => {
-                                    setSelectedColor(charItem.color);
-                                }}
-                            >
-                                <Color style={{backgroundColor: `${charItem.color}`}} />
-                            </ColorBlock>
-                        ))}
-                    </Specs>
                     <NavBlock>
                         <Counter width={138} height={46} inpWidth={46} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                         <Button text={'В кошик'} width={213} height={46} onClick={() => handleAddToCart(totalQuantity)}>
@@ -610,33 +550,27 @@ const PodsPage = ({ idp }: GetId) => {
                     <Imgfull src={product?.wide_image ? `${product.wide_image}` : '/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
-            {/* <FullData>
+            <FullData>
                 <DescHeader>
-                    Характеристики {selectedProduct?.title}:
+                    Характеристики {product?.title}:
                 </DescHeader>
                 <FullDataBlock className={roboto.className}>
                     <ValueBlock>
-                        <ValueRow>
-                            <Active>
-                                Лід
-                            </Active>
-                            <DataValue>
-                                Так/ні
-                            </DataValue>
-                        </ValueRow>
-                        <ValueRow>
-                            <Active>
-                                Вага
-                            </Active>
-                            <DataValue>
-                                50 гр
-                            </DataValue>
-                        </ValueRow>
+                        {product?.chars.map((item, index) => (
+                            <ValueRow key={index}>
+                                <Active>
+                                    {item.key}
+                                </Active>
+                                <DataValue>
+                                    {item.value}
+                                </DataValue>
+                            </ValueRow>
+                        ))}
                     </ValueBlock>
                 </FullDataBlock>
-            </FullData> */}
+            </FullData>
         </ProductContainer>
     )
 }
 
-export default PodsPage;
+export default DetailsPage;

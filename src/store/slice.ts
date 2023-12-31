@@ -32,6 +32,15 @@ interface Product {
     chars: Chars;
     totalQuantity: number;
   }
+  interface Detail {
+    id: string;
+    title: string;
+    code: number;
+    image: string;
+    starting_price: number;
+    sale_price: number;
+    totalQuantity: number;
+  }
 
   interface Chars {
     id: number;
@@ -41,11 +50,13 @@ interface Product {
   interface CartState {
     products: Product[];
     pods: PodProduct[];
+    details: Detail[];
   }
   
   const initialState: CartState = {
     products: [],
     pods: [],
+    details: [],
   };
   
   const cartSlice = createSlice({
@@ -58,6 +69,12 @@ interface Product {
       addPodToCart(state, action: PayloadAction<PodProduct>) {
         state.pods.push(action.payload);
       },
+      addDetailToCart(state, action: PayloadAction<Detail>) {
+        state.details.push(action.payload);
+      },
+      removeDetailFromCart(state, action: PayloadAction<string>) {
+        state.details = state.details.filter(item => item.id !== action.payload);
+      },
       removePodFromCart(state, action: PayloadAction<number>) {
         state.pods = state.pods.filter(item => item.chars.id !== action.payload);
       },
@@ -66,14 +83,17 @@ interface Product {
       },
       clearCart(state) {
         state.products = [];
+        state.details = [];
+        state.pods = [];
       },
     },
   });
   
   
-  export const { addToCart, removeFromCart, clearCart, addPodToCart, removePodFromCart } = cartSlice.actions;
+  export const { addToCart, removeFromCart, clearCart, addPodToCart, removePodFromCart, addDetailToCart, removeDetailFromCart } = cartSlice.actions;
   
   export const selectCart = (state: RootState) => state.cart.products;
   export const selectPods = (state: RootState) => state.cart.pods;
+  export const selectDetails = (state: RootState) => state.cart.details;
   
   export default cartSlice.reducer;

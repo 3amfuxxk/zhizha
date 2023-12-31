@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Roboto } from "next/font/google";
 import ConfirmationWindow from "../ConfirmationWindow/ConfirmationWindow";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCart, clearCart } from "../../../store/slice";
+import { selectCart, clearCart, selectPods, selectDetails } from "../../../store/slice";
 import axios from "axios";
 
 const roboto = Roboto({
@@ -83,6 +83,7 @@ const UnderText = styled.p`
     font-style: normal;
     font-weight: 400;
     line-height: 130%;
+    margin-top: 21px;
     @media (max-width:430px) {
         margin-top: 22px;
     }
@@ -167,12 +168,27 @@ const validationSchema = Yup.object().shape({
     telegramNick: Yup.string(),
 });
 
-interface Order {
-    order: Product[];
+interface OrderData {
+    data: Order;
 }
-interface Product {
+
+interface Order {
+    items: Liquid[];
+    pods: Pod[];
+    details: Detail[];
+}
+interface Liquid {
     product_id: string;
     option_id: string;
+    quantity: number;
+}
+interface Detail {
+    product_id: string;
+    quantity: number;
+}
+interface Pod {
+    product_id: string;
+    color_id: string;
     quantity: number;
 }
 
@@ -180,11 +196,24 @@ const Order = () => {
     const dispatch = useDispatch();
     const cartProducts = useSelector(selectCart);
 
-    const order = cartProducts.map((product) => ({
+    const cartPods = useSelector(selectPods);
+
+    const cartDetails = useSelector(selectDetails);
+
+    const liquid = cartProducts.map((product) => ({
         product_id: product.id,
         option_id: product.options.id,
         quantity: product.totalQuantity,
     }));
+    const pods = cartPods.map((pod) => ({
+        pod_id: pod.id,
+        color_id: pod.chars.id,
+        quantity: pod.totalQuantity,
+    }))
+    const details = cartDetails.map((detail) => ({
+        detail_id: detail.id,
+        quantity: detail.totalQuantity,
+    }))
     const [isVisible, setIsVisible] = useState(false);
 
     const orderConfirm = async (payload: any) => {
@@ -207,7 +236,9 @@ const Order = () => {
             region: values.location,
             city: values.city,
             post_number: values.post,
-            products: order,
+            liquids: liquid,
+            pods: pods,
+            details: details,
         };
         console.log('Submitted values:', values);
         setSubmitting(false);

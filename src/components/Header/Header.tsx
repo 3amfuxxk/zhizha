@@ -7,8 +7,8 @@ import Link from "next/link";
 import Counter from "../Counter/Counter";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
-import { selectCart, selectPods } from "../../store/slice";
-import { removeFromCart, removePodFromCart } from '../../store/slice';
+import { selectCart, selectPods, selectDetails } from "../../store/slice";
+import { removeFromCart, removePodFromCart, removeDetailFromCart } from '../../store/slice';
 import { Dispatch } from "@reduxjs/toolkit";
 
 const HeaderBlock = styled.div`
@@ -535,11 +535,14 @@ const Header = () => {
 
     const cartPods = useSelector(selectPods);
 
+    const cartDetails = useSelector(selectDetails);
+
     const [cartOpen, setCart] = useState<boolean>(false);
 
     const toggleOpen = () => {
         setCart(!cartOpen);
     }
+    
 
     const [productQuantities, setProductQuantities] = useState<{ [key: string]: number }>({});
 
@@ -556,6 +559,13 @@ const Header = () => {
             [charsId]: newQuantity,
         }));
     };
+
+    const handleDetailQuantityChange = (detailId: string, newQuantity: number) => {
+        setProductQuantities((prevQuantities) => ({
+            ...prevQuantities,
+            [detailId]: newQuantity,
+        }));
+    }
 
     const showMenu = () => {
         const showMenuCont = document.getElementById('menu-mobile');
@@ -595,6 +605,23 @@ const Header = () => {
         dispatch(removePodFromCart(id));
     }
 
+    const handleRemoveDetail = (id: string) => {
+        dispatch(removeDetailFromCart(id));
+    }
+    //detailfuncs
+    const totalDetailCost = cartDetails.reduce((accumulator, detail) => {
+        const detailCost = detail.starting_price * (productQuantities[detail.id] || detail.totalQuantity);
+        return accumulator + detailCost;
+    }, 0);
+
+    const totalDetailSale = cartPods.reduce((accumulator, detail) => {
+        if (detail.starting_price) {
+            const detailSale: number = (detail.starting_price - detail.sale_price) * (productQuantities[detail.id] || detail.totalQuantity);
+            return accumulator + detailSale;
+        }
+        return accumulator;
+    }, 0);
+
     const totalCost = cartProducts.reduce((accumulator, product) => {
         const productCost = product.options.starting_price * (productQuantities[product.options.id] || product.totalQuantity);
         return accumulator + productCost;
@@ -621,12 +648,12 @@ const Header = () => {
         return accumulator;
     }, 0);
 
-    const orderCost = totalCost + totalPodCost - totalSale - totalPodSale;
+    const orderCost = totalCost + totalPodCost - totalSale - totalPodSale + totalDetailCost - totalDetailSale;
 
     return (
         <HeaderBlock>
             <Link href={'/'}>
-                <Img src={'/img/Logo/Logo.svg'} width={37} height={44.769} alt='Logo' />
+                <Img src={'/img/Logo/logo_ng.png'} width={37} height={44.769} alt='Logo' />
             </Link>
             <NavBlock>
                 <Link href={{ pathname: '/catalog' }}>
@@ -653,7 +680,7 @@ const Header = () => {
                     <Cart onClick={toggleOpen}>
                         <RoundCount>
                             <ItemsCount>
-                                {cartProducts.length + cartPods.length}
+                                {cartProducts.length + cartPods.length + cartDetails.length}
                             </ItemsCount>
                         </RoundCount>
                         <Image src={'/img/Header/shop-bag.svg'} alt={''} width={18} height={21} />
@@ -729,6 +756,40 @@ const Header = () => {
                                                 }
                                                     totalQuantity={productQuantities[pod.chars.id] || pod.totalQuantity} />
                                                 <DeleteBlock onClick={() => handleRemovePod(pod.chars.id)}>
+                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                </DeleteBlock>
+                                            </FunctionBlock>
+                                        </PriceContainer>
+                                    </ProductInfo>
+                                </ProductCard>
+                            ))}
+                            {cartDetails.map((detail) => (
+                                <ProductCard key={detail.id}>
+                                    <ImageBlock>
+                                        <Image src={detail.image} width={114} height={114} alt="" />
+                                    </ImageBlock>
+                                    <ProductInfo>
+                                        <ProductName>
+                                            {detail.title}
+                                        </ProductName>
+                                        <ProductID>
+                                            Код товару: <Span>{detail.code}</Span>
+                                        </ProductID>
+                                        <PriceContainer>
+                                            <PriceBlock>
+                                                <ProductPrice>
+                                                    {(detail.sale_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴
+                                                </ProductPrice>
+                                                <ProductSale>
+                                                    {detail.starting_price ? `${(detail.starting_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴` : null}
+                                                </ProductSale>
+                                            </PriceBlock>
+                                            <FunctionBlock>
+                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                    handleDetailQuantityChange(detail.id, newQuantity)
+                                                }
+                                                    totalQuantity={productQuantities[detail.id] || detail.totalQuantity} />
+                                                <DeleteBlock onClick={() => handleRemoveDetail(detail.id)}>
                                                     <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
                                                 </DeleteBlock>
                                             </FunctionBlock>

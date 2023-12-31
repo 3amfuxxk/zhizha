@@ -117,7 +117,7 @@ const LikeBlock = styled.div`
     cursor: pointer;
 `
 
-interface Pods {
+interface Details {
     id: string;
     title: string;
     code: number;
@@ -134,11 +134,11 @@ interface Pods {
 }
 
 interface Chars {
-    id: number;
-    color: string;
+    key: string;
+    value: string;
 }
 
-const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, discount, in_stock, image, categories, chars, wide_image }: Pods) => {
+const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, discount, in_stock, image, categories, chars }: Details) => {
 
     const isMobile = window.innerWidth <= 430;
 

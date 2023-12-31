@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import LinkPath from "../../../components/LinkPath/LinkPath";
 import Card from "../../../components/Card/Card";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
+import DetailCard from '../../../components/DetailCard/DetailCard';
 
 const LiquidContainer = styled.div`
     display: flex;
@@ -55,7 +57,7 @@ const Active = styled.p`
     font-weight: 600;
     line-height: 130%;
 `
-const CardContainer = styled.div<{ maxHeight: number }>`
+const CardContainer = styled.div<{ maxHeight: number}>`
     display: grid;
     overflow: hidden;
     max-height: ${(props) => `${props.maxHeight}px`};
@@ -96,15 +98,61 @@ const ButtonText = styled.p`
     line-height: normal;
 `
 
+interface Details {
+    id: string;
+    title: string;
+    code: number;
+    desc: string;
+    short_desc: string;
+    starting_price: number;
+    sale_price: number;
+    discount: number;
+    in_stock: boolean;
+    image: string;
+    wide_image: string;
+    wide_card: string;
+    categories: string[];
+    chars: Chars[];
+}
+
+interface Chars {
+    key: string;
+    value: string;
+}
+
 const AccessoriesBlock = () => {
-    const defaultHeight = 1754;
-    const increaseHeight = 1764;
+    let defaultHeight = 1754;
+    let increaseHeight = 1764;
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+        defaultHeight = window.innerWidth <= 430 ? 1342 : 1754;
+    }
+    if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+        const increaseHeight = window.innerWidth <= 430 ? 1352 : 1764;
+    }
 
     const [maxHeight, setMaxHeight] = useState<number>(defaultHeight);
 
     const toggleExpanded = () => {
         setMaxHeight((prevHeight) => prevHeight + increaseHeight);
-      };
+    };
+
+    const [data, setData] = useState<Details[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/details`);
+                const blogData = response.data as Details[];
+                setData(blogData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setData(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+    console.log(data);
 
     return (
         <LiquidContainer>
@@ -128,14 +176,32 @@ const AccessoriesBlock = () => {
                             Каталог
                         </TextInactive>
                     </Link>
-                    <Link href={"/liquid"} >
+                    <Link href={"/accessories"} >
                         <Active>
                             Комплектуючі
                         </Active>
                     </Link>
                 </LinkPath>
                 <CardContainer maxHeight={maxHeight}>
-                
+                    {data?.map((item, index) => (
+                        <Link key={index} href={{pathname: '/detailsproduct', query: { id: item.id}}}>
+                            <DetailCard
+                                id={item.id}
+                                code={item.code}
+                                title={item.title}
+                                desc={item.desc}
+                                short_desc={item.short_desc}
+                                starting_price={item.starting_price}
+                                sale_price={item.sale_price}
+                                discount={item.discount}
+                                in_stock={item.in_stock}
+                                image={item.image}
+                                wide_image={item.wide_image}
+                                categories={item.categories}
+                                chars={item.chars}
+                                />
+                        </Link>
+                    ))}
                 </CardContainer>
                 <ButtonRow>
                     <ButtonMore onClick={toggleExpanded}>

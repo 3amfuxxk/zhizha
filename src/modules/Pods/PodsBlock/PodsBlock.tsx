@@ -109,6 +109,7 @@ interface Pods {
     discount: number;
     in_stock: boolean;
     image: string;
+    wide_image: string;
     categories: string[];
     chars: Chars[];
     options: any[];
@@ -195,6 +196,7 @@ const PodsBlock = () => {
                                 discount={item.discount}
                                 in_stock={item.in_stock}
                                 image={item.image}
+                                wide_image={item.wide_image}
                                 categories={item.categories}
                                 chars={item.chars}
                                 />
