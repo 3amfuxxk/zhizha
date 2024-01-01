@@ -17,7 +17,7 @@ const LanguageBlock = styled.div`
     left: 62px;
     top:0;
     @media (max-width: 430px) {
-        left: 22px;
+        left: 75px;
         top: -24px;
     }
 `

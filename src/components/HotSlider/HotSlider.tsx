@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { Roboto } from "next/font/google";
 import Image from "next/image";
+import axios from "axios";
 
 const roboto = Roboto({
     weight: ["500", "700"],
@@ -99,8 +100,59 @@ const Bullet = styled.span`
     background: white;
   }
 `
+const Img = styled(Image)`
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+`
+
+interface Images {
+    id: number;
+    image_desktop_1: string;
+    image_desktop_2: string;
+    image_desktop_3: string;
+    image_mobile_1: string;
+    image_mobile_2: string;
+    image_mobile_3: string;
+}
 
 const HotSlider = () => {
+
+    const [images, setData] = useState<Images | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/hot`);
+                const imagesData = response.data as Images;
+                setData(imagesData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setData(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 430);
+            };
+
+            handleResize();
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
+    }, []);
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
@@ -146,7 +198,6 @@ const HotSlider = () => {
                     if (slider !== null) {
                         slider.scrollLeft = slider.scrollLeft - slideWidth;
                         setCurrentSlideIndex(newIndex);
-                        console.log(newIndex);
                         updateBulletColors();
                     }
                 }
@@ -179,15 +230,57 @@ const HotSlider = () => {
                 Гарячі пропозиції:
             </Header>
             <SliderBlock id="hot-slider">
-                <Slide className="hot-slide-slide">
-                        bgbgbg
-                </Slide>
-                <Slide className="hot-slide-slide">
-                        hello
-                </Slide>
-                <Slide className="hot-slide-slide">
-                        bgbgb
-                </Slide>
+                {isMobile ? (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_mobile_1 ? (
+                            <Img src={images.image_mobile_1} width={374} height={230} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                ) : (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_desktop_1 ? (
+                            <Img src={images.image_desktop_1} width={1204} height={520} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                )}
+                {isMobile ? (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_mobile_2 ? (
+                            <Img src={images.image_mobile_2} width={374} height={230} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                ) : (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_desktop_2 ? (
+                            <Img src={images.image_desktop_2} width={1204} height={520} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                )}
+                {isMobile ? (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_mobile_3 ? (
+                            <Img src={images.image_mobile_3} width={374} height={230} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                ) : (
+                    <Slide className="hot-slide-slide">
+                        {images?.image_desktop_3 ? (
+                            <Img src={images.image_desktop_3} width={1204} height={520} alt="" />
+                        ) : (
+                            <div>Изображение не найдено</div>
+                        )}
+                    </Slide>
+                )}
             </SliderBlock>
             <NavSlider>
                 <NavArrow onClick={slideLeft}>
