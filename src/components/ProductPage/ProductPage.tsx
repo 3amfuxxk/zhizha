@@ -392,8 +392,6 @@ interface GetId {
 
 const ProductPage = ({ idp }: GetId) => {
 
-    console.log(idp);
-
     const [product, setProduct] = useState<Product | null>(null);
 
     useEffect(() => {
@@ -427,8 +425,6 @@ const ProductPage = ({ idp }: GetId) => {
 
         fetchProduct();
     }, [idp]);
-
-    console.log(recs);
 
     const [selectedNico, setSelectedNico] = useState<number>(-1);
     const [selectedVolume, setSelectedVolume] = useState<number>(-1);

@@ -49,8 +49,10 @@ const Text = styled.p`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    line-height: 180%;
     @media (max-width: 430px) {
-        text-align: center;   
+        text-align: center;
+        line-height: normal; 
     }
 `
 const TgBlock = styled.div`

@@ -165,7 +165,6 @@ const PodsBlock = () => {
 
         fetchProduct();
     }, []);
-    console.log(data);
 
     return (
         <LiquidContainer>

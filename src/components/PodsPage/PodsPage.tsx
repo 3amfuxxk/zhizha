@@ -479,7 +479,6 @@ interface AddToCartProduct {
 }
 
 const PodsPage = ({ idp }: GetId) => {
-    console.log(idp);
 
     const [product, setProduct] = useState<Pods | null>(null);
 
@@ -515,10 +514,6 @@ const PodsPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    console.log(recs);
-
-    console.log(product);
-
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
     const cartPods = useSelector(selectPods);
@@ -536,7 +531,6 @@ const PodsPage = ({ idp }: GetId) => {
     };
 
     const id = findByColor(selectedColor) || 0;
-    console.log(id);
 
     const findByID = (id: number) => {
         const selectedIndex = product?.chars.findIndex((item) => item.id === id);
@@ -544,7 +538,6 @@ const PodsPage = ({ idp }: GetId) => {
     };
 
     const index = findByID(id) || 0;
-    console.log(index);
 
     const handleAddToCart = (quantity: number) => {
         if (product) {

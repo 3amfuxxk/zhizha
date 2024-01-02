@@ -503,8 +503,6 @@ const DetailsPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    console.log(recs);
-
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
     const cartDetails = useSelector(selectDetails);
@@ -527,7 +525,6 @@ const DetailsPage = ({ idp }: GetId) => {
 
             if (!isProductInCart) {
                 dispatch(addDetailToCart(SelectedDetailToAdd));
-                console.log(SelectedDetailToAdd);
             } else {
                 console.log('Этот товар уже есть в корзине');
             }

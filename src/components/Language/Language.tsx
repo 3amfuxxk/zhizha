@@ -68,7 +68,6 @@ const Language = () => {
     const toggle = () => {
         setExpanded(!expanded);
     };
-
     return (
         <LanguageBlock style={{ height: expanded ? '103px' : '50px' }}>
             <LanguageBar>
