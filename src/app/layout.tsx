@@ -3,6 +3,7 @@ import './globals.css'
 import { Manrope } from 'next/font/google'
 import { StoreProvider } from '@/store/StoreProvider';
 
+
 const manrope = Manrope({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
   style: ['normal'],

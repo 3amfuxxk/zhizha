@@ -164,7 +164,6 @@ const LiquidBlock = () => {
                     })),
                 }));
                 setData(modifiedData);
-                console.log(modifiedData);
             } catch (error) {
                 console.error('Ошибка запроса:', error);
             }

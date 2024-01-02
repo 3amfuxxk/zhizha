@@ -27,6 +27,8 @@ const ImgBlock = styled.div`
     height: 280px;
     border-radius: 6px;
     overflow: hidden;
+    max-width: 100%;
+    max-height: 100%;
     @media (max-width: 430px) {
         width: 100%;
         height: 182px;
@@ -150,7 +152,7 @@ interface ProductOption {
     volume: number;
 }
 
-const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToCart }: Props) => {
+const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToCart}: Props) => {
 
     const handleOpen = () => {
         const addContainer = document.getElementById('add-container');

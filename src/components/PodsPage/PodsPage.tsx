@@ -12,6 +12,7 @@ import { addPodToCart } from '../../store/slice';
 import { selectPods } from '../../store/slice';
 import { useEffect } from "react";
 import axios from "axios";
+import PodCard from '../../components/PodCard/PodCard';
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -412,6 +413,34 @@ const Color = styled.div`
     border-radius: 50%;
 `
 
+const RecContainer = styled.div`
+    display: flex;
+    width: 100%;
+    height: auto;
+    gap: 17px;
+    flex-direction: column;
+    padding: 34px 0px;
+    flex-shrink: 0;
+    border-radius: 18px;
+`
+const RecBlock = styled.div`
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    @media (max-width: 430px) {
+        display: grid; 
+  grid-auto-columns: 1fr; 
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: 1fr 1fr; 
+  gap: 10px 10px; 
+  grid-template-areas: 
+    ". ."
+    ". ."; 
+        justify-content: unset;
+    }
+`
+
 interface Pods {
     id: string;
     title: string;
@@ -468,6 +497,25 @@ const PodsPage = ({ idp }: GetId) => {
 
         fetchProduct();
     }, [idp]);
+
+    const [recs, setRecs] = useState<Pods[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/products/recommendations/${idp}`);
+                const recsData = response.data as Pods[];
+                setRecs(recsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setRecs(null);
+            }
+        };
+
+        fetchProduct();
+    }, [idp]);
+
+    console.log(recs);
 
     console.log(product);
 
@@ -585,7 +633,7 @@ const PodsPage = ({ idp }: GetId) => {
                                     setSelectedColor(charItem.color);
                                 }}
                             >
-                                <Color style={{backgroundColor: `${charItem.color}`}} />
+                                <Color style={{ backgroundColor: `${charItem.color}` }} />
                             </ColorBlock>
                         ))}
                     </Specs>
@@ -635,6 +683,33 @@ const PodsPage = ({ idp }: GetId) => {
                     </ValueBlock>
                 </FullDataBlock>
             </FullData> */}
+            <RecContainer>
+                <DescHeader>
+                    Схожі товари
+                </DescHeader>
+                <RecBlock>
+                    {recs?.map((item, index) => (
+                        <Link key={index} href={{ pathname: '/podsproduct', query: { id: item.id } }}>
+                            <PodCard
+                                id={item.id}
+                                code={item.code}
+                                title={item.title}
+                                desc={item.desc}
+                                short_desc={item.short_desc}
+                                starting_price={item.starting_price}
+                                sale_price={item.sale_price}
+                                discount={item.discount}
+                                in_stock={item.in_stock}
+                                // image={item.image}
+                                image={'/img/Card/rb.jpg'}
+                                wide_image={item.wide_image}
+                                categories={item.categories}
+                                chars={item.chars}
+                            />
+                        </Link>
+                    ))}
+                </RecBlock>
+            </RecContainer>
         </ProductContainer>
     )
 }

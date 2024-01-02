@@ -12,6 +12,7 @@ import { addToCart } from '../../store/slice';
 import { selectCart } from '../../store/slice';
 import { useEffect } from "react";
 import axios from "axios";
+import Card from "../Card/Card";
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -323,71 +324,32 @@ const Imgfull = styled(Image)`
         height: 230px;
     }
 `
-const FullData = styled.div`
+const RecContainer = styled.div`
     display: flex;
     width: 100%;
-    height: 542px;
+    height: auto;
+    gap: 17px;
+    flex-direction: column;
+    padding: 34px 0px;
     flex-shrink: 0;
     border-radius: 18px;
-    background: #141414;
-    padding: 34px 29px 29px 29px;
-    flex-direction: column;
 `
-const FullDataBlock = styled.div`
+const RecBlock = styled.div`
     display: flex;
     width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-`
-const DataValue = styled.p`
-    color: rgba(255, 255, 255, 0.80);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
-`
-const ValueBlock = styled.div`
-    display: flex;
     height: auto;
-    width: auto;
-    gap: 18px;
-    flex-direction: column;
-`
-const ValueName = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-`
-const ValueRow = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-`
-const ButtonContainer = styled.div`
-        display: flex;
-        flex-shrink: 0;
-        border-radius: 8px;
-        background: #B6020D;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
+    justify-content: space-between;
     @media (max-width: 430px) {
-        width: 100%;
-        height: 46px;
+        display: grid; 
+  grid-auto-columns: 1fr; 
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: 1fr 1fr; 
+  gap: 10px 10px; 
+  grid-template-areas: 
+    ". ."
+    ". ."; 
+        justify-content: unset;
     }
-`
-const TextButton = styled.p`
-    color: #FFF;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-`
-const ButtonBlock = styled.div`
-    display: flex;
-    gap: 7px;
 `
 
 interface AddToCartProduct {
@@ -429,6 +391,7 @@ interface GetId {
 }
 
 const ProductPage = ({ idp }: GetId) => {
+
     console.log(idp);
 
     const [product, setProduct] = useState<Product | null>(null);
@@ -448,7 +411,24 @@ const ProductPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    console.log(product);
+    const [recs, setRecs] = useState<Product[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://35.180.189.210/api/v1/products/recommendations/${idp}`);
+                const recsData = response.data as Product[];
+                setRecs(recsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setRecs(null);
+            }
+        };
+
+        fetchProduct();
+    }, [idp]);
+
+    console.log(recs);
 
     const [selectedNico, setSelectedNico] = useState<number>(-1);
     const [selectedVolume, setSelectedVolume] = useState<number>(-1);
@@ -485,7 +465,6 @@ const ProductPage = ({ idp }: GetId) => {
     };
 
     const id = findIdByOptions(selectedNico, selectedVolume) || 0;
-    console.log(id);
 
     const findByID = (id: number) => {
         const selectedIndex = product?.options.findIndex((item) => item.id === id);
@@ -493,7 +472,6 @@ const ProductPage = ({ idp }: GetId) => {
     };
 
     const index = findByID(id) || 0;
-    console.log(index);
 
     const handleAddToCart = (quantity: number) => {
         if (product) {
@@ -626,31 +604,28 @@ const ProductPage = ({ idp }: GetId) => {
                     <Imgfull src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
-            {/* <FullData>
+            <RecContainer>
                 <DescHeader>
-                    Характеристики {selectedProduct?.title}:
+                    Схожі товари
                 </DescHeader>
-                <FullDataBlock className={roboto.className}>
-                    <ValueBlock>
-                        <ValueRow>
-                            <Active>
-                                Лід
-                            </Active>
-                            <DataValue>
-                                Так/ні
-                            </DataValue>
-                        </ValueRow>
-                        <ValueRow>
-                            <Active>
-                                Вага
-                            </Active>
-                            <DataValue>
-                                50 гр
-                            </DataValue>
-                        </ValueRow>
-                    </ValueBlock>
-                </FullDataBlock>
-            </FullData> */}
+                <RecBlock>
+                    {recs?.map((item, index) => (
+                        <Link key={index} href={{ pathname: '/product', query: { id: item.id } }}>
+                            <Card
+                                code={item.code}
+                                desc={item.desc}
+                                ice={item.ice}
+                                categories={item.categories}
+                                // image={item.image}
+                                image={'/img/Card/rb.jpg'}
+                                title={item.title}
+                                id={item.id}
+                                options={item.options}
+                            />
+                        </Link>
+                    ))}
+                </RecBlock>
+            </RecContainer>
         </ProductContainer>
     )
 }

@@ -165,7 +165,6 @@ const AccessoriesBlock = () => {
 
         fetchProduct();
     }, []);
-    console.log(data);
 
     return (
         <LiquidContainer>
