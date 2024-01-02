@@ -7,6 +7,7 @@ const Container = styled.div`
   width: 100%;
   gap: 7px;
   align-items: center;
+  margin-top: 8px;
 `;
 
 interface StyledContainerProps {

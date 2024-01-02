@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { addLiquid } from '../../store/favs';
 
 const CardContainer = styled.div`
     display: flex;
@@ -152,7 +154,7 @@ interface ProductOption {
     volume: number;
 }
 
-const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToCart}: Props) => {
+const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToCart }: Props) => {
 
     const handleOpen = () => {
         const addContainer = document.getElementById('add-container');
@@ -174,6 +176,22 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
     const buttonProps = isMobile
         ? { width: 38, height: 38 }
         : { text: 'В кошик', width: 135, height: 38 };
+
+    const dispatch = useDispatch();
+    const handleAddToFavs = () => {
+        const liquidToAdd: Product = {
+            id,
+            title,
+            code,
+            ice,
+            desc,
+            image,
+            categories,
+            options,
+        }
+        dispatch(addLiquid(liquidToAdd));
+        console.log(liquidToAdd);
+    }
 
     return (
         <CardContainer>
@@ -200,7 +218,7 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                     <Button onClick={handleAddToCart} {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock>
+                    <LikeBlock onClick={handleAddToFavs}>
                         <Image src={'/img/Card/svg/heart.svg'} width={16} height={13.995} alt="" />
                     </LikeBlock>
                 </AddBlock>

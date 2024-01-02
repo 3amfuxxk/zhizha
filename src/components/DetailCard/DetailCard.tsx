@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { addDetail } from '../../store/favs';
 
 const CardContainer = styled.div`
     display: flex;
@@ -138,7 +140,7 @@ interface Chars {
     value: string;
 }
 
-const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, discount, in_stock, image, categories, chars }: Details) => {
+const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, discount, in_stock, image, categories, chars, wide_image }: Details) => {
 
     const isMobile = window.innerWidth <= 430;
 
@@ -146,6 +148,26 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         ? { width: 38, height: 38 }
         : { text: 'В кошик', width: 135, height: 38 };
 
+    const dispatch = useDispatch();
+    const handleAddToFavs = () => {
+        const DetailToAdd: Details = {
+            id,
+            title,
+            code,
+            desc,
+            image,
+            categories,
+            short_desc,
+            starting_price,
+            sale_price,
+            discount,
+            in_stock,
+            wide_image,
+            chars,
+        }
+        dispatch(addDetail(DetailToAdd));
+        console.log(DetailToAdd);
+    }
     return (
         <CardContainer>
             <ImgBlock>
@@ -171,7 +193,7 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock>
+                    <LikeBlock onClick={handleAddToFavs}>
                         <Image src={'/img/Card/svg/heart.svg'} width={16} height={13.995} alt="" />
                     </LikeBlock>
                 </AddBlock>

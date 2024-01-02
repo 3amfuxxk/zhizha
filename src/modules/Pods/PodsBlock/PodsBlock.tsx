@@ -188,7 +188,7 @@ const PodsBlock = () => {
                             Каталог
                         </TextInactive>
                     </Link>
-                    <Link href={"/podsproduct"} >
+                    <Link href={"/pods"} >
                         <Active>
                             Поди
                         </Active>

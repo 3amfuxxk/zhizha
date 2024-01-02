@@ -673,9 +673,11 @@ const Header = () => {
                     <Image src={'/img/Header/search.svg'} width={16} height={16} alt="" />
                 </Search>
                 <Language />
-                <Like>
-                    <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
-                </Like>
+                <Link href="/favorites">
+                    <Like>
+                        <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
+                    </Like>
+                </Link>
                 <CartContainer>
                     <Cart onClick={toggleOpen}>
                         <RoundCount>
