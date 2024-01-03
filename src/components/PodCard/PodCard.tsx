@@ -226,7 +226,7 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock onClick={handleAddToFavs}>
-                        <Image src={'/img/Card/svg/heart.svg'} width={16} height={13.995} alt="" />
+                        <Heart />
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>
