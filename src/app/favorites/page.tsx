@@ -8,6 +8,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import FavBlock from "../../modules/Favorites/FavBlock/FavBlock";
 
 export default function Home() {
+    // const cookieStore = cookies()
+    // const cookes = cookieStore.getAll().map((cookie) => (
+    //     <div key={cookie.name}>
+    //         <p>Name: {cookie.name}</p>
+    //         <p>Value: {cookie.value}</p>
+    //     </div>
+    // ))
+    // console.log(cookes);
 
     return (
         <div>

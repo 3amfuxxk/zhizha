@@ -5,6 +5,9 @@ import Image from 'next/image';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { addLiquid } from '../../store/favs';
+import { useCookies } from 'react-cookie';
+import { RootState } from '../../store/store';
+import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
     display: flex;
@@ -120,6 +123,9 @@ const LikeBlock = styled.div`
     background: #141414;
     cursor: pointer;
 `
+interface LiquidID {
+    id: string;
+}
 
 interface Product {
     id: string;
@@ -176,20 +182,51 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
     const buttonProps = isMobile
         ? { width: 38, height: 38 }
         : { text: 'В кошик', width: 135, height: 38 };
+        
 
+    const favsState = useSelector((state: RootState) => state.favs);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
     const dispatch = useDispatch();
     const handleAddToFavs = () => {
-        const liquidToAdd: Product = {
+        const liquidToAdd: LiquidID = {
             id,
-            title,
-            code,
-            ice,
-            desc,
-            image,
-            categories,
-            options,
         }
-        dispatch(addLiquid(liquidToAdd));
+    
+        let updatedProducts = [];
+    
+        // Проверяем наличие айди в массиве favoriteProducts.products
+        if (favoriteProducts && favoriteProducts.products) {
+            const existingIndex = favoriteProducts.products.findIndex(
+                (product: LiquidID) => product.id === id
+            );
+    
+            if (existingIndex !== -1) {
+                // Если айди уже есть в массиве, удаляем его
+                updatedProducts = favoriteProducts.products.filter(
+                    (product: LiquidID) => product.id !== id
+                );
+            } else {
+                // Если айди отсутствует, добавляем его в массив
+                updatedProducts = [...favoriteProducts.products, liquidToAdd];
+            }
+        } else {
+            // Если массив пуст или отсутствует, добавляем первый элемент
+            updatedProducts = [liquidToAdd];
+        }
+    
+        // Обновляем объект с обновленным массивом айди
+        const updatedFavs = {
+            ...favoriteProducts,
+            products: updatedProducts,
+        };
+    
+        // Сохраняем обновленные данные в куки
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
+    
         console.log(liquidToAdd);
     }
 
@@ -219,7 +256,7 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock onClick={handleAddToFavs}>
-                        <Image src={'/img/Card/svg/heart.svg'} width={16} height={13.995} alt="" />
+                        <Heart />
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

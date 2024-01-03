@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from 'styled-components';
 import Container from "../components/Container/Container";
 import Header from "../components/Header/Header";
@@ -12,23 +12,31 @@ import Recommendation from "../components/Recommendation/Recommendation";
 import Advertising from "../components/Advertising/Advertising";
 import Stories from "../components/Stories/Stories";
 import HotSlider from "../components/HotSlider/HotSlider";
+import { CookiesProvider } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 
 export default function Home() {
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
+  useEffect(() => {
+    console.log('Cookies: ', cookies);
+  }, [cookies]);
   return (
-      <div>
-        <Container>
-          <Header/>
-          <HomeSection />
-          <Stories />
-          <Advertising />
-          <Pros />
-          <HotSlider />
-          <Recommendation />
-          <Blog />
-          <Review />
-          <Footer />
-        </Container>
-      </div>
+      <CookiesProvider>
+        <div>
+          <Container>
+            <Header/>
+            <HomeSection />
+            <Stories />
+            <Advertising />
+            <Pros />
+            <HotSlider />
+            <Recommendation />
+            <Blog />
+            <Review />
+            <Footer />
+          </Container>
+        </div>
+      </CookiesProvider>
   )
 }

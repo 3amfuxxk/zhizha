@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPod } from '../../store/favs';
+import { RootState } from '../../store/store';
+import { useCookies } from 'react-cookie';
+import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
     display: flex;
@@ -116,6 +121,9 @@ const LikeBlock = styled.div`
     background: #141414;
     cursor: pointer;
 `
+interface PodID {
+    id: string;
+}
 
 interface Pods {
     id: string;
@@ -146,6 +154,52 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         ? { width: 38, height: 38 }
         : { text: 'В кошик', width: 135, height: 38 };
 
+    const dispatch = useDispatch();
+    const favsState = useSelector((state: RootState) => state.favs);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
+    const handleAddToFavs = () => {
+        const PodToAdd: PodID = {
+            id,
+        }
+    
+        let updatedPods = [];
+    
+        // Проверяем наличие айди в массиве favoriteProducts.pods
+        if (favoriteProducts && favoriteProducts.pods) {
+            const existingIndex = favoriteProducts.pods.findIndex(
+                (pod: PodID) => pod.id === id
+            );
+    
+            if (existingIndex !== -1) {
+                // Если айди уже есть в массиве, удаляем его
+                updatedPods = favoriteProducts.pods.filter(
+                    (pod: PodID) => pod.id !== id
+                );
+            } else {
+                // Если айди отсутствует, добавляем его в массив
+                updatedPods = [...favoriteProducts.pods, PodToAdd];
+            }
+        } else {
+            // Если массив пуст или отсутствует, добавляем первый элемент
+            updatedPods = [PodToAdd];
+        }
+    
+        // Обновляем объект с обновленным массивом айди подов
+        const updatedFavs = {
+            ...favoriteProducts,
+            pods: updatedPods,
+        };
+    
+        // Сохраняем обновленные данные в куки
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
+    
+        console.log(PodToAdd);
+    }
+
     return (
         <CardContainer>
             <ImgBlock>
@@ -171,7 +225,7 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock>
+                    <LikeBlock onClick={handleAddToFavs}>
                         <Image src={'/img/Card/svg/heart.svg'} width={16} height={13.995} alt="" />
                     </LikeBlock>
                 </AddBlock>
