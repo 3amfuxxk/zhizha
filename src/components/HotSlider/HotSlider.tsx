@@ -124,7 +124,7 @@ const HotSlider = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/hot`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/hot`);
                 const imagesData = response.data as Images;
                 setData(imagesData);
             } catch (error) {

@@ -10,7 +10,7 @@ import ProductPage from "../../components/ProductPage/ProductPage";
 export default function Home() {
   const searchParams = useSearchParams()
   const id = searchParams.get('id');
-  console.log(id);
+  // console.log(id);
   return (
     <div>
       <Container>

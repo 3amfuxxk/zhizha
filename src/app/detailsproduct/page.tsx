@@ -10,7 +10,7 @@ import DetailsPage from "../../components/DetailsPage/DetailsPage";
 export default function Home() {
   const searchParams = useSearchParams()
   const id = searchParams.get('id');
-  console.log(id);
+  // console.log(id);
   return (
     <div>
       <Container>

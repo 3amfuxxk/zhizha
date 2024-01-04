@@ -218,7 +218,7 @@ const Order = () => {
 
     const orderConfirm = async (payload: any) => {
         try {
-            const response = await axios.post('http://35.180.189.210/api/v1/orders/', payload);
+            const response = await axios.post('https://rainzhizha.com/api/v1/orders/', payload);
             console.log('POST request successful:', response.data);
             dispatch(clearCart());
         } catch (error) {

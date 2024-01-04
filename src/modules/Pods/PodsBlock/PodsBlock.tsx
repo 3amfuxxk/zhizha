@@ -154,7 +154,7 @@ const PodsBlock = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/pods`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/pods`);
                 const blogData = response.data as Pods[];
                 setData(blogData);
             } catch (error) {

@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { addLiquid } from '../../store/favs';
-import { useCookies } from 'react-cookie';
-import { RootState } from '../../store/store';
+// import { addLiquid } from '../../store/favs';
+// import { useCookies } from 'react-cookie';
+// import { RootState } from '../../store/store';
 import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
@@ -184,51 +184,51 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
         : { text: 'В кошик', width: 135, height: 38 };
         
 
-    const favsState = useSelector((state: RootState) => state.favs);
-    const [cookies, setCookie] = useCookies(['favoriteProducts']);
-    const favoriteProducts = cookies['favoriteProducts'];
+    // const favsState = useSelector((state: RootState) => state.favs);
+    // const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    // const favoriteProducts = cookies['favoriteProducts'];
     const dispatch = useDispatch();
-    const handleAddToFavs = () => {
-        const liquidToAdd: LiquidID = {
-            id,
-        }
+    // const handleAddToFavs = () => {
+    //     const liquidToAdd: LiquidID = {
+    //         id,
+    //     }
     
-        let updatedProducts = [];
+    //     let updatedProducts = [];
     
-        // Проверяем наличие айди в массиве favoriteProducts.products
-        if (favoriteProducts && favoriteProducts.products) {
-            const existingIndex = favoriteProducts.products.findIndex(
-                (product: LiquidID) => product.id === id
-            );
+    //     // Проверяем наличие айди в массиве favoriteProducts.products
+    //     if (favoriteProducts && favoriteProducts.products) {
+    //         const existingIndex = favoriteProducts.products.findIndex(
+    //             (product: LiquidID) => product.id === id
+    //         );
     
-            if (existingIndex !== -1) {
-                // Если айди уже есть в массиве, удаляем его
-                updatedProducts = favoriteProducts.products.filter(
-                    (product: LiquidID) => product.id !== id
-                );
-            } else {
-                // Если айди отсутствует, добавляем его в массив
-                updatedProducts = [...favoriteProducts.products, liquidToAdd];
-            }
-        } else {
-            // Если массив пуст или отсутствует, добавляем первый элемент
-            updatedProducts = [liquidToAdd];
-        }
+    //         if (existingIndex !== -1) {
+    //             // Если айди уже есть в массиве, удаляем его
+    //             updatedProducts = favoriteProducts.products.filter(
+    //                 (product: LiquidID) => product.id !== id
+    //             );
+    //         } else {
+    //             // Если айди отсутствует, добавляем его в массив
+    //             updatedProducts = [...favoriteProducts.products, liquidToAdd];
+    //         }
+    //     } else {
+    //         // Если массив пуст или отсутствует, добавляем первый элемент
+    //         updatedProducts = [liquidToAdd];
+    //     }
     
-        // Обновляем объект с обновленным массивом айди
-        const updatedFavs = {
-            ...favoriteProducts,
-            products: updatedProducts,
-        };
+    //     // Обновляем объект с обновленным массивом айди
+    //     const updatedFavs = {
+    //         ...favoriteProducts,
+    //         products: updatedProducts,
+    //     };
     
-        // Сохраняем обновленные данные в куки
-        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
-            path: '/',
-            maxAge: 30 * 24 * 60 * 60,
-        });
+    //     // Сохраняем обновленные данные в куки
+    //     setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+    //         path: '/',
+    //         maxAge: 30 * 24 * 60 * 60,
+    //     });
     
-        console.log(liquidToAdd);
-    }
+    //     console.log(liquidToAdd);
+    // }
 
     return (
         <CardContainer>
@@ -255,7 +255,8 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                     <Button onClick={handleAddToCart} {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock onClick={handleAddToFavs}>
+                    {/* <LikeBlock onClick={handleAddToFavs}> */}
+                    <LikeBlock>
                         <Heart />
                     </LikeBlock>
                 </AddBlock>

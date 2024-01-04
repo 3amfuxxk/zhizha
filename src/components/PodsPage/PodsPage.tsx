@@ -485,7 +485,7 @@ const PodsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/pods/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/pods/${idp}`);
                 const productData = response.data as Pods;
                 setProduct(productData);
             } catch (error) {
@@ -502,7 +502,7 @@ const PodsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/products/recommendations/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}`);
                 const recsData = response.data as Pods[];
                 setRecs(recsData);
             } catch (error) {
@@ -694,7 +694,7 @@ const PodsPage = ({ idp }: GetId) => {
                                 discount={item.discount}
                                 in_stock={item.in_stock}
                                 // image={item.image}
-                                image={'/img/Card/rb.jpg'}
+                                image={item.image}
                                 wide_image={item.wide_image}
                                 categories={item.categories}
                                 chars={item.chars}

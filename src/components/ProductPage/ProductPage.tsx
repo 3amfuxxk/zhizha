@@ -373,6 +373,7 @@ interface Product {
     short_desc: string;
     ice: boolean;
     image: string;
+    wide_image: string;
     categories: string[];
     options: ProductOption[];
 }
@@ -397,7 +398,7 @@ const ProductPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/products/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/${idp}`);
                 const productData = response.data as Product;
                 setProduct(productData);
             } catch (error) {
@@ -414,7 +415,7 @@ const ProductPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/products/recommendations/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}`);
                 const recsData = response.data as Product[];
                 setRecs(recsData);
             } catch (error) {
@@ -597,7 +598,7 @@ const ProductPage = ({ idp }: GetId) => {
             </DescWhole>
             <ImageWhole>
                 <ImageFull>
-                    <Imgfull src={'/img/Card/rb.jpg'} width={1204} height={520} alt="" />
+                    <Imgfull src={product?.wide_image ? `${product.wide_image}` : '/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
             <RecContainer>
@@ -613,7 +614,7 @@ const ProductPage = ({ idp }: GetId) => {
                                 ice={item.ice}
                                 categories={item.categories}
                                 // image={item.image}
-                                image={'/img/Card/rb.jpg'}
+                                image={item.image}
                                 title={item.title}
                                 id={item.id}
                                 options={item.options}

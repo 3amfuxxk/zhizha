@@ -62,7 +62,7 @@ const Review = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/reviews/`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/reviews/`);
                 const reviewsData = response.data as Reviews[];
                 setReviews(reviewsData);
             } catch (error) {

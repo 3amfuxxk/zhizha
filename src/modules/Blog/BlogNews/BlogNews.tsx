@@ -41,7 +41,7 @@ const Active = styled.p`
     font-weight: 600;
     line-height: 130%;
 `
-const NewsBlock = styled.div<{ maxHeight: number }>`
+const NewssBlock = styled.div<{ maxHeight: number }>`
     display: flex;
     width: 100%;
     gap: 11px;
@@ -96,7 +96,7 @@ const BlogNews = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://35.180.189.210/api/v1/news`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/news`);
                 const blogData = response.data as Blog[];
                 setBlog(blogData);
             } catch (error) {
@@ -140,7 +140,7 @@ const BlogNews = () => {
                     </Active>
                 </Link>
             </LinkPath>
-            <NewsBlock maxHeight={maxHeight}>
+            <NewssBlock maxHeight={maxHeight}>
                 {blog?.map((item, index) => (
                     <CardBlog
                         key={index}
@@ -153,7 +153,7 @@ const BlogNews = () => {
                         topicText={item.paragraph1}
                         link={'/singleblog'} />
                 ))}
-            </NewsBlock>
+            </NewssBlock>
             <More>
                 <ButtonText onClick={toggleExpanded}>
                     Більше

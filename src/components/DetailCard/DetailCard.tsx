@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { addDetail } from '../../store/favs';
-import { RootState } from '../../store/store';
-import { useCookies } from 'react-cookie';
+// import { addDetail } from '../../store/favs';
+// import { RootState } from '../../store/store';
+// import { useCookies } from 'react-cookie';
 import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
@@ -155,50 +155,50 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         : { text: 'В кошик', width: 135, height: 38 };
 
     const dispatch = useDispatch();
-    const favsState = useSelector((state: RootState) => state.favs);
-    const [cookies, setCookie] = useCookies(['favoriteProducts']);
-    const favoriteProducts = cookies['favoriteProducts'];
-    const handleAddToFavs = () => {
-        const DetailToAdd: DetailID = {
-            id,
-        }
+    // const favsState = useSelector((state: RootState) => state.favs);
+    // const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    // const favoriteProducts = cookies['favoriteProducts'];
+    // const handleAddToFavs = () => {
+    //     const DetailToAdd: DetailID = {
+    //         id,
+    //     }
     
-        let updatedDetails = [];
+    //     let updatedDetails = [];
     
-        // Проверяем наличие айди в массиве favoriteProducts.details
-        if (favoriteProducts && favoriteProducts.details) {
-            const existingIndex = favoriteProducts.details.findIndex(
-                (detail: DetailID) => detail.id === id
-            );
+    //     // Проверяем наличие айди в массиве favoriteProducts.details
+    //     if (favoriteProducts && favoriteProducts.details) {
+    //         const existingIndex = favoriteProducts.details.findIndex(
+    //             (detail: DetailID) => detail.id === id
+    //         );
     
-            if (existingIndex !== -1) {
-                // Если айди уже есть в массиве, удаляем его
-                updatedDetails = favoriteProducts.details.filter(
-                    (detail: DetailID) => detail.id !== id
-                );
-            } else {
-                // Если айди отсутствует, добавляем его в массив
-                updatedDetails = [...favoriteProducts.details, DetailToAdd];
-            }
-        } else {
-            // Если массив пуст или отсутствует, добавляем первый элемент
-            updatedDetails = [DetailToAdd];
-        }
+    //         if (existingIndex !== -1) {
+    //             // Если айди уже есть в массиве, удаляем его
+    //             updatedDetails = favoriteProducts.details.filter(
+    //                 (detail: DetailID) => detail.id !== id
+    //             );
+    //         } else {
+    //             // Если айди отсутствует, добавляем его в массив
+    //             updatedDetails = [...favoriteProducts.details, DetailToAdd];
+    //         }
+    //     } else {
+    //         // Если массив пуст или отсутствует, добавляем первый элемент
+    //         updatedDetails = [DetailToAdd];
+    //     }
     
-        // Обновляем объект с обновленным массивом айди деталей
-        const updatedFavs = {
-            ...favoriteProducts,
-            details: updatedDetails,
-        };
+    //     // Обновляем объект с обновленным массивом айди деталей
+    //     const updatedFavs = {
+    //         ...favoriteProducts,
+    //         details: updatedDetails,
+    //     };
     
-        // Сохраняем обновленные данные в куки
-        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
-            path: '/',
-            maxAge: 30 * 24 * 60 * 60,
-        });
+    //     // Сохраняем обновленные данные в куки
+    //     setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+    //         path: '/',
+    //         maxAge: 30 * 24 * 60 * 60,
+    //     });
     
-        console.log(DetailToAdd);
-    }
+    //     console.log(DetailToAdd);
+    // }
     return (
         <CardContainer>
             <ImgBlock>
@@ -224,7 +224,8 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock onClick={handleAddToFavs}>
+                    {/* <LikeBlock onClick={handleAddToFavs}> */}
+                    <LikeBlock>    
                         <Heart />
                     </LikeBlock>
                 </AddBlock>

@@ -13,14 +13,14 @@ import Advertising from "../components/Advertising/Advertising";
 import Stories from "../components/Stories/Stories";
 import HotSlider from "../components/HotSlider/HotSlider";
 import { CookiesProvider } from 'react-cookie';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 
 export default function Home() {
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  // const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
-  useEffect(() => {
-    console.log('Cookies: ', cookies);
-  }, [cookies]);
+  // useEffect(() => {
+  //   console.log('Cookies: ', cookies);
+  // }, [cookies]);
   return (
       <CookiesProvider>
         <div>
