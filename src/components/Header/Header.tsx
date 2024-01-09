@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
 import { selectCart, selectPods, selectDetails } from "../../store/slice";
 import { removeFromCart, removePodFromCart, removeDetailFromCart } from '../../store/slice';
-import { Dispatch } from "@reduxjs/toolkit";
+import Searchbar from "../../modules/Searchbar/Searchbar";
+import Searchsvg from '../../../public/img/Header/search.svg';
+import Closesvg from '../../../public/img/Header/close.svg';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -35,6 +37,7 @@ const NavBlock = styled.div`
     display: flex;
     gap: 12px;
     padding: 0px 180px;
+    position: relative;
     @media (max-width: 430px) {
         padding: 0px;
     }
@@ -93,6 +96,7 @@ const Search = styled.div`
     align-items: center;
     display: flex;
     cursor: pointer;
+    user-select: none;
     @media (max-width: 430px) {
         margin-left: 100px;
         display: none;
@@ -509,6 +513,12 @@ const RoundBlock = styled.div`
     top: 0;
     transition: width 0.3s ease;
 `
+const CloseSvg = styled(Closesvg)`
+    display: none;
+`
+const SearchSvg = styled(Searchsvg)`
+    display: flex;
+`
 
 const NavPart = styled.div`
     width: auto;
@@ -595,6 +605,28 @@ const Header = () => {
         }
     }
 
+    const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
+
+    const showSearch = () => {
+        if (typeof document !== 'undefined') {
+            const searchBar = document.getElementById('search-bar');
+            const searchSvg = document.getElementById('search-svg');
+            const closeSvg = document.getElementById('close-svg');
+            if (searchBar && searchSvg && closeSvg) {
+                if (!isSearchVisible) {
+                    searchBar.style.top = '0px';
+                    searchSvg.style.display = 'none';
+                    closeSvg.style.display = 'flex';
+                } else {
+                    searchBar.style.top = '-100px';
+                    searchSvg.style.display = 'flex';
+                    closeSvg.style.display = 'none';
+                }
+                setIsSearchVisible(prevState => !prevState);
+            }
+        }
+    };
+
     const dispatch = useDispatch();
 
     const handleRemoveFromCart = (id: number) => {
@@ -650,6 +682,12 @@ const Header = () => {
 
     const orderCost = totalCost + totalPodCost - totalSale - totalPodSale + totalDetailCost - totalDetailSale;
 
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const clearInput = () => {
+        setSearchTerm('');
+    };
+
     return (
         <HeaderBlock>
             <Link href={'/'}>
@@ -665,12 +703,14 @@ const Header = () => {
                 <span onClick={showContact}>
                     <NavButton text={'Контакти'} svgLink={'order.svg'} />
                 </span>
+                <Searchbar />
             </NavBlock>
             <Bar>
                 <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} id="burger-menu" />
                 <Cross src={'/img/Header/cross.svg'} width={40} height={40} alt="" onClick={hideMenu} id="cross-menu" />
-                <Search>
-                    <Image src={'/img/Header/search.svg'} width={16} height={16} alt="" />
+                <Search onClick={showSearch}>
+                    <SearchSvg id="search-svg" />
+                    <CloseSvg id="close-svg" />
                 </Search>
                 <Language />
                 {/* <Link href="/favorites"> */}
