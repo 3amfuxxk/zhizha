@@ -5,6 +5,8 @@ import axios from 'axios';
 import SearchItem from '../SearchItem/SearchItem';
 import Link from 'next/link';
 import Right from '../../../public/img/Header/right-sm.svg';
+import { useDispatch } from 'react-redux';
+import { getLiquidResults, getDetailResults, getPodResults } from '@/store/search';
 
 const SearchBlock = styled.div`
     display: flex;
@@ -65,6 +67,7 @@ const StInp = styled.input`
         padding-top: 3px;
     }
 `
+// For Liquids
 interface Product {
     id: string;
     title: string;
@@ -84,6 +87,7 @@ interface ProductOption {
     nico: number;
     volume: number;
 }
+// For Pods
 interface Pods {
     id: string;
     title: string;
@@ -98,14 +102,13 @@ interface Pods {
     wide_image: string;
     categories: string[];
     chars: Chars[];
-    options: any[];
 }
 
 interface Chars {
     id: number;
     color: string;
 }
-
+// For Deatails
 interface Details {
     id: string;
     title: string;
@@ -118,7 +121,6 @@ interface Details {
     in_stock: boolean;
     image: string;
     wide_image: string;
-    wide_card: string;
     categories: string[];
     chars: Charss[];
 }
@@ -254,14 +256,18 @@ const Searchbar = () => {
     const [podResults, setPodResults] = useState<Pods[]>([]);
     const [detailResults, setDetailResults] = useState<Details[]>([]);
 
+    const clearData = () => {
+        setLiquidResults([]);
+        setPodResults([]);
+        setDetailResults([]);
+    }
+
     const handleSearch = (event: any) => {
         const value = event.target.value;
         setSearchTerm(value);
 
         if (value.trim() === '') {
-            setLiquidResults([]);
-            setPodResults([]);
-            setDetailResults([]);
+            clearData();
             return;
         }
 
@@ -274,7 +280,6 @@ const Searchbar = () => {
         setDetailResults(detailsResults || []);
     }
     const totalResultsCount = liquidResults.length + podResults.length + detailResults.length;
-
     useEffect(() => {
         const interval = setInterval(() => {
             const searchBar = document.getElementById('search-bar');
@@ -296,6 +301,19 @@ const Searchbar = () => {
     }, []);
 
 
+
+    const dispatch = useDispatch();
+
+    const allSearches = () => {
+        if (liquidResults.length > 0 || podResults.length > 0 || detailResults.length > 0) {
+            dispatch(getLiquidResults(liquidResults));
+            dispatch(getPodResults(podResults));
+            dispatch(getDetailResults(detailResults));
+        } else {
+            console.log('Нет результатов поиска');
+        }
+    }
+
     return (
         <SearchWrap id="search-bar">
             <SearchBlock>
@@ -303,11 +321,13 @@ const Searchbar = () => {
                     <Search />
                     <StInp placeholder='Search through our shop' value={searchTerm} onChange={handleSearch} />
                 </MnBlock>
-                <SearchButton>
-                    <SrBut>
-                        Search
-                    </SrBut>
-                </SearchButton>
+                <Link href="/search" onClick={() => {allSearches(), clearData()}}>
+                    <SearchButton>
+                        <SrBut>
+                            Search
+                        </SrBut>
+                    </SearchButton>
+                </Link>
             </SearchBlock>
             {totalResultsCount > 0 && (
                 <ListProd>
@@ -355,12 +375,14 @@ const Searchbar = () => {
                         </ProductHolders>
                     )}
                     {totalResultsCount !== undefined && totalResultsCount > 4 && (
-                        <LookMore>
-                            <TextMore>
-                                Показати ще {totalResultsCount - 4} пошуків
-                            </TextMore>
-                            <Right />
-                        </LookMore>
+                        <Link href="/search" onClick={() => {allSearches(), clearData()}}>
+                            <LookMore>
+                                <TextMore>
+                                    Показати ще {totalResultsCount - 4} пошуків
+                                </TextMore>
+                                <Right />
+                            </LookMore>
+                        </Link>
                     )}
                 </ListProd>
             )}

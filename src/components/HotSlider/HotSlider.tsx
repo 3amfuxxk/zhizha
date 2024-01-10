@@ -50,6 +50,7 @@ const Slide = styled.div`
     border: 1px solid #282828;
     background: #1F1E1F;
     flex-shrink: 0;
+    overflow: hidden;
 `
 const NavSlider = styled.div`
     display: flex;
