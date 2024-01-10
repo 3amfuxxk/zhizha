@@ -13,12 +13,8 @@ const LanguageBlock = styled.div`
     overflow: hidden;
     position: relative;
     transition: height 0.3s ease;
-    position: absolute;
-    left: 62px;
-    top:0;
     @media (max-width: 430px) {
-        left: 75px;
-        display: none;
+
     }
 `
 
@@ -62,7 +58,7 @@ const Img = styled(Image)`
     rotate: 0deg;
 `
 
-const Language = () => {
+const LanguageMobile = () => {
     const [expanded, setExpanded] = useState(false);
 
     const toggle = () => {
@@ -88,4 +84,4 @@ const Language = () => {
     )
 }
 
-export default Language;
+export default LanguageMobile;

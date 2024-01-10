@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import NavButton from "../NavButton/NavButton";
@@ -12,6 +12,7 @@ import { removeFromCart, removePodFromCart, removeDetailFromCart } from '../../s
 import Searchbar from "../../modules/Searchbar/Searchbar";
 import Searchsvg from '../../../public/img/Header/search.svg';
 import Closesvg from '../../../public/img/Header/close.svg';
+import Logo from '../../../public/img/Logo/logo_ng.svg';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -31,6 +32,7 @@ const HeaderBlock = styled.div`
     @media (max-width: 430px) {
         justify-content: space-between;
         padding: 0px 10px 0px 18px;
+        gap: 10px;
     }
 `
 const NavBlock = styled.div`
@@ -40,6 +42,8 @@ const NavBlock = styled.div`
     position: relative;
     @media (max-width: 430px) {
         padding: 0px;
+        position: absolute;
+        width: 78%;
     }
 `
 const Bar = styled.div`
@@ -47,6 +51,9 @@ const Bar = styled.div`
     position: relative;
     width: 297px;
     align-items: center;
+    @media (max-width: 430px) {
+        width: 100%;
+    }
 `
 const Img = styled(Image)`
     cursor: pointer;
@@ -97,9 +104,8 @@ const Search = styled.div`
     display: flex;
     cursor: pointer;
     user-select: none;
+    transition: all 0.1s ease;
     @media (max-width: 430px) {
-        margin-left: 100px;
-        display: none;
     }
 `
 const Cart = styled.div`
@@ -607,20 +613,53 @@ const Header = () => {
 
     const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false);
 
+    const [windowWidth, setWindowWidth] = useState<number>(0);
+
+    if (typeof window !== 'undefined') {
+        useEffect(() => {
+            const handleResize = () => {
+                setWindowWidth(window.innerWidth);
+            };
+
+            handleResize();
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }, []);
+    }
+
+    console.log(windowWidth);
     const showSearch = () => {
         if (typeof document !== 'undefined') {
             const searchBar = document.getElementById('search-bar');
             const searchSvg = document.getElementById('search-svg');
             const closeSvg = document.getElementById('close-svg');
-            if (searchBar && searchSvg && closeSvg) {
+            const searchButton = document.getElementById('search-button');
+            const cartButton = document.getElementById('cart-button');
+            const burger = document.getElementById('burger-menu');
+            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger) {
                 if (!isSearchVisible) {
                     searchBar.style.top = '0px';
                     searchSvg.style.display = 'none';
                     closeSvg.style.display = 'flex';
+                    if (windowWidth <= 430) {
+                        searchBar.style.top = '-25px';
+                        searchButton.style.marginLeft = 'auto';
+                        cartButton.style.display = 'none';
+                        burger.style.display = 'none';
+                    }
                 } else {
                     searchBar.style.top = '-100px';
                     searchSvg.style.display = 'flex';
                     closeSvg.style.display = 'none';
+                    if (windowWidth <= 430) {
+                        searchButton.style.marginLeft = '0';
+                        cartButton.style.display = 'flex';
+                        burger.style.display = 'flex';
+                    }
                 }
                 setIsSearchVisible(prevState => !prevState);
             }
@@ -691,7 +730,7 @@ const Header = () => {
     return (
         <HeaderBlock>
             <Link href={'/'}>
-                <Img src={'/img/Logo/logo_ng.png'} width={37} height={44.769} alt='Logo' />
+                <Logo />
             </Link>
             <NavBlock>
                 <Link href={{ pathname: '/catalog' }}>
@@ -708,7 +747,7 @@ const Header = () => {
             <Bar>
                 <Burger src={'/img/Header/burger.svg'} width={40} height={40} alt="" onClick={showMenu} id="burger-menu" />
                 <Cross src={'/img/Header/cross.svg'} width={40} height={40} alt="" onClick={hideMenu} id="cross-menu" />
-                <Search onClick={showSearch}>
+                <Search onClick={showSearch} id="search-button">
                     <SearchSvg id="search-svg" />
                     <CloseSvg id="close-svg" />
                 </Search>
@@ -720,7 +759,7 @@ const Header = () => {
                     </Like>
                 </Link>
                 <CartContainer>
-                    <Cart onClick={toggleOpen}>
+                    <Cart onClick={toggleOpen} id="cart-button">
                         <RoundCount>
                             <ItemsCount>
                                 {cartProducts.length + cartPods.length + cartDetails.length}

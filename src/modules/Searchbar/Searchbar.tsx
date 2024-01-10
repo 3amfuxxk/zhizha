@@ -18,6 +18,10 @@ const SearchBlock = styled.div`
     background: #141414;
     padding: 12px 0px;
     position: relative;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 52px;
+    }
 `
 const SearchButton = styled.div`
     display: flex;
@@ -32,6 +36,9 @@ const SearchButton = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    @media (max-width: 430px) {
+        display: none;   
+    }
 `
 const SrBut = styled.p`
     color: #FFF;
@@ -65,6 +72,9 @@ const StInp = styled.input`
     &::placeholder {
         color: rgba(255, 255, 255, 0.50);
         padding-top: 3px;
+    }
+    @media (max-width: 430px) {
+        width: 90%;
     }
 `
 // For Liquids
@@ -138,6 +148,10 @@ const SearchWrap = styled.div`
     top: -100px;
     transition: all 0.3s ease;
     width: auto;
+    @media (max-width: 430px) {
+        z-index: 4;
+        width: 100%;
+    }
 `
 const ListProd = styled.div`
     display: flex;
@@ -152,6 +166,9 @@ const ListProd = styled.div`
     background: #141414;
     padding: 14px;
     overflow: hidden;
+    @media (max-width: 430px) {
+        width: 117%;
+    }
 `
 const Long = styled.span`
     display: flex;
@@ -194,6 +211,24 @@ const TextMore = styled.div`
 
 const Searchbar = () => {
     const [liquids, setLiquid] = useState<Product[] | null>(null);
+
+    const [windowWidth, setWindowWidth] = useState<number>(0);
+
+    if (typeof window !== 'undefined') {
+        useEffect(() => {
+            const handleResize = () => {
+                setWindowWidth(window.innerWidth);
+            };
+
+            handleResize();
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }, []);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -280,27 +315,73 @@ const Searchbar = () => {
         setDetailResults(detailsResults || []);
     }
     const totalResultsCount = liquidResults.length + podResults.length + detailResults.length;
+    // useEffect(() => {
+    //     const searchBar = document.getElementById('search-bar');
+
+    //     if (!searchBar) {
+    //       return;
+    //     }
+
+    //     const handleMutation = (mutationsList: MutationRecord[]) => {
+    //       for (const mutation of mutationsList) {
+    //         if (mutation.attributeName === 'style') {
+    //           const computedStyle = window.getComputedStyle(searchBar);
+    //           const topValue = computedStyle.getPropertyValue('top');
+
+    //           if (topValue !== '0px') {
+    //             setSearchTerm('');
+    //             setLiquidResults([]);
+    //             setPodResults([]);
+    //             setDetailResults([]);
+    //           }
+    //         }
+    //       }
+    //     };
+
+    //     const observer = new MutationObserver(handleMutation);
+
+    //     observer.observe(searchBar, { attributes: true, attributeFilter: ['style'] });
+
+    //     return () => observer.disconnect();
+    //   }, []);
+    
     useEffect(() => {
-        const interval = setInterval(() => {
+        if (windowWidth <= 430) {
+          const interval = setInterval(() => {
             const searchBar = document.getElementById('search-bar');
-
+      
             if (searchBar) {
-                const computedStyle = window.getComputedStyle(searchBar);
-                const topValue = computedStyle.getPropertyValue('top');
-
-                if (topValue !== '0px') {
+              const computedStyle = window.getComputedStyle(searchBar);
+              const topValue = computedStyle.getPropertyValue('top');
+      
+              if (topValue !== '-25px') {
+                setSearchTerm('');
+                setLiquidResults([]);
+                setPodResults([]);
+                setDetailResults([]);
+              }
+            }
+          }, 1);
+      
+          return () => clearInterval(interval);
+        } else {
+            const interval = setInterval(() => {
+                const searchBar = document.getElementById('search-bar');
+          
+                if (searchBar) {
+                  const computedStyle = window.getComputedStyle(searchBar);
+                  const topValue = computedStyle.getPropertyValue('top');
+          
+                  if (topValue !== '0px') {
                     setSearchTerm('');
                     setLiquidResults([]);
                     setPodResults([]);
                     setDetailResults([]);
+                  }
                 }
-            }
-        }, 1);
-
-        return () => clearInterval(interval);
-    }, []);
-
-
+              }, 1);
+        }
+      }, [windowWidth]);
 
     const dispatch = useDispatch();
 
@@ -321,7 +402,7 @@ const Searchbar = () => {
                     <Search />
                     <StInp placeholder='Search through our shop' value={searchTerm} onChange={handleSearch} />
                 </MnBlock>
-                <Link href="/search" onClick={() => {allSearches(), clearData()}}>
+                <Link href="/search" onClick={() => { allSearches(), clearData() }}>
                     <SearchButton>
                         <SrBut>
                             Search
@@ -375,7 +456,7 @@ const Searchbar = () => {
                         </ProductHolders>
                     )}
                     {totalResultsCount !== undefined && totalResultsCount > 4 && (
-                        <Link href="/search" onClick={() => {allSearches(), clearData()}}>
+                        <Link href="/search" onClick={() => { allSearches(), clearData() }}>
                             <LookMore>
                                 <TextMore>
                                     Показати ще {totalResultsCount - 4} пошуків

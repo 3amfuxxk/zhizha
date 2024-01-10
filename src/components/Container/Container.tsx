@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
 import Contact from "../../modules/Contact/Contact";
+import LanguageMobile from "../Language/LanguageMobile";
 
 interface ContainerProps {
   children: React.ReactNode;
@@ -97,6 +98,10 @@ const BlurBack = styled.div`
         justify-content: center;
         align-items: center;
 `
+const NavRow = styled.div`
+  display: flex;
+  gap: 12px;
+`
 
 const Container = ({ children }: ContainerProps) => {
   const showContact = () => {
@@ -118,9 +123,12 @@ const Container = ({ children }: ContainerProps) => {
       </BlurBack>
       <MenuMobile id="menu-mobile">
         <NavCont>
-          <LikeNav>
-            <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
-          </LikeNav>
+          <NavRow>
+            <LikeNav>
+              <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
+            </LikeNav>
+            <LanguageMobile />
+          </NavRow>
           <Link href={{ pathname: '/catalog' }}>
             <NavPart>
               <RoundBlock>
