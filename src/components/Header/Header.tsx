@@ -630,8 +630,6 @@ const Header = () => {
             };
         }, []);
     }
-
-    console.log(windowWidth);
     const showSearch = () => {
         if (typeof document !== 'undefined') {
             const searchBar = document.getElementById('search-bar');
@@ -727,6 +725,10 @@ const Header = () => {
         setSearchTerm('');
     };
 
+    console.log('Zhizhi',cartProducts);
+    console.log('Detali',cartDetails);
+    console.log('Podi',cartPods);
+
     return (
         <HeaderBlock>
             <Link href={'/'}>
@@ -777,8 +779,8 @@ const Header = () => {
                             </CartNav>
                         </CartProducts>
                         <Product id="product-block" className="scrol">
-                            {cartProducts.map((product) => (
-                                <ProductCard key={product.id}>
+                            {cartProducts.map((product, index) => (
+                                <ProductCard key={index}>
                                     <ImageBlock>
                                         <Image src={product.image} width={114} height={114} alt="" />
                                     </ImageBlock>
@@ -792,10 +794,10 @@ const Header = () => {
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {(product.options.sale_price * (productQuantities[product.id] || product.totalQuantity)).toFixed(2)}₴
+                                                    {(product.options.sale_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {product.options.starting_price ? `${(product.options.starting_price * (productQuantities[product.id] || product.totalQuantity)).toFixed(2)}₴` : null}
+                                                    {product.options.starting_price ? `${(product.options.starting_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
                                             <FunctionBlock>
@@ -811,8 +813,8 @@ const Header = () => {
                                     </ProductInfo>
                                 </ProductCard>
                             ))}
-                            {cartPods.map((pod) => (
-                                <ProductCard key={pod.id}>
+                            {cartPods.map((pod, index) => (
+                                <ProductCard key={index}>
                                     <ImageBlock>
                                         <Image src={pod.image} width={114} height={114} alt="" />
                                     </ImageBlock>
@@ -826,10 +828,10 @@ const Header = () => {
                                         <PriceContainer>
                                             <PriceBlock>
                                                 <ProductPrice>
-                                                    {(pod.sale_price * (productQuantities[pod.id] || pod.totalQuantity)).toFixed(2)}₴
+                                                    {(pod.sale_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴
                                                 </ProductPrice>
                                                 <ProductSale>
-                                                    {pod.starting_price ? `${(pod.starting_price * (productQuantities[pod.id] || pod.totalQuantity)).toFixed(2)}₴` : null}
+                                                    {pod.starting_price ? `${(pod.starting_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴` : null}
                                                 </ProductSale>
                                             </PriceBlock>
                                             <FunctionBlock>
@@ -845,8 +847,8 @@ const Header = () => {
                                     </ProductInfo>
                                 </ProductCard>
                             ))}
-                            {cartDetails.map((detail) => (
-                                <ProductCard key={detail.id}>
+                            {cartDetails.map((detail, index) => (
+                                <ProductCard key={index}>
                                     <ImageBlock>
                                         <Image src={detail.image} width={114} height={114} alt="" />
                                     </ImageBlock>

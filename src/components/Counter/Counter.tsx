@@ -25,7 +25,7 @@ const FuncBlock = styled.div`
     color: #FFF;
     user-select: none;
 `
-const Input = styled.input<{inpWidth: number}>`
+const Input = styled.input<{ inpWidth: number }>`
     width: ${(props) => props.inpWidth}px;
     display: flex;
     height: 100%;
@@ -60,7 +60,7 @@ interface Props {
     totalQuantity: number;
 }
 
-const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Props) => {
+const Counter = ({ width, height, inpWidth, onQuantityChange, totalQuantity }: Props) => {
     const [quantity, setQuantity] = useState(1);
 
     const handleIncrement = () => {
@@ -76,23 +76,11 @@ const Counter = ({width, height, inpWidth, onQuantityChange, totalQuantity}: Pro
             onQuantityChange(newQuantity);
         }
     };
-
-    // useEffect(() => {
-    //     const decrementChange = document.getElementById('decrementChange');
-    //     if (decrementChange) {
-    //         if (quantity === 1) {
-    //             decrementChange.style.opacity = '0.3';
-    //         } else {
-    //             decrementChange.style.opacity = '1';
-    //         }
-    //     }
-    // }, [quantity]);
-
     useEffect(() => {
         setQuantity(totalQuantity);
-      });
+    });
 
-    
+
 
     return (
         <CounterBlock width={width} height={height} inpWidth={inpWidth} onQuantityChange={onQuantityChange} totalQuantity={totalQuantity} >

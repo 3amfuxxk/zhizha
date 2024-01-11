@@ -315,35 +315,6 @@ const Searchbar = () => {
         setDetailResults(detailsResults || []);
     }
     const totalResultsCount = liquidResults.length + podResults.length + detailResults.length;
-    // useEffect(() => {
-    //     const searchBar = document.getElementById('search-bar');
-
-    //     if (!searchBar) {
-    //       return;
-    //     }
-
-    //     const handleMutation = (mutationsList: MutationRecord[]) => {
-    //       for (const mutation of mutationsList) {
-    //         if (mutation.attributeName === 'style') {
-    //           const computedStyle = window.getComputedStyle(searchBar);
-    //           const topValue = computedStyle.getPropertyValue('top');
-
-    //           if (topValue !== '0px') {
-    //             setSearchTerm('');
-    //             setLiquidResults([]);
-    //             setPodResults([]);
-    //             setDetailResults([]);
-    //           }
-    //         }
-    //       }
-    //     };
-
-    //     const observer = new MutationObserver(handleMutation);
-
-    //     observer.observe(searchBar, { attributes: true, attributeFilter: ['style'] });
-
-    //     return () => observer.disconnect();
-    //   }, []);
     
     useEffect(() => {
         if (windowWidth <= 430) {
