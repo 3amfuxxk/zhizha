@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
-import Card from '../Card/Card';
-import AddToCart from '../AddToCart/AddToCart';
+import Card from '@/components/Card/CardEN';
+import AddToCart from '@/components/AddToCart/AddToCartEN';
 import axios from 'axios';
 // import { useSelectedProduct } from '../../context/SelectedProduct';
 
@@ -164,7 +164,7 @@ const Recommendation = () => {
                 }));
                 setData(modifiedData);
             } catch (error) {
-                
+
             }
         };
 
@@ -180,13 +180,13 @@ const Recommendation = () => {
                         <Image src={'/img/Recommendation/svg/star.svg'} width={16} height={16} alt="" />
                     </SvgBlock>
                     <HeadText>
-                        Ми рекомендуємо:
+                        We recommend:
                     </HeadText>
                 </HeaderLeft>
                 <Link href="/catalog">
                     <HeaderRight>
                         <LinkText>
-                            До каталогу
+                            To the catalogue
                         </LinkText>
                         <Image src={'/img/Recommendation/svg/arr-rg.svg'} width={14} height={10} alt="" />
                     </HeaderRight>
@@ -213,7 +213,7 @@ const Recommendation = () => {
             <ButtonRow>
                 <ButtonMore onClick={toggleExpanded}>
                     <ButtonText>
-                        Більше
+                        More
                     </ButtonText>
                     <Image src={'/img/Card/svg/dots.svg'} width={16} height={4} alt="" style={{marginTop: "3px"}} />
                 </ButtonMore>

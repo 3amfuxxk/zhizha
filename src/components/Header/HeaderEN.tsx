@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import NavButton from "../NavButton/NavButton";
-import Language from "../Language/Language";
+import Language from "../Language/LanguageEN";
 import Link from "next/link";
 import Counter from "../Counter/Counter";
 import { useDispatch, useSelector } from 'react-redux';
@@ -725,9 +725,9 @@ const Header = () => {
         setSearchTerm('');
     };
 
-    // console.log('Zhizhi',cartProducts);
-    // console.log('Detali',cartDetails);
-    // console.log('Podi',cartPods);
+    // console.log('Zhizhi', cartProducts);
+    // console.log('Detali', cartDetails);
+    // console.log('Podi', cartPods);
 
     return (
         <HeaderBlock>
@@ -736,13 +736,13 @@ const Header = () => {
             </Link>
             <NavBlock>
                 <Link href={{ pathname: '/catalog' }}>
-                    <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
+                    <NavButton text={'Catalogue'} svgLink={'catalog.svg'} />
                 </Link>
                 <Link href={'/shipping'}>
-                    <NavButton text={'Доставка'} svgLink={'contact.svg'} />
+                    <NavButton text={'Shipping'} svgLink={'contact.svg'} />
                 </Link>
                 <span onClick={showContact}>
-                    <NavButton text={'Контакти'} svgLink={'order.svg'} />
+                    <NavButton text={'Contacts'} svgLink={'order.svg'} />
                 </span>
                 <Searchbar />
             </NavBlock>
@@ -773,7 +773,7 @@ const Header = () => {
                         <CartProducts>
                             <CartNav>
                                 <CartHeader>
-                                    Ваш Кошик
+                                    Your Сart
                                 </CartHeader>
                                 <Img src={'/img/Header/close.svg'} width={22} height={22} alt="" onClick={toggleOpen} />
                             </CartNav>
@@ -884,15 +884,15 @@ const Header = () => {
                         </Product>
                         <OrderInfo>
                             <PromoBlock>
-                                <PromoInput placeholder="Введіть ваш промокод" />
+                                <PromoInput placeholder="Enter your promo code" />
                                 <SubmitPromo>
-                                    Активувати
+                                    Activate
                                 </SubmitPromo>
                             </PromoBlock>
                             <OrderPrice>
                                 <InfoPrice>
                                     <SummaryText>
-                                        Сума замовлення
+                                        Order amount
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
@@ -901,7 +901,7 @@ const Header = () => {
                                 </InfoPrice>
                                 <InfoPrice>
                                     <SummaryText>
-                                        Знижки
+                                        Discounts
                                     </SummaryText>
                                     <SpanBot />
                                     <SummaryText>
@@ -910,7 +910,7 @@ const Header = () => {
                                 </InfoPrice>
                                 <InfoPrice>
                                     <TotalPrice>
-                                        До сплати
+                                        To be paid
                                     </TotalPrice>
                                     <SpanBot />
                                     <TotalPrice>
@@ -920,7 +920,7 @@ const Header = () => {
                                 <Link href={'/order'}>
                                     <SubmitOrder>
                                         <OrderText>
-                                            Оформити замовлення
+                                            Place an order
                                         </OrderText>
                                     </SubmitOrder>
                                 </Link>
