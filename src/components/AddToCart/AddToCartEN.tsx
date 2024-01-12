@@ -194,7 +194,7 @@ const Add = styled.div`
     height: 38px;
     flex-shrink: 0;
     border-radius: 8px;
-    opacity: 0.7;
+    /* opacity: 0.7; */
     background: #B6020D;
     cursor: pointer;
     justify-content: center;
@@ -292,7 +292,7 @@ const AddToCart = ({ product }: Props) => {
     const resetValues = () => {
         setUniqueVolumes([]);
         setFilteredNicos([]);
-      };
+    };
 
     const handleCart = (product: Product, quantity: number) => {
         const selectedOptions: ProductOption = product.options[index];
@@ -331,7 +331,7 @@ const AddToCart = ({ product }: Props) => {
                 <AddCard>
                     <Header>
                         <HeadText>
-                            Оберіть параметри:
+                            Select the options:
                         </HeadText>
                         <Close onClick={handleClose}>
                             <Image src={'/img/Card/svg/close.svg'} width={18} height={18} alt="" />
@@ -346,7 +346,7 @@ const AddToCart = ({ product }: Props) => {
                                 {product.title}
                             </Name>
                             <IDBlock>
-                                Код товару: <Span>{product.code}</Span>
+                                Product code: <Span>{product.code}</Span>
                             </IDBlock>
                             <PriceBlock>
                                 <Price>
@@ -358,7 +358,7 @@ const AddToCart = ({ product }: Props) => {
                     </ProductRow>
                     <SpecsBlock>
                         <SectName>
-                            Міцність:
+                            Strength:
                         </SectName>
                         <Specs>
                             {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : product?.options.map((item) => item.nico))).map((uniqueNico, index) => (
@@ -370,14 +370,14 @@ const AddToCart = ({ product }: Props) => {
                                         filterVolumeByNico(uniqueNico);
                                     }}
                                 >
-                                    <Text>{uniqueNico / 10}%({uniqueNico}мг)</Text>
+                                    <Text>{uniqueNico / 10}%({uniqueNico}mg)</Text>
                                 </BlockProps>
                             ))}
                         </Specs>
                     </SpecsBlock>
                     <SpecsBlock>
                         <SectName>
-                            Об’єм:
+                            Volume:
                         </SectName>
                         <Specs>
                             {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : product?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
@@ -389,7 +389,7 @@ const AddToCart = ({ product }: Props) => {
                                         filterNicoByVolume(uniqueVolume);
                                     }}
                                 >
-                                    <Text>{uniqueVolume}мл</Text>
+                                    <Text>{uniqueVolume}ml</Text>
                                 </BlockProps>
                             ))}
                         </Specs>
@@ -397,13 +397,13 @@ const AddToCart = ({ product }: Props) => {
                     <NavBlock>
                         <Leave onClick={handleClose}>
                             <p>
-                                Назад до магазину
+                                Back to the shop
                             </p>
                         </Leave>
-                        <Add onClick={() => {handleCart(product, totalQuantity); handleClose();}}>
+                        <Add onClick={() => { handleCart(product, totalQuantity); handleClose(); }}>
                             <Image src={'/img/Card/svg/cart.svg'} width="13" height={16} alt="" />
                             <p>
-                                Додати в кошик
+                                Add to cart
                             </p>
                         </Add>
                     </NavBlock>

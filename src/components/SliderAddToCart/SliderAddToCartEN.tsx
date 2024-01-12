@@ -194,7 +194,7 @@ const Add = styled.div`
     height: 38px;
     flex-shrink: 0;
     border-radius: 8px;
-    opacity: 0.7;
+    /* opacity: 0.7; */
     background: #B6020D;
     cursor: pointer;
     justify-content: center;

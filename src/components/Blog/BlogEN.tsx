@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import Link from "next/link";
 import Image from "next/image";
-import CardBlog from "@/modules/Blog/Card/Card";
+import CardBlog from "@/modules/Blog/Card/CardEN";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -122,12 +122,12 @@ const Blog = () => {
         <BlogContainer>
             <Header>
                 <HeaderText>
-                    Останні новини:
+                    Latest news:
                 </HeaderText>
                 <Link href={'/blog'}>
                     <BlogLink>
                         <SmallText>
-                            Наш блог
+                            Our blog
                         </SmallText>
                         <Img src={'/img/Blog/svg/arrow-right.svg'} width={14} height={10} alt="" />
                     </BlogLink>

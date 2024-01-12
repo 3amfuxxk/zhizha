@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import Link from 'next/link';
-import Card from '@/modules/Review/Card/Card';
+import Card from '@/modules/Review/Card/CardEN';
 import axios from 'axios';
 
 const ReviewContainer = styled.div`
@@ -77,7 +77,7 @@ const Review = () => {
         <ReviewContainer>
             <Header>
                 <HeaderText>
-                    Відгуки:
+                    Reviews:
                 </HeaderText>
             </Header>
             <CardContainer>
