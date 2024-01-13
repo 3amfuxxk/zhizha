@@ -70,15 +70,15 @@ const LanguageMobile = () => {
             <LanguageBar>
                 <LanguageRow onClick={toggle}>
                     <Text>
-                        UA
+                        EN
                     </Text>
                     <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{rotate: expanded ? '180deg' : '0deg'}} />
                 </LanguageRow>
                 <Span />
-                <Link href={"/en"}>
+                <Link href={"/"}>
                     <LanguageRow>
                         <Text>
-                            EN
+                            UA
                         </Text>
                     </LanguageRow>
                 </Link>

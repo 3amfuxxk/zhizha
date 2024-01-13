@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Contact from "@/modules/Contact/Contact";
 import LanguageMobile from "@/components/Language/LanguageMobile";
+import { useState, useEffect } from "react";
 
 interface ContainerProps {
   children: React.ReactNode;
@@ -104,6 +105,30 @@ const NavRow = styled.div`
 `
 
 const Container = ({ children }: ContainerProps) => {
+
+  if (typeof window !== 'undefined') {
+    let isScreenWidthBelowThreshold = window.innerWidth <= 430;
+
+    const checkAndUpdatePage = () => {
+      const screenWidth = window.innerWidth;
+      const isBelowThreshold = screenWidth <= 430;
+
+      if (isScreenWidthBelowThreshold !== isBelowThreshold) {
+        isScreenWidthBelowThreshold = isBelowThreshold;
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('resize', () => {
+      checkAndUpdatePage();
+    });
+
+    window.addEventListener('load', () => {
+      checkAndUpdatePage();
+    });
+  }
+
+
   const showContact = () => {
     const menu = document.getElementById('menu-mobile');
     const contact = document.getElementById('blur-back');
@@ -142,7 +167,7 @@ const Container = ({ children }: ContainerProps) => {
           <Link href={'/shipping'}>
             <NavPart>
               <RoundBlock>
-                <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
+                <Image src={`/img/Header/shipping.svg`} width={20} height={20} alt='Catalog' />
               </RoundBlock>
               <Text>
                 Доставка
@@ -151,7 +176,7 @@ const Container = ({ children }: ContainerProps) => {
           </Link>
           <NavPart onClick={showContact}>
             <RoundBlock>
-              <Image src={`/img/Header/order.svg`} width={20} height={20} alt='Catalog' />
+              <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
             </RoundBlock>
             <Text>
               Контакти

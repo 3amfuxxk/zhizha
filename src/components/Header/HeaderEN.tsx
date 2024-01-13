@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slice';
 import { selectCart, selectPods, selectDetails } from "../../store/slice";
 import { removeFromCart, removePodFromCart, removeDetailFromCart } from '../../store/slice';
-import Searchbar from "../../modules/Searchbar/Searchbar";
+import Searchbar from "@/modules/Searchbar/SearchbarEN";
 import Searchsvg from '../../../public/img/Header/search.svg';
 import Closesvg from '../../../public/img/Header/close.svg';
 import Logo from '../../../public/img/Logo/logo_ng.svg';
@@ -653,7 +653,8 @@ const Header = () => {
             const searchButton = document.getElementById('search-button');
             const cartButton = document.getElementById('cart-button');
             const burger = document.getElementById('burger-menu');
-            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger) {
+            const cross = document.getElementById('cross-menu');
+            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger && cross) {
                 if (!isSearchVisible) {
                     searchBar.style.top = '0px';
                     searchSvg.style.display = 'none';
@@ -663,6 +664,7 @@ const Header = () => {
                         searchButton.style.marginLeft = 'auto';
                         cartButton.style.display = 'none';
                         burger.style.display = 'none';
+                        cross.style.display = 'none';
                     }
                 } else {
                     searchBar.style.top = '-100px';
@@ -671,7 +673,7 @@ const Header = () => {
                     if (windowWidth <= 430) {
                         searchButton.style.marginLeft = '0';
                         cartButton.style.display = 'flex';
-                        burger.style.display = 'flex';
+                        cross.style.display = 'flex';
                     }
                 }
                 setIsSearchVisible(prevState => !prevState);
@@ -752,10 +754,10 @@ const Header = () => {
                     <NavButton text={'Catalogue'} svgLink={'catalog.svg'} />
                 </Link>
                 <Link href={'/en/shipping'}>
-                    <NavButton text={'Shipping'} svgLink={'contact.svg'} />
+                    <NavButton text={'Shipping'} svgLink={'shipping.svg'} />
                 </Link>
                 <span onClick={showContact}>
-                    <NavButton text={'Contacts'} svgLink={'order.svg'} />
+                    <NavButton text={'Contacts'} svgLink={'contact.svg'} />
                 </span>
                 <Searchbar />
             </NavBlock>

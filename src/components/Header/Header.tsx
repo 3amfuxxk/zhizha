@@ -560,7 +560,11 @@ const EmptyText = styled.p`
     font-weight: 500;
     line-height: normal;
 `
-
+const LogoHolder = styled.div`
+    display: flex;
+    width: 37px;
+    height: 47px;
+`
 
 const Header = () => {
     const cartProducts = useSelector(selectCart);
@@ -654,7 +658,8 @@ const Header = () => {
             const searchButton = document.getElementById('search-button');
             const cartButton = document.getElementById('cart-button');
             const burger = document.getElementById('burger-menu');
-            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger) {
+            const cross = document.getElementById('cross-menu');
+            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger && cross) {
                 if (!isSearchVisible) {
                     searchBar.style.top = '0px';
                     searchSvg.style.display = 'none';
@@ -664,6 +669,7 @@ const Header = () => {
                         searchButton.style.marginLeft = 'auto';
                         cartButton.style.display = 'none';
                         burger.style.display = 'none';
+                        cross.style.display = 'none';
                     }
                 } else {
                     searchBar.style.top = '-100px';
@@ -672,7 +678,7 @@ const Header = () => {
                     if (windowWidth <= 430) {
                         searchButton.style.marginLeft = '0';
                         cartButton.style.display = 'flex';
-                        burger.style.display = 'flex';
+                        cross.style.display = 'flex';
                     }
                 }
                 setIsSearchVisible(prevState => !prevState);
@@ -753,10 +759,10 @@ const Header = () => {
                     <NavButton text={'Каталог'} svgLink={'catalog.svg'} />
                 </Link>
                 <Link href={'/shipping'}>
-                    <NavButton text={'Доставка'} svgLink={'contact.svg'} />
+                    <NavButton text={'Доставка'} svgLink={'shipping.svg'} />
                 </Link>
                 <span onClick={showContact}>
-                    <NavButton text={'Контакти'} svgLink={'order.svg'} />
+                    <NavButton text={'Контакти'} svgLink={'contact.svg'} />
                 </span>
                 <Searchbar />
             </NavBlock>

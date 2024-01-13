@@ -150,7 +150,7 @@ const Contact = () => {
                     </SectName>
                     <CopyBlock>
                         <CopyText className={roboto.className}>
-                            @nickname
+                            @rain_site
                         </CopyText>
                         <CopyItem>
                             <Image src={'/img/Contact/copy.svg'} width={13} height={16} alt="" />
@@ -189,7 +189,7 @@ const Contact = () => {
                     </SectName>
                     <CopyBlock>
                         <CopyText className={roboto.className}>
-                            example@gmail.com
+                            rainzhizha@gmail.com
                         </CopyText>
                         <CopyItem>
                             <Image src={'/img/Contact/copy.svg'} width={13} height={16} alt="" />

@@ -183,7 +183,7 @@ const Footer = () => {
                 <SocialContainer>
                     <SocialMediaBlock imgLink="/img/Footer/svg/tg.svg" />
                     <SocialMediaBlock imgLink="/img/Footer/svg/insta.svg" />
-                    <SocialMediaBlock imgLink="/img/Footer/svg/tw.svg" />
+                    <SocialMediaBlock imgLink="/img/Footer/svg/tiktok.svg" />
                 </SocialContainer>
                 <FormBlock />
             </FooterBlock>

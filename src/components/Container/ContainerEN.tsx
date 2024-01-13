@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
 import Contact from "../../modules/Contact/ContactEN";
-import LanguageMobile from "../Language/LanguageMobile";
+import LanguageMobile from "../Language/LanguageMobileEN";
 
 interface ContainerProps {
   children: React.ReactNode;
@@ -104,6 +104,29 @@ const NavRow = styled.div`
 `
 
 const Container = ({ children }: ContainerProps) => {
+
+  if (typeof window !== 'undefined') {
+    let isScreenWidthBelowThreshold = window.innerWidth <= 430;
+
+    const checkAndUpdatePage = () => {
+      const screenWidth = window.innerWidth;
+      const isBelowThreshold = screenWidth <= 430;
+
+      if (isScreenWidthBelowThreshold !== isBelowThreshold) {
+        isScreenWidthBelowThreshold = isBelowThreshold;
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('resize', () => {
+      checkAndUpdatePage();
+    });
+
+    window.addEventListener('load', () => {
+      checkAndUpdatePage();
+    });
+  }
+
   const showContact = () => {
     const menu = document.getElementById('menu-mobile');
     const contact = document.getElementById('blur-back');
@@ -113,7 +136,7 @@ const Container = ({ children }: ContainerProps) => {
       menu.style.display = 'none';
       contact.style.display = 'flex';
       cross.style.display = 'none';
-      burger.style.display = 'flex';
+      burger.style.display = 'none';
     }
   }
   return (
@@ -129,32 +152,32 @@ const Container = ({ children }: ContainerProps) => {
             </LikeNav>
             <LanguageMobile />
           </NavRow>
-          <Link href={{ pathname: '/catalog' }}>
+          <Link href={{ pathname: '../en/catalog' }}>
             <NavPart>
               <RoundBlock>
                 <Image src={`/img/Header/catalog.svg`} width={20} height={20} alt='Catalog' />
               </RoundBlock>
               <Text>
-                Каталог
+                Catalogue
               </Text>
             </NavPart>
           </Link>
-          <Link href={'/shipping'}>
+          <Link href={'../en/shipping'}>
             <NavPart>
               <RoundBlock>
-                <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
+                <Image src={`/img/Header/shipping.svg`} width={20} height={20} alt='Catalog' />
               </RoundBlock>
               <Text>
-                Доставка
+                Shipping
               </Text>
             </NavPart>
           </Link>
           <NavPart onClick={showContact}>
             <RoundBlock>
-              <Image src={`/img/Header/order.svg`} width={20} height={20} alt='Catalog' />
+              <Image src={`/img/Header/contact.svg`} width={20} height={20} alt='Catalog' />
             </RoundBlock>
             <Text>
-              Контакти
+              Contacts
             </Text>
           </NavPart>
         </NavCont>
