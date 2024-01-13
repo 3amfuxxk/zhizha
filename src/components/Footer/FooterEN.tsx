@@ -6,6 +6,7 @@ import ListBlock from "@/modules/Footer/ListBlock/ListBlockEN";
 import FormBlock from "@/modules/Footer/FormBlock/FormBlockEN";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
+import ArrowUp from "../../../public/img/Footer/svg/arrow-up.svg";
 
 const roboto = Roboto({
     weight: ['400', '500'],
@@ -176,7 +177,7 @@ const Footer = () => {
                         <HeadText>
                             Top
                         </HeadText>
-                        <Imgs src={'img/Footer/svg/arrow-up.svg'} width={18} height={9} alt="" />
+                        <ArrowUp />
                     </UpBlockRow>
                 </UpBlock>
                 <ListBlock />

@@ -124,7 +124,7 @@ const Blog = () => {
                 <HeaderText>
                     Latest news:
                 </HeaderText>
-                <Link href={'/blog'}>
+                <Link href={'/en/blog'}>
                     <BlogLink>
                         <SmallText>
                             Our blog

@@ -2,8 +2,8 @@ import React from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
-import Contact from "@/modules/Contact/Contact";
-import LanguageMobile from "@/components/Language/LanguageMobile";
+import Contact from "../../modules/Contact/ContactEN";
+import LanguageMobile from "../Language/LanguageMobile";
 
 interface ContainerProps {
   children: React.ReactNode;

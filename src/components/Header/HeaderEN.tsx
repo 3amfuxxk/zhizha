@@ -731,14 +731,14 @@ const Header = () => {
 
     return (
         <HeaderBlock>
-            <Link href={'/'}>
+            <Link href={'/en'}>
                 <Logo />
             </Link>
             <NavBlock>
                 <Link href={{ pathname: '/catalog' }}>
                     <NavButton text={'Catalogue'} svgLink={'catalog.svg'} />
                 </Link>
-                <Link href={'/shipping'}>
+                <Link href={'/en/shipping'}>
                     <NavButton text={'Shipping'} svgLink={'contact.svg'} />
                 </Link>
                 <span onClick={showContact}>

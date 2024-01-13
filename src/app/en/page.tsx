@@ -1,7 +1,7 @@
 'use client'
 import React, {useState, useEffect} from "react";
 import styled from 'styled-components';
-import Container from "@/components/Container/Container";
+import Container from "@/components/Container/ContainerEN";
 import Header from "@/components/Header/HeaderEN";
 import HomeSection from "@/modules/Home/HomeSectionEN";
 import Footer from "@/components/Footer/FooterEN";
