@@ -565,6 +565,16 @@ const LogoHolder = styled.div`
     width: 37px;
     height: 47px;
 `
+const BlurHeader = styled.div`
+    display: none;
+    background: rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+`
 
 const Header = () => {
     const cartProducts = useSelector(selectCart);
@@ -577,6 +587,10 @@ const Header = () => {
 
     const toggleOpen = () => {
         setCart(!cartOpen);
+        const blurHeader = document.getElementById('blur-header');
+        if (blurHeader) {
+            blurHeader.style.display = cartOpen ? 'none' : 'flex';
+          }
     }
 
 
@@ -751,6 +765,7 @@ const Header = () => {
 
     return (
         <HeaderBlock>
+            <BlurHeader id="blur-header" />
             <Link href={'/'}>
                 <Logo />
             </Link>
