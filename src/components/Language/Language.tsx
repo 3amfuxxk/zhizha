@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
@@ -70,16 +70,14 @@ const Language = () => {
         setExpanded(!expanded);
     };
     return (
-        <LanguageBlock style={{ height: expanded ? '103px' : '50px' }}>
+        <LanguageBlock style={{ height: expanded ? '103px' : '50px' }} onClick={toggle}>
             <LanguageBar>
-                <Link href="">
-                    <LanguageRow onClick={toggle}>
-                        <Text>
-                            UA
-                        </Text>
-                        <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{rotate: expanded ? '180deg' : '0deg'}} />
-                    </LanguageRow>
-                </Link>
+                <LanguageRow>
+                    <Text>
+                        UA
+                    </Text>
+                    <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{ rotate: expanded ? '180deg' : '0deg' }} />
+                </LanguageRow>
                 <Span />
                 <Link href="./en">
                     <LanguageRow>

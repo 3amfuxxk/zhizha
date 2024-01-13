@@ -312,6 +312,7 @@ const SubmitPromo = styled.div`
     color: #FFF;
     font-size: 14px;
     font-weight: 700;
+    cursor: pointer;
 `
 const OrderPrice = styled.div`
     display: flex;
@@ -545,6 +546,20 @@ const NavPart = styled.div`
     }
 `
 
+const EmptyCart = styled.div`
+    display: flex;
+    width: 100%;
+    height: 330px;
+    justify-content: center;
+    align-items: center;
+`
+const EmptyText = styled.p`
+    color: rgba(255, 255, 255, 0.30);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+`
 
 const Header = () => {
     const cartProducts = useSelector(selectCart);
@@ -725,9 +740,7 @@ const Header = () => {
         setSearchTerm('');
     };
 
-    // console.log('Zhizhi', cartProducts);
-    // console.log('Detali', cartDetails);
-    // console.log('Podi', cartPods);
+    const isCartEmpty = !cartProducts.length && !cartPods.length && !cartDetails.length;
 
     return (
         <HeaderBlock>
@@ -778,110 +791,118 @@ const Header = () => {
                                 <Img src={'/img/Header/close.svg'} width={22} height={22} alt="" onClick={toggleOpen} />
                             </CartNav>
                         </CartProducts>
-                        <Product id="product-block" className="scrol">
-                            {cartProducts.map((product, index) => (
-                                <ProductCard key={index}>
-                                    <ImageBlock>
-                                        <Image src={product.image} width={114} height={114} alt="" />
-                                    </ImageBlock>
-                                    <ProductInfo>
-                                        <ProductName>
-                                            {product.title}
-                                        </ProductName>
-                                        <ProductID>
-                                            Код товару: <Span>{product.code}</Span>
-                                        </ProductID>
-                                        <PriceContainer>
-                                            <PriceBlock>
-                                                <ProductPrice>
-                                                    {(product.options.sale_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴
-                                                </ProductPrice>
-                                                <ProductSale>
-                                                    {product.options.starting_price ? `${(product.options.starting_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴` : null}
-                                                </ProductSale>
-                                            </PriceBlock>
-                                            <FunctionBlock>
-                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
-                                                    handleQuantityChange(product.options.id, newQuantity)
-                                                }
-                                                    totalQuantity={productQuantities[product.options.id] || product.totalQuantity} />
-                                                <DeleteBlock onClick={() => handleRemoveFromCart(product.options.id)}>
-                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
-                                                </DeleteBlock>
-                                            </FunctionBlock>
-                                        </PriceContainer>
-                                    </ProductInfo>
-                                </ProductCard>
-                            ))}
-                            {cartPods.map((pod, index) => (
-                                <ProductCard key={index}>
-                                    <ImageBlock>
-                                        <Image src={pod.image} width={114} height={114} alt="" />
-                                    </ImageBlock>
-                                    <ProductInfo>
-                                        <ProductName>
-                                            {pod.title}
-                                        </ProductName>
-                                        <ProductID>
-                                            Код товару: <Span>{pod.code}</Span>
-                                        </ProductID>
-                                        <PriceContainer>
-                                            <PriceBlock>
-                                                <ProductPrice>
-                                                    {(pod.sale_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴
-                                                </ProductPrice>
-                                                <ProductSale>
-                                                    {pod.starting_price ? `${(pod.starting_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴` : null}
-                                                </ProductSale>
-                                            </PriceBlock>
-                                            <FunctionBlock>
-                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
-                                                    handlePodQuantityChange(pod.chars.id, newQuantity)
-                                                }
-                                                    totalQuantity={productQuantities[pod.chars.id] || pod.totalQuantity} />
-                                                <DeleteBlock onClick={() => handleRemovePod(pod.chars.id)}>
-                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
-                                                </DeleteBlock>
-                                            </FunctionBlock>
-                                        </PriceContainer>
-                                    </ProductInfo>
-                                </ProductCard>
-                            ))}
-                            {cartDetails.map((detail, index) => (
-                                <ProductCard key={index}>
-                                    <ImageBlock>
-                                        <Image src={detail.image} width={114} height={114} alt="" />
-                                    </ImageBlock>
-                                    <ProductInfo>
-                                        <ProductName>
-                                            {detail.title}
-                                        </ProductName>
-                                        <ProductID>
-                                            Код товару: <Span>{detail.code}</Span>
-                                        </ProductID>
-                                        <PriceContainer>
-                                            <PriceBlock>
-                                                <ProductPrice>
-                                                    {(detail.sale_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴
-                                                </ProductPrice>
-                                                <ProductSale>
-                                                    {detail.starting_price ? `${(detail.starting_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴` : null}
-                                                </ProductSale>
-                                            </PriceBlock>
-                                            <FunctionBlock>
-                                                <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
-                                                    handleDetailQuantityChange(detail.id, newQuantity)
-                                                }
-                                                    totalQuantity={productQuantities[detail.id] || detail.totalQuantity} />
-                                                <DeleteBlock onClick={() => handleRemoveDetail(detail.id)}>
-                                                    <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
-                                                </DeleteBlock>
-                                            </FunctionBlock>
-                                        </PriceContainer>
-                                    </ProductInfo>
-                                </ProductCard>
-                            ))}
-                        </Product>
+                        {isCartEmpty ? (
+                            <EmptyCart>
+                                <EmptyText>
+                                    Cart is empty
+                                </EmptyText>
+                            </EmptyCart>
+                        ) : (
+                            <Product id="product-block" className="scrol">
+                                {cartProducts.map((product, index) => (
+                                    <ProductCard key={index}>
+                                        <ImageBlock>
+                                            <Image src={product.image} width={114} height={114} alt="" />
+                                        </ImageBlock>
+                                        <ProductInfo>
+                                            <ProductName>
+                                                {product.title}
+                                            </ProductName>
+                                            <ProductID>
+                                                Product code: <Span>{product.code}</Span>
+                                            </ProductID>
+                                            <PriceContainer>
+                                                <PriceBlock>
+                                                    <ProductPrice>
+                                                        {(product.options.sale_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴
+                                                    </ProductPrice>
+                                                    <ProductSale>
+                                                        {product.options.starting_price ? `${(product.options.starting_price * (productQuantities[product.options.id] || product.totalQuantity)).toFixed(2)}₴` : null}
+                                                    </ProductSale>
+                                                </PriceBlock>
+                                                <FunctionBlock>
+                                                    <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                        handleQuantityChange(product.options.id, newQuantity)
+                                                    }
+                                                        totalQuantity={productQuantities[product.options.id] || product.totalQuantity} />
+                                                    <DeleteBlock onClick={() => handleRemoveFromCart(product.options.id)}>
+                                                        <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                    </DeleteBlock>
+                                                </FunctionBlock>
+                                            </PriceContainer>
+                                        </ProductInfo>
+                                    </ProductCard>
+                                ))}
+                                {cartPods.map((pod, index) => (
+                                    <ProductCard key={index}>
+                                        <ImageBlock>
+                                            <Image src={pod.image} width={114} height={114} alt="" />
+                                        </ImageBlock>
+                                        <ProductInfo>
+                                            <ProductName>
+                                                {pod.title}
+                                            </ProductName>
+                                            <ProductID>
+                                                Product code: <Span>{pod.code}</Span>
+                                            </ProductID>
+                                            <PriceContainer>
+                                                <PriceBlock>
+                                                    <ProductPrice>
+                                                        {(pod.sale_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴
+                                                    </ProductPrice>
+                                                    <ProductSale>
+                                                        {pod.starting_price ? `${(pod.starting_price * (productQuantities[pod.chars.id] || pod.totalQuantity)).toFixed(2)}₴` : null}
+                                                    </ProductSale>
+                                                </PriceBlock>
+                                                <FunctionBlock>
+                                                    <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                        handlePodQuantityChange(pod.chars.id, newQuantity)
+                                                    }
+                                                        totalQuantity={productQuantities[pod.chars.id] || pod.totalQuantity} />
+                                                    <DeleteBlock onClick={() => handleRemovePod(pod.chars.id)}>
+                                                        <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                    </DeleteBlock>
+                                                </FunctionBlock>
+                                            </PriceContainer>
+                                        </ProductInfo>
+                                    </ProductCard>
+                                ))}
+                                {cartDetails.map((detail, index) => (
+                                    <ProductCard key={index}>
+                                        <ImageBlock>
+                                            <Image src={detail.image} width={114} height={114} alt="" />
+                                        </ImageBlock>
+                                        <ProductInfo>
+                                            <ProductName>
+                                                {detail.title}
+                                            </ProductName>
+                                            <ProductID>
+                                                Product code: <Span>{detail.code}</Span>
+                                            </ProductID>
+                                            <PriceContainer>
+                                                <PriceBlock>
+                                                    <ProductPrice>
+                                                        {(detail.sale_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴
+                                                    </ProductPrice>
+                                                    <ProductSale>
+                                                        {detail.starting_price ? `${(detail.starting_price * (productQuantities[detail.id] || detail.totalQuantity)).toFixed(2)}₴` : null}
+                                                    </ProductSale>
+                                                </PriceBlock>
+                                                <FunctionBlock>
+                                                    <Counter width={86} height={28} inpWidth={28} onQuantityChange={(newQuantity) =>
+                                                        handleDetailQuantityChange(detail.id, newQuantity)
+                                                    }
+                                                        totalQuantity={productQuantities[detail.id] || detail.totalQuantity} />
+                                                    <DeleteBlock onClick={() => handleRemoveDetail(detail.id)}>
+                                                        <Image src={'/img/Header/trash.svg'} width={10} height={12} alt="" />
+                                                    </DeleteBlock>
+                                                </FunctionBlock>
+                                            </PriceContainer>
+                                        </ProductInfo>
+                                    </ProductCard>
+                                ))}
+                            </Product>
+                        )}
                         <OrderInfo>
                             <PromoBlock>
                                 <PromoInput placeholder="Enter your promo code" />
@@ -917,13 +938,21 @@ const Header = () => {
                                         {(orderCost.toFixed(2))}₴
                                     </TotalPrice>
                                 </InfoPrice>
-                                <Link href={'../en/order'}>
-                                    <SubmitOrder>
+                                {isCartEmpty ? (
+                                    <SubmitOrder style={{ opacity: '0.5', cursor: 'default' }}>
                                         <OrderText>
                                             Place an order
                                         </OrderText>
                                     </SubmitOrder>
-                                </Link>
+                                ) : (
+                                    <Link href={'../en/order'}>
+                                        <SubmitOrder>
+                                            <OrderText>
+                                                Place an order
+                                            </OrderText>
+                                        </SubmitOrder>
+                                    </Link>
+                                )}
                             </OrderPrice>
                         </OrderInfo>
                     </CartBlock>

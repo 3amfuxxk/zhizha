@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LanguageBlock = styled.div`
     display: flex;
@@ -69,17 +70,18 @@ const Language = () => {
     const toggle = () => {
         setExpanded(!expanded);
     };
+
+    const router = useRouter();
+
     return (
-        <LanguageBlock style={{ height: expanded ? '103px' : '50px' }}>
+        <LanguageBlock style={{ height: expanded ? '103px' : '50px' }} onClick={toggle}>
             <LanguageBar>
-                <Link href="">
-                    <LanguageRow onClick={toggle}>
-                        <Text>
-                            EN
-                        </Text>
-                        <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{rotate: expanded ? '180deg' : '0deg'}} />
-                    </LanguageRow>
-                </Link>
+                <LanguageRow>
+                    <Text>
+                        EN
+                    </Text>
+                    <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{ rotate: expanded ? '180deg' : '0deg' }} />
+                </LanguageRow>
                 <Span />
                 <Link href={"/"}>
                     <LanguageRow>
