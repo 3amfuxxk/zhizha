@@ -129,12 +129,12 @@ const BlogNews = () => {
                 Our blog
             </HeaderText>
             <LinkPath>
-                <Link href={"../"} >
+                <Link href={"../en"} >
                     <TextInactive>
                         Home
                     </TextInactive>
                 </Link>
-                <Link href={"/catalog"} >
+                <Link href={"../en/blog"} >
                     <Active>
                         Blog
                     </Active>

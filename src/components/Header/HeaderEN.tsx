@@ -735,7 +735,7 @@ const Header = () => {
                 <Logo />
             </Link>
             <NavBlock>
-                <Link href={{ pathname: '/catalog' }}>
+                <Link href={{ pathname: '/en/catalog' }}>
                     <NavButton text={'Catalogue'} svgLink={'catalog.svg'} />
                 </Link>
                 <Link href={'/en/shipping'}>
@@ -917,7 +917,7 @@ const Header = () => {
                                         {(orderCost.toFixed(2))}₴
                                     </TotalPrice>
                                 </InfoPrice>
-                                <Link href={'/order'}>
+                                <Link href={'../en/order'}>
                                     <SubmitOrder>
                                         <OrderText>
                                             Place an order

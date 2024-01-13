@@ -254,7 +254,7 @@ const HomeSection = () => {
             <SmallText className={roboto.className}>
                 And various popular or geeky devices and components
             </SmallText>
-            <Link href={"/catalog"} >
+            <Link href={"../en/catalog"} >
                 <Button>
                     <ButtonBlock>
                         <ButtonText>
