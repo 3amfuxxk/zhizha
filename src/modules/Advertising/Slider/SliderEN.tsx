@@ -447,7 +447,7 @@ const Slider = () => {
     return (
         <SliderContainer>
             <HeaderText>
-                This week's top sellers:
+                This week&apos;s top sellers:
             </HeaderText>
             <SliderAddToCart product={showProduct} />
             <SliderBlock id="slider">

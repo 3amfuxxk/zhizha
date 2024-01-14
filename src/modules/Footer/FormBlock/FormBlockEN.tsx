@@ -155,7 +155,7 @@ const FormBlock = () => {
     return (
         <FormContainer style={{ gridArea: 'div4' }}>
             <HeadText>
-                Don't miss out on <White>sales</White> and other <White>great offers!</White>
+                Don&apos;t miss out on <White>sales</White> and other <White>great offers!</White>
             </HeadText>
             <AdvBlock>
                 <TickRow>

@@ -214,7 +214,6 @@ const Searchbar = () => {
 
     const [windowWidth, setWindowWidth] = useState<number>(0);
 
-    if (typeof window !== 'undefined') {
         useEffect(() => {
             const handleResize = () => {
                 setWindowWidth(window.innerWidth);
@@ -228,7 +227,6 @@ const Searchbar = () => {
                 window.removeEventListener('resize', handleResize);
             };
         }, []);
-    }
 
     useEffect(() => {
         const fetchData = async () => {

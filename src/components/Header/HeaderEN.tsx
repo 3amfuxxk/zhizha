@@ -644,21 +644,20 @@ const Header = () => {
 
     const [windowWidth, setWindowWidth] = useState<number>(0);
 
-    if (typeof window !== 'undefined') {
-        useEffect(() => {
-            const handleResize = () => {
-                setWindowWidth(window.innerWidth);
-            };
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
 
-            handleResize();
+        handleResize();
 
-            window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
 
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
-        }, []);
-    }
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const showSearch = () => {
         if (typeof document !== 'undefined') {
             const searchBar = document.getElementById('search-bar');
@@ -668,7 +667,10 @@ const Header = () => {
             const cartButton = document.getElementById('cart-button');
             const burger = document.getElementById('burger-menu');
             const cross = document.getElementById('cross-menu');
-            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger && cross) {
+            const menuMobile = document.getElementById('menu-mobile');
+            if (searchBar && searchSvg && closeSvg && searchButton && cartButton && burger && cross && menuMobile) {
+                const displayValue = window.getComputedStyle(menuMobile).getPropertyValue('display');
+
                 if (!isSearchVisible) {
                     searchBar.style.top = '0px';
                     searchSvg.style.display = 'none';
@@ -687,7 +689,13 @@ const Header = () => {
                     if (windowWidth <= 430) {
                         searchButton.style.marginLeft = '0';
                         cartButton.style.display = 'flex';
-                        cross.style.display = 'flex';
+                        if (displayValue === 'flex') {
+                            burger.style.display = 'none';
+                            cross.style.display = 'flex';
+                        } else {
+                            burger.style.display = 'flex';
+                            cross.style.display = 'none';
+                        }
                     }
                 }
                 setIsSearchVisible(prevState => !prevState);

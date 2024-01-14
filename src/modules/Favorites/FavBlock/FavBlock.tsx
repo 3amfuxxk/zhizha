@@ -181,7 +181,7 @@ const FavBlock = () => {
         if (cookies && cookies['favoriteProducts']) {
             fetchData();
         }
-    }, [cookies]);
+    }, [cookies, favoriteProducts]);
     console.log(liquidData);
     //Pod
     const [podData, setPodData] = useState<Pods[]>([]);
@@ -216,7 +216,7 @@ const FavBlock = () => {
         if (cookies && cookies['favoriteProducts']) {
             fetchData();
         }
-    }, [cookies]);
+    }, [cookies, favoriteProducts]);
 
     console.log(podData);
 
@@ -253,7 +253,7 @@ const FavBlock = () => {
         if (cookies && cookies['favoriteProducts']) {
             fetchData();
         }
-    }, [cookies]);
+    }, [cookies, favoriteProducts]);
 
     console.log(detailData);
 
