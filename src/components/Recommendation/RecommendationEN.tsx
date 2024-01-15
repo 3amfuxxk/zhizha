@@ -153,7 +153,7 @@ const Recommendation = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/recommendations/');
+                const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/recommendations/?lang=en');
                 const modifiedData = response.data.map(item => ({
                     ...item,
                     options: item.options.map(option => ({
@@ -170,7 +170,6 @@ const Recommendation = () => {
 
         fetchData();
     }, []);
-
 
     return (
         <RecContainer>

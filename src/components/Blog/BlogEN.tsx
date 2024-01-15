@@ -144,7 +144,7 @@ const Blog = () => {
                         date={item.date_posted}
                         topicName={item.title}
                         topicText={item.paragraph1}
-                        link={'/singleblog'} />
+                        link={'../en/singleblog'} />
                 ))}
             </CardContainer>
         </BlogContainer>

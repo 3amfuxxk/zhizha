@@ -474,7 +474,7 @@ const DetailsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/details/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/details/${idp}/?lang=en`);
                 const productData = response.data as Details;
                 setProduct(productData);
             } catch (error) {
@@ -491,7 +491,7 @@ const DetailsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}/?lang=en`);
                 const recsData = response.data as Details[];
                 setRecs(recsData);
             } catch (error) {
@@ -630,7 +630,7 @@ const DetailsPage = ({ idp }: GetId) => {
                 </DescHeader>
                 <RecBlock>
                     {recs?.map((item, index) => (
-                        <Link key={index} href={{ pathname: '/detailsproduct', query: { id: item.id } }}>
+                        <Link key={index} href={{ pathname: '../en/detailsproduct', query: { id: item.id } }}>
                             <DetailCard
                                 id={item.id}
                                 code={item.code}

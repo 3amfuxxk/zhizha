@@ -485,7 +485,7 @@ const PodsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/pods/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/pods/${idp}/?lang=en`);
                 const productData = response.data as Pods;
                 setProduct(productData);
             } catch (error) {
@@ -502,7 +502,7 @@ const PodsPage = ({ idp }: GetId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}/?lang=en`);
                 const recsData = response.data as Pods[];
                 setRecs(recsData);
             } catch (error) {

@@ -154,7 +154,7 @@ const AccessoriesBlock = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/details`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/details/?lang=en`);
                 const blogData = response.data as Details[];
                 setData(blogData);
             } catch (error) {

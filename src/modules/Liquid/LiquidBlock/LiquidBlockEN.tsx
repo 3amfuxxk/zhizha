@@ -154,7 +154,7 @@ const LiquidBlock = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/');
+                const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/?lang=en');
                 const modifiedData = response.data.map(item => ({
                     ...item,
                     options: item.options.map(option => ({
