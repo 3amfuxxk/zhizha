@@ -122,7 +122,7 @@ const Chat = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://rainzhizha.com/api/v1/controller/');
+                const response = await axios.get('https://rainzhizha.com/api/v1/controller/?lang=en');
                 const data: Chat = response.data;
                 setChatData(data);
             } catch (error) {

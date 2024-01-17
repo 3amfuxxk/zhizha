@@ -384,7 +384,7 @@ const Slider = () => {
                 setSlideMoving(true);
                 setTimeout(() => {
                     setSlideMoving(false);
-                }, 800);
+                }, 600);
             });
         }
     }

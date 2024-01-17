@@ -108,7 +108,7 @@ const SinglePage = ({idb}: BlogId) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/news/${idb}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/news/${idb}/?lang=en`);
                 const blogData = response.data as Blog;
                 setProduct(blogData);
             } catch (error) {

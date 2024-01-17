@@ -96,7 +96,7 @@ const BlogNews = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/news`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/news/?lang=en`);
                 const blogData = response.data as Blog[];
                 setBlog(blogData);
             } catch (error) {

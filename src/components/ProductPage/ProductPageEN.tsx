@@ -613,7 +613,6 @@ const ProductPage = ({ idp }: GetId) => {
                                 desc={item.desc}
                                 ice={item.ice}
                                 categories={item.categories}
-                                // image={item.image}
                                 image={item.image}
                                 title={item.title}
                                 id={item.id}

@@ -38,6 +38,7 @@ const LanguageRow = styled.div`
     align-items: center;
     cursor: pointer;
     user-select: none;
+    justify-content: center;
 `
 
 const Text = styled.p`
@@ -76,7 +77,7 @@ const Language = () => {
                     <Text>
                         UA
                     </Text>
-                    <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{ rotate: expanded ? '180deg' : '0deg' }} />
+                    {/* <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{ rotate: expanded ? '180deg' : '0deg' }} /> */}
                 </LanguageRow>
                 <Span />
                 <Link href="./en">

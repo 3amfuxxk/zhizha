@@ -567,7 +567,7 @@ const BlurHeader = styled.div`
     -webkit-backdrop-filter: blur(5px);
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     z-index: 2;
 `
 

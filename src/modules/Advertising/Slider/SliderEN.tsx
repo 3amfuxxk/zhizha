@@ -325,7 +325,7 @@ const Slider = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/products/slider/`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/products/slider/?lang=en`);
                 const productsData = response.data as Product[];
                 setProducts(productsData);
             } catch (error) {
@@ -384,7 +384,7 @@ const Slider = () => {
                 setSlideMoving(true);
                 setTimeout(() => {
                     setSlideMoving(false);
-                }, 800);
+                }, 600);
             });
         }
     }

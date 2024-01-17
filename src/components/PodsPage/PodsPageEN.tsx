@@ -651,31 +651,6 @@ const PodsPage = ({ idp }: GetId) => {
                     <Imgfull src={product?.wide_image ? `${product.wide_image}` : '/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
-            {/* <FullData>
-                <DescHeader>
-                    Характеристики {selectedProduct?.title}:
-                </DescHeader>
-                <FullDataBlock className={roboto.className}>
-                    <ValueBlock>
-                        <ValueRow>
-                            <Active>
-                                Лід
-                            </Active>
-                            <DataValue>
-                                Так/ні
-                            </DataValue>
-                        </ValueRow>
-                        <ValueRow>
-                            <Active>
-                                Вага
-                            </Active>
-                            <DataValue>
-                                50 гр
-                            </DataValue>
-                        </ValueRow>
-                    </ValueBlock>
-                </FullDataBlock>
-            </FullData> */}
             <RecContainer>
                 <DescHeader>
                     Similar products
