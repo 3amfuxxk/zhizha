@@ -371,7 +371,7 @@ const Searchbar = () => {
                     <Search />
                     <StInp placeholder='Search through our shop' value={searchTerm} onChange={handleSearch} />
                 </MnBlock>
-                <Link href="../en/search" onClick={() => { allSearches(), clearData() }}>
+                <Link href="en/search" onClick={() => { allSearches(), clearData() }}>
                     <SearchButton>
                         <SrBut>
                             Search
@@ -385,7 +385,7 @@ const Searchbar = () => {
                         <ProductHolders>
                             {liquidResults.map((liquid, index) => (
                                 <Column key={index}>
-                                    <Link key={index} href={{ pathname: '/product', query: { id: liquid.id } }} >
+                                    <Link key={index} href={{ pathname: 'en/product', query: { id: liquid.id } }} >
                                         <SearchItem
                                             img={liquid.image}
                                             code={liquid.code}
@@ -398,7 +398,7 @@ const Searchbar = () => {
                             ))}
                             {podResults.map((pod, index) => (
                                 <Column key={index}>
-                                    <Link key={index} href={{ pathname: '/podsproduct', query: { id: pod.id } }}>
+                                    <Link key={index} href={{ pathname: 'en/podsproduct', query: { id: pod.id } }}>
                                         <SearchItem
                                             img={pod.image}
                                             code={pod.code}
@@ -411,7 +411,7 @@ const Searchbar = () => {
                             ))}
                             {detailResults.map((detail, index) => (
                                 <Column key={index}>
-                                    <Link key={index} href={{ pathname: '/detailsproduct', query: { id: detail.id } }}>
+                                    <Link key={index} href={{ pathname: 'en/detailsproduct', query: { id: detail.id } }}>
                                         <SearchItem
                                             img={detail.image}
                                             code={detail.code}

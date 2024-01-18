@@ -534,22 +534,22 @@ const DetailsPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../en"} >
+                <Link href={"/en"} >
                     <TextInactive>
                         Home
                     </TextInactive>
                 </Link>
-                <Link href={"../en/catalog"} >
+                <Link href={"/en/catalog"} >
                     <TextInactive>
                         Catalogue
                     </TextInactive>
                 </Link>
-                <Link href={"../en/accessories"} >
+                <Link href={"/en/accessories"} >
                     <TextInactive>
                         Components
                     </TextInactive>
                 </Link>
-                <Link href={'/'}>
+                <Link href={''}>
                     <Active>
                         {product?.title}
                     </Active>
@@ -630,7 +630,7 @@ const DetailsPage = ({ idp }: GetId) => {
                 </DescHeader>
                 <RecBlock>
                     {recs?.map((item, index) => (
-                        <Link key={index} href={{ pathname: '../en/detailsproduct', query: { id: item.id } }}>
+                        <Link key={index} href={{ pathname: '/en/detailsproduct', query: { id: item.id } }}>
                             <DetailCard
                                 id={item.id}
                                 code={item.code}

@@ -220,6 +220,10 @@ const BlockProps = styled.div<BlockProps>`
         padding: 0px 16px;
         height: 40px;
     }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -496,17 +500,17 @@ const ProductPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../en"} >
+                <Link href={"/en"} >
                     <TextInactive>
                         Home
                     </TextInactive>
                 </Link>
-                <Link href={"../en/catalog"} >
+                <Link href={"/en/catalog"} >
                     <TextInactive>
                         Catalogue
                     </TextInactive>
                 </Link>
-                <Link href={"../en/liquid"} >
+                <Link href={"/en/liquid"} >
                     <TextInactive>
                         Kits
                     </TextInactive>

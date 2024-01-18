@@ -67,6 +67,10 @@ const TgBlock = styled.div`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const TgText = styled.p`
     color: #FFF;

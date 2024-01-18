@@ -1,14 +1,14 @@
 import React from "react";
 import styled from 'styled-components';
 import { Roboto } from "next/font/google";
-import LinkPath from "../../../components/LinkPath/LinkPath";
+import LinkPath from "@/components/LinkPath/LinkPath";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { allLiquid, allDetails, allPods } from "../../../store/favs";
+import { allLiquid, allDetails, allPods } from "@/store/favs";
 import { useSelector, useDispatch } from 'react-redux';
-import Card from "../../../components/Card/Card";
-import DetailCard from "../../../components/DetailCard/DetailCard";
-import PodCard from "../../../components/PodCard/PodCard";
+import Card from "@/components/Card/CardEN";
+import DetailCard from "@/components/DetailCard/DetailCardEN";
+import PodCard from "@/components/PodCard/PodCardEN";
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 
@@ -156,7 +156,7 @@ const FavBlock = () => {
                 if (favoriteProducts && favoriteProducts.products && favoriteProducts.products.length > 0) {
                     const productIds = (favoriteProducts.products as favIDs[]).map(product => product.id);
 
-                    const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/', {
+                    const response = await axios.get<Product[]>('https://rainzhizha.com/api/v1/products/?lang=en', {
                         params: {
                             id: productIds.join(','),
                         },
@@ -193,7 +193,7 @@ const FavBlock = () => {
                 if (favoriteProducts && favoriteProducts.pods && favoriteProducts.pods.length > 0) {
                     const podIds = (favoriteProducts.pods as favIDs[]).map(pod => pod.id);
 
-                    const response = await axios.get<Pods[]>('https://rainzhizha.com/api/v1/pods/', {
+                    const response = await axios.get<Pods[]>('https://rainzhizha.com/api/v1/pods/?lang=en', {
                         params: {
                             id: podIds.join(','),
                         },
@@ -230,7 +230,7 @@ const FavBlock = () => {
                 if (favoriteProducts && favoriteProducts.details && favoriteProducts.details.length > 0) {
                     const detailIds = (favoriteProducts.details as favIDs[]).map(detail => detail.id);
 
-                    const response = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/', {
+                    const response = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/?lang=en', {
                         params: {
                             id: detailIds.join(','),
                         },
@@ -262,27 +262,27 @@ const FavBlock = () => {
         <FavContainer>
             <HeadContainer>
                 <Header>
-                    Список бажань
+                    Wishlist
                 </Header>
                 <UnderHeader>
-                    Добірка товарів, яким ви натискали вподобайку
+                    A selection of products you've liked
                 </UnderHeader>
             </HeadContainer>
             <LinkPath>
-                <Link href={"../"} >
+                <Link href={"/en"} >
                     <TextInactive>
-                        Головна
+                        Home
                     </TextInactive>
                 </Link>
-                <Link href={'/favorites'}>
+                <Link href={'/en/favorites'}>
                     <Active>
-                        Вішліст
+                        Wishlist
                     </Active>
                 </Link>
             </LinkPath>
             <Wishlist>
                 {liquidData?.map((liquid, index) => (
-                    <Link key={index} href={{ pathname: '/product', query: { id: liquid.id } }} >
+                    <Link key={index} href={{ pathname: '/en/product', query: { id: liquid.id } }} >
                         <Card
                             code={liquid.code}
                             desc={liquid.desc}
@@ -296,7 +296,7 @@ const FavBlock = () => {
                     </Link>
                 ))}
                 {detailData?.map((detail, index) => (
-                    <Link key={index} href={{ pathname: '/detailsproduct', query: { id: detail.id } }}>
+                    <Link key={index} href={{ pathname: '/en/detailsproduct', query: { id: detail.id } }}>
                         <DetailCard
                             id={detail.id}
                             code={detail.code}
@@ -315,24 +315,24 @@ const FavBlock = () => {
                     </Link>
                 ))}
                 {podData?.map((pod, index) => (
-                        <Link key={index} href={{ pathname: '/podsproduct', query: { id: pod.id } }}>
-                            <PodCard
-                                id={pod.id}
-                                code={pod.code}
-                                title={pod.title}
-                                desc={pod.desc}
-                                short_desc={pod.short_desc}
-                                starting_price={pod.starting_price}
-                                sale_price={pod.sale_price}
-                                discount={pod.discount}
-                                in_stock={pod.in_stock}
-                                // image={item.image}
-                                image={'/img/Card/rb.jpg'}
-                                wide_image={pod.wide_image}
-                                categories={pod.categories}
-                                chars={pod.chars}
-                            />
-                        </Link>
+                    <Link key={index} href={{ pathname: '/en/podsproduct', query: { id: pod.id } }}>
+                        <PodCard
+                            id={pod.id}
+                            code={pod.code}
+                            title={pod.title}
+                            desc={pod.desc}
+                            short_desc={pod.short_desc}
+                            starting_price={pod.starting_price}
+                            sale_price={pod.sale_price}
+                            discount={pod.discount}
+                            in_stock={pod.in_stock}
+                            // image={item.image}
+                            image={'/img/Card/rb.jpg'}
+                            wide_image={pod.wide_image}
+                            categories={pod.categories}
+                            chars={pod.chars}
+                        />
+                    </Link>
                 ))}
             </Wishlist>
         </FavContainer>

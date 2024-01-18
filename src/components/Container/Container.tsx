@@ -143,7 +143,6 @@ const Container = ({ children }: ContainerProps) => {
   }
   return (
     <Wrapper className="container">
-      <script src="https://app.embed.im/snow.js" defer></script>
       <BlurBack id="blur-back">
         <Contact />
       </BlurBack>

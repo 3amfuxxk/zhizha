@@ -120,7 +120,7 @@ const SearchResults = () => {
         <SearchContainer>
             <HeadContainer>
                 <Header>
-                    Список бажань
+                    Пошук
                 </Header>
                 <UnderHeader className={roboto.className}>
                     Список усіх результатів, за вашим пошуком:

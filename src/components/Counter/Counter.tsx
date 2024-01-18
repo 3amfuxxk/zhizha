@@ -24,6 +24,10 @@ const FuncBlock = styled.div`
     cursor: pointer;
     color: #FFF;
     user-select: none;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Input = styled.input<{ inpWidth: number }>`
     width: ${(props) => props.inpWidth}px;

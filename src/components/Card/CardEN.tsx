@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '@/components/Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
-// import { addLiquid } from '../../store/favs';
-// import { useCookies } from 'react-cookie';
-// import { RootState } from '../../store/store';
+import { addLiquid } from '../../store/favs';
+import { useCookies } from 'react-cookie';
+import { RootState } from '../../store/store';
 import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
@@ -23,6 +23,10 @@ const CardContainer = styled.div`
         width: 100%;
         height: 328px;
         padding: 9px;
+    }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
     }
 `
 const ImgBlock = styled.div`
@@ -122,6 +126,10 @@ const LikeBlock = styled.div`
     border: 1px solid #292929;
     background: #141414;
     cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 interface LiquidID {
     id: string;
@@ -182,8 +190,60 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
     const buttonProps = isMobile
         ? { width: 38, height: 38 }
         : { text: 'Add to cart', width: 135, height: 38 };
-        
+
+    const favsState = useSelector((state: RootState) => state.favs);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
     const dispatch = useDispatch();
+    const handleAddToFavs = () => {
+        const liquidToAdd: LiquidID = {
+            id,
+        }
+
+        let updatedProducts = [];
+
+        // Проверяем наличие айди в массиве favoriteProducts.products
+        if (favoriteProducts && favoriteProducts.products) {
+            const existingIndex = favoriteProducts.products.findIndex(
+                (product: LiquidID) => product.id === id
+            );
+
+            if (existingIndex !== -1) {
+                // Если айди уже есть в массиве, удаляем его
+                updatedProducts = favoriteProducts.products.filter(
+                    (product: LiquidID) => product.id !== id
+                );
+            } else {
+                // Если айди отсутствует, добавляем его в массив
+                updatedProducts = [...favoriteProducts.products, liquidToAdd];
+            }
+        } else {
+            // Если массив пуст или отсутствует, добавляем первый элемент
+            updatedProducts = [liquidToAdd];
+        }
+
+        // Обновляем объект с обновленным массивом айди
+        const updatedFavs = {
+            ...favoriteProducts,
+            products: updatedProducts,
+        };
+
+        // Сохраняем обновленные данные в куки
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
+
+    }
+
+    const isFavorited = favoriteProducts && favoriteProducts.products && favoriteProducts.products.some(
+        (product: LiquidID) => product.id === id
+    );
+
+    const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        handleAddToFavs();
+    }
 
     return (
         <CardContainer>
@@ -211,8 +271,12 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     {/* <LikeBlock onClick={handleAddToFavs}> */}
-                    <LikeBlock>
-                        <Heart />
+                    <LikeBlock onClick={handleHeartClick}>
+                        {isFavorited ? (
+                            <Heart fill="#fff" />
+                        ) : (
+                            <Heart />
+                        )}
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

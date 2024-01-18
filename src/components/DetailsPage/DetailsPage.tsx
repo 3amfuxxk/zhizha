@@ -534,7 +534,7 @@ const DetailsPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../"} >
+                <Link href={"/"} >
                     <TextInactive>
                         Головна
                     </TextInactive>
@@ -549,7 +549,7 @@ const DetailsPage = ({ idp }: GetId) => {
                         Комплектуючі
                     </TextInactive>
                 </Link>
-                <Link href={'/'}>
+                <Link href={''}>
                     <Active>
                         {product?.title}
                     </Active>

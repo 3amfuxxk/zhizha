@@ -220,6 +220,10 @@ const BlockProps = styled.div<BlockProps>`
         padding: 0px 16px;
         height: 40px;
     }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -496,7 +500,7 @@ const ProductPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../"} >
+                <Link href={"/"} >
                     <TextInactive>
                         Головна
                     </TextInactive>
@@ -511,7 +515,7 @@ const ProductPage = ({ idp }: GetId) => {
                         Набори
                     </TextInactive>
                 </Link>
-                <Link href={'/'}>
+                <Link href={''}>
                     <Active>
                         {product?.title}
                     </Active>

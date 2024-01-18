@@ -404,6 +404,9 @@ const ColorBlock = styled.div<BlockProps>`
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 50%;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Color = styled.div`
     display: flex;
@@ -564,17 +567,17 @@ const PodsPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../en"} >
+                <Link href={"/en"} >
                     <TextInactive>
                         Home
                     </TextInactive>
                 </Link>
-                <Link href={"../en/catalog"} >
+                <Link href={"/en/catalog"} >
                     <TextInactive>
                         Catalogue
                     </TextInactive>
                 </Link>
-                <Link href={"../en/pods"} >
+                <Link href={"/en/pods"} >
                     <TextInactive>
                         Pods
                     </TextInactive>

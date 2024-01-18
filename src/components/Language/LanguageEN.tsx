@@ -14,13 +14,17 @@ const LanguageBlock = styled.div`
     background: #141414;
     overflow: hidden;
     position: relative;
-    transition: height 0.3s ease;
+    transition: all 0.3s ease;
     position: absolute;
     left: 62px;
     top:0;
+    cursor: pointer;
     @media (max-width: 430px) {
         left: 75px;
         display: none;
+    }
+    &:hover {
+        border-color: #fff;
     }
 `
 

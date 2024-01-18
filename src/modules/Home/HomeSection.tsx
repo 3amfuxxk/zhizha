@@ -191,12 +191,13 @@ const Button = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 36px;
-    background: #B6020D;
+    background-color: #B6020D;
     justify-content: center;
     margin-top: 86px;
     @media (max-width: 430px) {
         margin-top: 123px;
     }
+    transition: background-color 0.3s ease;
 `
 const ButtonText = styled.p`
     color: #FFF;

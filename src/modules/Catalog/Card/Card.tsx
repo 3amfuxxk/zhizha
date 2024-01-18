@@ -18,6 +18,10 @@ const CardBlock = styled.div`
         gap: 12px;
         justify-content: unset;
     }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Img = styled(Image)`
     @media (max-width:430px) {

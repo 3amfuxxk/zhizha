@@ -47,6 +47,10 @@ const ListText = styled.p`
     font-weight: 400;
     line-height: normal;
     cursor: pointer;
+    transition: color 0.3s ease;
+    &:hover {
+        color: #fff;
+    }
 `
 const ListHolder = styled.div`
     display: flex;

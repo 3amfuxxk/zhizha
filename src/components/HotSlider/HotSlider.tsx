@@ -76,6 +76,10 @@ const NavArrow = styled.div`
     background: #141414;
     cursor: pointer;
     user-select: none;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const BulletNav = styled.div`
     display: flex;
@@ -95,7 +99,6 @@ const Bullet = styled.span`
     flex-shrink: 0;
     border-radius: 50%;
     background: #2D2D2D;
-    cursor: pointer;
 
     &.activee {
     background: white;
@@ -164,9 +167,9 @@ const HotSlider = () => {
         if (slider !== null) {
             slider.addEventListener('scroll', () => {
                 setSlideMoving(true);
-                setTimeout(() => {
-                    setSlideMoving(false);
-                }, 1200);
+            });
+            slider.addEventListener('scrollend', () => {
+                setSlideMoving(false);
             });
         }
     }

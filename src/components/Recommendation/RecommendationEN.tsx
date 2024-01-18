@@ -63,6 +63,10 @@ const LinkText = styled.p`
     font-style: normal;
     font-weight: 500;
     line-height: 130%;
+    transition: color 0.3s ease;
+    &:hover {
+        color: #fff;
+    }
 `
 const CardContainer = styled.div<{ expanded: boolean }>`
     display: grid;

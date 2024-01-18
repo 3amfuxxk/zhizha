@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
-// import { addPod } from '../../store/favs';
-// import { RootState } from '../../store/store';
-// import { useCookies } from 'react-cookie';
+import { addPod } from '../../store/favs';
+import { RootState } from '../../store/store';
+import { useCookies } from 'react-cookie';
 import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
@@ -23,6 +23,10 @@ const CardContainer = styled.div`
         width: 100%;
         height: 328px;
         padding: 9px;
+    }
+    transition: all 0.3s ease;
+    &:hover {
+        border-color: #fff;
     }
 `
 const ImgBlock = styled.div`
@@ -120,6 +124,10 @@ const LikeBlock = styled.div`
     border: 1px solid #292929;
     background: #141414;
     cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 interface PodID {
     id: string;
@@ -155,50 +163,54 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         : { text: 'В кошик', width: 135, height: 38 };
 
     const dispatch = useDispatch();
-    // const favsState = useSelector((state: RootState) => state.favs);
-    // const [cookies, setCookie] = useCookies(['favoriteProducts']);
-    // const favoriteProducts = cookies['favoriteProducts'];
-    // const handleAddToFavs = () => {
-    //     const PodToAdd: PodID = {
-    //         id,
-    //     }
+    const favsState = useSelector((state: RootState) => state.favs);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
+    const handleAddToFavs = () => {
+        const PodToAdd: PodID = {
+            id,
+        }
     
-    //     let updatedPods = [];
+        let updatedPods = [];
     
-    //     // Проверяем наличие айди в массиве favoriteProducts.pods
-    //     if (favoriteProducts && favoriteProducts.pods) {
-    //         const existingIndex = favoriteProducts.pods.findIndex(
-    //             (pod: PodID) => pod.id === id
-    //         );
+        // Проверяем наличие айди в массиве favoriteProducts.pods
+        if (favoriteProducts && favoriteProducts.pods) {
+            const existingIndex = favoriteProducts.pods.findIndex(
+                (pod: PodID) => pod.id === id
+            );
     
-    //         if (existingIndex !== -1) {
-    //             // Если айди уже есть в массиве, удаляем его
-    //             updatedPods = favoriteProducts.pods.filter(
-    //                 (pod: PodID) => pod.id !== id
-    //             );
-    //         } else {
-    //             // Если айди отсутствует, добавляем его в массив
-    //             updatedPods = [...favoriteProducts.pods, PodToAdd];
-    //         }
-    //     } else {
-    //         // Если массив пуст или отсутствует, добавляем первый элемент
-    //         updatedPods = [PodToAdd];
-    //     }
+            if (existingIndex !== -1) {
+                // Если айди уже есть в массиве, удаляем его
+                updatedPods = favoriteProducts.pods.filter(
+                    (pod: PodID) => pod.id !== id
+                );
+            } else {
+                // Если айди отсутствует, добавляем его в массив
+                updatedPods = [...favoriteProducts.pods, PodToAdd];
+            }
+        } else {
+            // Если массив пуст или отсутствует, добавляем первый элемент
+            updatedPods = [PodToAdd];
+        }
     
-    //     // Обновляем объект с обновленным массивом айди подов
-    //     const updatedFavs = {
-    //         ...favoriteProducts,
-    //         pods: updatedPods,
-    //     };
+        // Обновляем объект с обновленным массивом айди подов
+        const updatedFavs = {
+            ...favoriteProducts,
+            pods: updatedPods,
+        };
     
-    //     // Сохраняем обновленные данные в куки
-    //     setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
-    //         path: '/',
-    //         maxAge: 30 * 24 * 60 * 60,
-    //     });
+        // Сохраняем обновленные данные в куки
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
     
-    //     console.log(PodToAdd);
-    // }
+    }
+
+    const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        handleAddToFavs();
+    }
 
     return (
         <CardContainer>
@@ -225,8 +237,7 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    {/* <LikeBlock onClick={handleAddToFavs}> */}
-                    <LikeBlock>    
+                    <LikeBlock onClick={handleHeartClick}> 
                         <Heart />
                     </LikeBlock>
                 </AddBlock>

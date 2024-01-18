@@ -120,7 +120,7 @@ const SearchResults = () => {
         <SearchContainer>
             <HeadContainer>
                 <Header>
-                    Wishlist
+                    Search
                 </Header>
                 <UnderHeader className={roboto.className}>
                     A list of all results for your search:
@@ -128,7 +128,7 @@ const SearchResults = () => {
             </HeadContainer>
             <SearchBlock maxHeight={maxHeight}>
                 {liquids?.map((liquid, index) => (
-                    <Link key={index} href={{ pathname: '../en/product', query: { id: liquid.id } }} >
+                    <Link key={index} href={{ pathname: '/en/product', query: { id: liquid.id } }} >
                         <Card
                             code={liquid.code}
                             desc={liquid.desc}
@@ -142,7 +142,7 @@ const SearchResults = () => {
                     </Link>
                 ))}
                 {pods?.map((pod, index) => (
-                    <Link key={index} href={{ pathname: '../en/podsproduct', query: { id: pod.id } }}>
+                    <Link key={index} href={{ pathname: '/en/podsproduct', query: { id: pod.id } }}>
                         <PodCard
                             id={pod.id}
                             code={pod.code}
@@ -161,7 +161,7 @@ const SearchResults = () => {
                     </Link>
                 ))}
                 {details?.map((detail, index) => (
-                    <Link key={index} href={{ pathname: '../en/detailsproduct', query: { id: detail.id } }}>
+                    <Link key={index} href={{ pathname: '/en/detailsproduct', query: { id: detail.id } }}>
                         <DetailCard
                             id={detail.id}
                             code={detail.code}

@@ -96,6 +96,10 @@ const UpBlock = styled.div`
         height: 78px;
         order: -3;
     }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Img = styled(Image)`
    @media (max-width: 430px) {

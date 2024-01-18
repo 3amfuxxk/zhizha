@@ -404,6 +404,10 @@ const ColorBlock = styled.div<BlockProps>`
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 50%;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Color = styled.div`
     display: flex;
@@ -564,7 +568,7 @@ const PodsPage = ({ idp }: GetId) => {
     return (
         <ProductContainer>
             <LinkPath>
-                <Link href={"../"} >
+                <Link href={"/"} >
                     <TextInactive>
                         Головна
                     </TextInactive>
@@ -579,7 +583,7 @@ const PodsPage = ({ idp }: GetId) => {
                         Поди
                     </TextInactive>
                 </Link>
-                <Link href={'/'}>
+                <Link href={''}>
                     <Active>
                         {product?.title}
                     </Active>

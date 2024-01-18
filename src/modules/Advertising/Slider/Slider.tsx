@@ -167,6 +167,9 @@ const BlockProps = styled.div<BlockProps>`
         padding: 0px 16px;
         height: 40px;
     }
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -217,6 +220,12 @@ const FavBlock = styled.div`
     border-radius: 8px;
     border: 1px solid #292929;
     background: #141414;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    &:hover {
+        border-color: #fff;
+    }
+    
 `
 const FunctionBlock = styled.div`
     display: flex;
@@ -245,6 +254,10 @@ const NavArrow = styled.div`
     background: #141414;
     cursor: pointer;
     user-select: none;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const BulletNav = styled.div`
     display: flex;
@@ -264,7 +277,6 @@ const Bullet = styled.span`
     flex-shrink: 0;
     border-radius: 50%;
     background: #2D2D2D;
-    cursor: pointer;
 
     &.active {
     background: white;
@@ -382,10 +394,10 @@ const Slider = () => {
         if (slider !== null) {
             slider.addEventListener('scroll', () => {
                 setSlideMoving(true);
-                setTimeout(() => {
-                    setSlideMoving(false);
-                }, 600);
             });
+            slider.addEventListener('scrollend', () => {
+                setSlideMoving(false);
+            })
         }
     }
 

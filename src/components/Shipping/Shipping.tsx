@@ -118,6 +118,10 @@ const TgLink = styled.div`
     display: flex;
     gap: 4px;
     align-items: center;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const TgText = styled.p`
     color: #FFF;

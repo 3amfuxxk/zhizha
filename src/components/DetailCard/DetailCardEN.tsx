@@ -4,9 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../Button/Button';
 import { useSelector, useDispatch } from 'react-redux';
-// import { addDetail } from '../../store/favs';
-// import { RootState } from '../../store/store';
-// import { useCookies } from 'react-cookie';
+import { addDetail } from '../../store/favs';
+import { RootState } from '../../store/store';
+import { useCookies } from 'react-cookie';
 import Heart from '../../../public/img/Card/svg/heart.svg';
 
 const CardContainer = styled.div`
@@ -23,6 +23,10 @@ const CardContainer = styled.div`
         width: 100%;
         height: 328px;
         padding: 9px;
+    }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
     }
 `
 const ImgBlock = styled.div`
@@ -120,6 +124,10 @@ const LikeBlock = styled.div`
     border: 1px solid #292929;
     background: #141414;
     cursor: pointer;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 interface DetailID {
     id: string;
@@ -154,7 +162,57 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         ? { width: 38, height: 38 }
         : { text: 'Add to cart', width: 135, height: 38 };
 
-    const dispatch = useDispatch();
+        const dispatch = useDispatch();
+        const favsState = useSelector((state: RootState) => state.favs);
+        const [cookies, setCookie] = useCookies(['favoriteProducts']);
+        const favoriteProducts = cookies['favoriteProducts'];
+        const handleAddToFavs = () => {
+            const DetailToAdd: DetailID = {
+                id,
+            }
+        
+            let updatedDetails = [];
+        
+            // Проверяем наличие айди в массиве favoriteProducts.details
+            if (favoriteProducts && favoriteProducts.details) {
+                const existingIndex = favoriteProducts.details.findIndex(
+                    (detail: DetailID) => detail.id === id
+                );
+        
+                if (existingIndex !== -1) {
+                    // Если айди уже есть в массиве, удаляем его
+                    updatedDetails = favoriteProducts.details.filter(
+                        (detail: DetailID) => detail.id !== id
+                    );
+                } else {
+                    // Если айди отсутствует, добавляем его в массив
+                    updatedDetails = [...favoriteProducts.details, DetailToAdd];
+                }
+            } else {
+                // Если массив пуст или отсутствует, добавляем первый элемент
+                updatedDetails = [DetailToAdd];
+            }
+        
+            // Обновляем объект с обновленным массивом айди деталей
+            const updatedFavs = {
+                ...favoriteProducts,
+                details: updatedDetails,
+            };
+        
+            // Сохраняем обновленные данные в куки
+            setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+                path: '/',
+                maxAge: 30 * 24 * 60 * 60,
+            });
+        
+            console.log(DetailToAdd);
+        }
+    
+        const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
+            event.preventDefault();
+            handleAddToFavs();
+        }
+
     return (
         <CardContainer>
             <ImgBlock>
@@ -180,8 +238,7 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    {/* <LikeBlock onClick={handleAddToFavs}> */}
-                    <LikeBlock>    
+                    <LikeBlock onClick={handleHeartClick}> 
                         <Heart />
                     </LikeBlock>
                 </AddBlock>

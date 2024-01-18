@@ -91,6 +91,10 @@ const Like = styled.div`
     @media (max-width: 430px) {
         display: none;
     }
+    transition: all 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const Search = styled.div`
     width: 50px;
@@ -104,8 +108,11 @@ const Search = styled.div`
     display: flex;
     cursor: pointer;
     user-select: none;
-    transition: all 0.1s ease;
+    transition: all 0.3s ease;
     @media (max-width: 430px) {
+    }
+    &:hover {
+        border-color: #fff;
     }
 `
 const Cart = styled.div`
@@ -123,6 +130,10 @@ const Cart = styled.div`
     position: relative;
     margin-left: auto;
     user-select: none;
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const CartBlock = styled.div<{ cartOpen: boolean }>`
     position: absolute;
@@ -797,8 +808,8 @@ const Header = () => {
                     <CloseSvg id="close-svg" />
                 </Search>
                 <Language />
-                {/* <Link href="/favorites"> */}
-                <Link href="/">
+                <Link href="/favorites">
+                {/* <Link href="/"> */}
                     <Like>
                         <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
                     </Like>

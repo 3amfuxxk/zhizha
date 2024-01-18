@@ -18,6 +18,10 @@ const Block = styled.div`
         max-width: 130px;
         height: 130px;   
     }
+    transition: border-color 0.3s ease;
+    &:hover {
+        border-color: #fff;
+    }
 `
 const BlockContainer = styled.div`
     display: flex;

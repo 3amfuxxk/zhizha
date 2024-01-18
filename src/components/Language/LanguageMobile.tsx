@@ -76,7 +76,7 @@ const LanguageMobile = () => {
                     {/* <Img src={'/img/Header/arrow-down.svg'} width={6} height={10} alt='' style={{rotate: expanded ? '180deg' : '0deg'}} /> */}
                 </LanguageRow>
                 <Span />
-                <Link href={"/en"}>
+                <Link href={"en"}>
                     <LanguageRow>
                         <Text>
                             EN

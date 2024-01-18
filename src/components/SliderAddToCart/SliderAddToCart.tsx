@@ -187,6 +187,10 @@ const Leave = styled.div`
     @media (max-width: 430px) {
         height: 42px;
     }
+    transition: border-color 0.3s ease;
+    &:hover  {
+        border-color: #fff;
+    }
 `
 const Add = styled.div`
     display: flex;
@@ -208,6 +212,10 @@ const Add = styled.div`
     @media (max-width: 430px) {
         width: 183px;
         height: 42px;
+    }
+    transition: opacity 0.3s ease;
+    &:hover  {
+        opacity: 1;
     }
 `
 interface AddToCartProduct {
