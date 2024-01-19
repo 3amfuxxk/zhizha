@@ -18,9 +18,9 @@ import { useCookies } from 'react-cookie';
 export default function Home() {
   const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
-  useEffect(() => {
-    console.log('Cookies: ', cookies);
-  }, [cookies]);
+  // useEffect(() => {
+  //   console.log('Cookies: ', cookies);
+  // }, [cookies]);
   return (
       <CookiesProvider>
         <div>
