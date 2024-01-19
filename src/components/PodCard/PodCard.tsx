@@ -170,15 +170,15 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         const PodToAdd: PodID = {
             id,
         }
-    
+
         let updatedPods = [];
-    
+
         // Проверяем наличие айди в массиве favoriteProducts.pods
         if (favoriteProducts && favoriteProducts.pods) {
             const existingIndex = favoriteProducts.pods.findIndex(
                 (pod: PodID) => pod.id === id
             );
-    
+
             if (existingIndex !== -1) {
                 // Если айди уже есть в массиве, удаляем его
                 updatedPods = favoriteProducts.pods.filter(
@@ -192,20 +192,24 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
             // Если массив пуст или отсутствует, добавляем первый элемент
             updatedPods = [PodToAdd];
         }
-    
+
         // Обновляем объект с обновленным массивом айди подов
         const updatedFavs = {
             ...favoriteProducts,
             pods: updatedPods,
         };
-    
+
         // Сохраняем обновленные данные в куки
         setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
             path: '/',
             maxAge: 30 * 24 * 60 * 60,
         });
-    
+
     }
+
+    const isFavorited = favoriteProducts && favoriteProducts.pods && favoriteProducts.pods.some(
+        (pod: PodID) => pod.id === id
+    );
 
     const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -237,8 +241,12 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock onClick={handleHeartClick}> 
-                        <Heart />
+                    <LikeBlock onClick={handleHeartClick}>
+                        {isFavorited ? (
+                            <Heart fill="#fff" />
+                        ) : (
+                            <Heart />
+                        )}
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

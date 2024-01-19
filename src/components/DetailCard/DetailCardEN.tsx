@@ -162,56 +162,59 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         ? { width: 38, height: 38 }
         : { text: 'Add to cart', width: 135, height: 38 };
 
-        const dispatch = useDispatch();
-        const favsState = useSelector((state: RootState) => state.favs);
-        const [cookies, setCookie] = useCookies(['favoriteProducts']);
-        const favoriteProducts = cookies['favoriteProducts'];
-        const handleAddToFavs = () => {
-            const DetailToAdd: DetailID = {
-                id,
-            }
-        
-            let updatedDetails = [];
-        
-            // Проверяем наличие айди в массиве favoriteProducts.details
-            if (favoriteProducts && favoriteProducts.details) {
-                const existingIndex = favoriteProducts.details.findIndex(
-                    (detail: DetailID) => detail.id === id
+    const dispatch = useDispatch();
+    const favsState = useSelector((state: RootState) => state.favs);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
+    const handleAddToFavs = () => {
+        const DetailToAdd: DetailID = {
+            id,
+        }
+
+        let updatedDetails = [];
+
+        // Проверяем наличие айди в массиве favoriteProducts.details
+        if (favoriteProducts && favoriteProducts.details) {
+            const existingIndex = favoriteProducts.details.findIndex(
+                (detail: DetailID) => detail.id === id
+            );
+
+            if (existingIndex !== -1) {
+                // Если айди уже есть в массиве, удаляем его
+                updatedDetails = favoriteProducts.details.filter(
+                    (detail: DetailID) => detail.id !== id
                 );
-        
-                if (existingIndex !== -1) {
-                    // Если айди уже есть в массиве, удаляем его
-                    updatedDetails = favoriteProducts.details.filter(
-                        (detail: DetailID) => detail.id !== id
-                    );
-                } else {
-                    // Если айди отсутствует, добавляем его в массив
-                    updatedDetails = [...favoriteProducts.details, DetailToAdd];
-                }
             } else {
-                // Если массив пуст или отсутствует, добавляем первый элемент
-                updatedDetails = [DetailToAdd];
+                // Если айди отсутствует, добавляем его в массив
+                updatedDetails = [...favoriteProducts.details, DetailToAdd];
             }
-        
-            // Обновляем объект с обновленным массивом айди деталей
-            const updatedFavs = {
-                ...favoriteProducts,
-                details: updatedDetails,
-            };
-        
-            // Сохраняем обновленные данные в куки
-            setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
-                path: '/',
-                maxAge: 30 * 24 * 60 * 60,
-            });
-        
-            console.log(DetailToAdd);
+        } else {
+            // Если массив пуст или отсутствует, добавляем первый элемент
+            updatedDetails = [DetailToAdd];
         }
-    
-        const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
-            event.preventDefault();
-            handleAddToFavs();
-        }
+
+        // Обновляем объект с обновленным массивом айди деталей
+        const updatedFavs = {
+            ...favoriteProducts,
+            details: updatedDetails,
+        };
+
+        // Сохраняем обновленные данные в куки
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
+
+    }
+
+    const isFavorited = favoriteProducts && favoriteProducts.details && favoriteProducts.details.some(
+        (detail: DetailID) => detail.id === id
+    );
+
+    const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        handleAddToFavs();
+    }
 
     return (
         <CardContainer>
@@ -238,8 +241,12 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock onClick={handleHeartClick}> 
-                        <Heart />
+                    <LikeBlock onClick={handleHeartClick}>
+                        {isFavorited ? (
+                            <Heart fill="#fff" />
+                        ) : (
+                            <Heart />
+                        )}
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

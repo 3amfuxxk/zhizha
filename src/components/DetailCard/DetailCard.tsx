@@ -170,15 +170,15 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
         const DetailToAdd: DetailID = {
             id,
         }
-    
+
         let updatedDetails = [];
-    
+
         // Проверяем наличие айди в массиве favoriteProducts.details
         if (favoriteProducts && favoriteProducts.details) {
             const existingIndex = favoriteProducts.details.findIndex(
                 (detail: DetailID) => detail.id === id
             );
-    
+
             if (existingIndex !== -1) {
                 // Если айди уже есть в массиве, удаляем его
                 updatedDetails = favoriteProducts.details.filter(
@@ -192,21 +192,24 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
             // Если массив пуст или отсутствует, добавляем первый элемент
             updatedDetails = [DetailToAdd];
         }
-    
+
         // Обновляем объект с обновленным массивом айди деталей
         const updatedFavs = {
             ...favoriteProducts,
             details: updatedDetails,
         };
-    
+
         // Сохраняем обновленные данные в куки
         setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
             path: '/',
             maxAge: 30 * 24 * 60 * 60,
         });
-    
-        console.log(DetailToAdd);
+
     }
+
+    const isFavorited = favoriteProducts && favoriteProducts.details && favoriteProducts.details.some(
+        (detail: DetailID) => detail.id === id
+    );
 
     const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -237,8 +240,12 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                     <Button {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
-                    <LikeBlock onClick={handleHeartClick}>   
-                        <Heart />
+                    <LikeBlock onClick={handleHeartClick}>
+                        {isFavorited ? (
+                            <Heart fill="#fff" />
+                        ) : (
+                            <Heart />
+                        )}
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

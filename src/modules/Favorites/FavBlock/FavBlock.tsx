@@ -23,6 +23,7 @@ const FavContainer = styled.div`
     flex-direction: column;
     width: 100%;
     height: auto;
+    gap: 8px;
 `
 const Header = styled.p`
     color: #FFF;
@@ -72,6 +73,16 @@ const Wishlist = styled.div`
     ". . . .";
     width: 100%;
     margin-top: 18px;
+    @media (max-width:430px) {
+        grid-template-columns: 1fr 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        grid-template-areas: 
+        ". ."
+        ". ."
+        ". ."
+        ". .";
+       gap: 10px;
+    }
 `
 interface favIDs {
     id: string;
@@ -145,7 +156,6 @@ const FavBlock = () => {
 
     const [cookies] = useCookies(['favoriteProducts']);
     const favoriteProducts = cookies['favoriteProducts'];
-    console.log('Избранные товары:', favoriteProducts);
     //Liquid
     const [liquidData, setLiquidData] = useState<Product[]>([]);
     // const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -173,6 +183,8 @@ const FavBlock = () => {
                     }));
 
                     setLiquidData(modifiedData);
+                } else {
+                    setLiquidData([]);
                 }
             } catch (error) {
                 console.error('Ошибка запроса:', error);
@@ -183,7 +195,6 @@ const FavBlock = () => {
             fetchData();
         }
     }, [cookies, favoriteProducts]);
-    console.log(liquidData);
     //Pod
     const [podData, setPodData] = useState<Pods[]>([]);
 
@@ -208,6 +219,8 @@ const FavBlock = () => {
                     }));
 
                     setPodData(modifiedData);
+                } else {
+                    setPodData([]);
                 }
             } catch (error) {
                 console.error('Ошибка запроса:', error);
@@ -219,7 +232,6 @@ const FavBlock = () => {
         }
     }, [cookies, favoriteProducts]);
 
-    console.log(podData);
 
     //Details
     const [detailData, setDetailData] = useState<Details[]>([]);
@@ -245,6 +257,8 @@ const FavBlock = () => {
                     }));
 
                     setDetailData(modifiedData);
+                } else {
+                    setDetailData([]);
                 }
             } catch (error) {
                 console.error('Ошибка запроса:', error);
@@ -256,7 +270,6 @@ const FavBlock = () => {
         }
     }, [cookies, favoriteProducts]);
 
-    console.log(detailData);
 
     return (
         <FavContainer>

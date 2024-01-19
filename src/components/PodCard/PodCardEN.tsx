@@ -205,8 +205,11 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
             maxAge: 30 * 24 * 60 * 60,
         });
 
-        console.log(PodToAdd);
     }
+
+    const isFavorited = favoriteProducts && favoriteProducts.pods && favoriteProducts.pods.some(
+        (pod: PodID) => pod.id === id
+    );
 
     const handleHeartClick = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
@@ -239,7 +242,11 @@ const Card = ({ id, title, code, desc, short_desc, starting_price, sale_price, d
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     <LikeBlock onClick={handleHeartClick}>
-                        <Heart />
+                        {isFavorited ? (
+                            <Heart fill="#fff" />
+                        ) : (
+                            <Heart />
+                        )}
                     </LikeBlock>
                 </AddBlock>
             </InfoBlock>

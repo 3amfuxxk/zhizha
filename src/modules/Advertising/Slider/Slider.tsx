@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
-import Button from "../../../components/Button/Button";
-import SliderAddToCart from "../../../components/SliderAddToCart/SliderAddToCart";
+import { addLiquid } from '@/store/favs';
+import { useCookies } from 'react-cookie';
+import { RootState } from '@/store/store';
+import { useSelector, useDispatch } from 'react-redux';
+import SliderAddToCart from "@/components/SliderAddToCart/SliderAddToCart";
+import Heart from '../../../../public/img/Card/svg/heart.svg';
 import axios from "axios";
 
 const roboto = Roboto({
@@ -310,6 +314,10 @@ const Imgs = styled(Image)`
         height: 18px;
     }
 `
+interface LiquidID {
+    id: string;
+}
+
 interface Product {
     id: string;
     title: string;
@@ -332,7 +340,11 @@ interface ProductOption {
 
 const Slider = () => {
 
+    const favsState = useSelector((state: RootState) => state.favs);
     const [products, setProducts] = useState<Product[] | null>(null);
+    const [cookies, setCookie] = useCookies(['favoriteProducts']);
+    const favoriteProducts = cookies['favoriteProducts'];
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -380,7 +392,6 @@ const Slider = () => {
         if (addContainer) {
             addContainer.style.display = 'flex';
         }
-        console.log('a');
     };
     const handleAll = () => {
         handleOpen();
@@ -456,6 +467,42 @@ const Slider = () => {
         }
     };
 
+    const handleAddToFavs = (id: string) => {
+        const liquidToAdd: LiquidID = { id };
+
+        let updatedProducts = [];
+
+        if (favoriteProducts && favoriteProducts.products) {
+            const existingIndex = favoriteProducts.products.findIndex((product: LiquidID) => product.id === id);
+
+            if (existingIndex !== -1) {
+                updatedProducts = favoriteProducts.products.filter((product: LiquidID) => product.id !== id);
+            } else {
+                updatedProducts = [...favoriteProducts.products, liquidToAdd];
+            }
+        } else {
+            updatedProducts = [liquidToAdd];
+        }
+
+        const updatedFavs = {
+            ...favoriteProducts,
+            products: updatedProducts,
+        };
+
+        setCookie('favoriteProducts', JSON.stringify(updatedFavs), {
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60,
+        });
+    };
+
+    const isFavorited = (productId: string) => {
+        return (
+            favoriteProducts &&
+            favoriteProducts.products &&
+            favoriteProducts.products.some((product: LiquidID) => product.id === productId)
+        );
+    };
+
     return (
         <SliderContainer>
             <HeaderText>
@@ -512,11 +559,12 @@ const Slider = () => {
                                             </TextButton>
                                         </ButtonBlock>
                                     </ButtonContainer>
-                                    {/* <Button text='В кошик' width={135} height={38} onClick={() => { handleToAddToCart(item); handleOpen() }}>
-                                        <Image src={'/img/Advertising/Slider/cart.svg'} width={13} height={16} alt="" />
-                                    </Button> */}
-                                    <FavBlock>
-                                        <Imgs src={'/img/Advertising/Slider/heart.svg'} width={16} height={13.955} alt="" />
+                                    <FavBlock onClick={() => handleAddToFavs(item.id)}>
+                                        {isFavorited(item.id) ? (
+                                            <Heart fill="#fff" />
+                                        ) : (
+                                            <Heart />
+                                        )}
                                     </FavBlock>
                                 </FuncionBlock>
                             </FunctionBlock>

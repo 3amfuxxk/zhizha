@@ -149,9 +149,11 @@ const Container = ({ children }: ContainerProps) => {
       <MenuMobile id="menu-mobile">
         <NavCont>
           <NavRow>
-            <LikeNav>
-              <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
-            </LikeNav>
+            <Link href={"favorites"}>
+              <LikeNav>
+                <Image src={'/img/Header/like.svg'} width={18} height={16} alt="" />
+              </LikeNav>
+            </Link>
             <LanguageMobile />
           </NavRow>
           <Link href={{ pathname: '/catalog' }}>
