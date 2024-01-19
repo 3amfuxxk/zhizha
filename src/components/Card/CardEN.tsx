@@ -245,6 +245,10 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
         handleAddToFavs();
     }
 
+    const handleNoRedirection = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+    }
+
     return (
         <CardContainer>
             <ImgBlock>
@@ -267,7 +271,7 @@ const Card = ({ id, title, code, desc, ice, image, categories, options, onAddToC
                     )}
                 </PriceBlock>
                 <AddBlock>
-                    <Button onClick={handleAddToCart} {...buttonProps} >
+                    <Button onClick={(event: React.MouseEvent<HTMLDivElement>) => { handleNoRedirection(event); handleAddToCart(); }} {...buttonProps} >
                         <Image src={'/img/Card/svg/cart.svg'} width={13} height={16} alt="" />
                     </Button>
                     {/* <LikeBlock onClick={handleAddToFavs}> */}

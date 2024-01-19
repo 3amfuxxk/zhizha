@@ -143,11 +143,16 @@ interface ProductOption {
 const Recommendation = () => {
     const [expanded, setExpanded] = useState<boolean>(false);
 
+    const preventDef = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
+    }
+
     const toggleExpanded = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
 
     const [showProduct, setShowProduct] = useState<any>(null);
+
     const handleToAddToCart = (product: Product) => {
         setShowProduct(product);
     };
@@ -175,7 +180,6 @@ const Recommendation = () => {
         fetchData();
     }, []);
 
-
     return (
         <RecContainer>
             <Header>
@@ -199,18 +203,19 @@ const Recommendation = () => {
             <CardContainer expanded={expanded}>
                 <AddToCart product={showProduct} />
                 {data && data.length > 0 && data.map((product, index) => (
-                    <Card
-                        key={index}
-                        code={product.code}
-                        desc={product.desc}
-                        ice={product.ice}
-                        categories={product.categories}
-                        image={product.image}
-                        title={product.title}
-                        id={product.id}
-                        options={product.options}
-                        onAddToCart={handleToAddToCart}
-                    />
+                    <Link key={index} href={{ pathname: '/product', query: { id: product.id} }}>
+                        <Card
+                            code={product.code}
+                            desc={product.desc}
+                            ice={product.ice}
+                            categories={product.categories}
+                            image={product.image}
+                            title={product.title}
+                            id={product.id}
+                            options={product.options}
+                            onAddToCart={handleToAddToCart}
+                        />
+                    </Link>
                 ))}
 
             </CardContainer>

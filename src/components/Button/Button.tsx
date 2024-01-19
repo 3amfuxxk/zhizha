@@ -6,7 +6,7 @@ import Image from "next/image";
 interface Props {
     text?: string;
     children?: React.ReactNode;
-    onClick?: () => void;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
     width: number;
     height: number;
 }
