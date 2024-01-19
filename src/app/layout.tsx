@@ -23,10 +23,12 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={manrope.className}>
-          {children}
+        <head>
           <script src="https://app.embed.im/snow.js" defer></script>
-        </body>
+          <body className={manrope.className}>
+            {children}
+          </body>
+        </head>
       </html>
     </StoreProvider>
   )
