@@ -406,9 +406,9 @@ const Slider = () => {
             slider.addEventListener('scroll', () => {
                 setSlideMoving(true);
             });
-            slider.addEventListener('scrollend', () => {
+            setTimeout(() => {
                 setSlideMoving(false);
-            })
+            }, 600);
         }
     }
 
