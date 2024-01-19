@@ -149,7 +149,7 @@ const CartBlock = styled.div<{ cartOpen: boolean }>`
     right: 0;
     top: 80px;
     @media (max-width: 430px) {
-        left: -273%;
+        left: -250%;
         width: 375px;
         flex-shrink: 1;
         padding: 29px 17px;
