@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import styled from 'styled-components';
 import Image from "next/image";
 import Link from "next/link";
@@ -104,6 +105,13 @@ const NavRow = styled.div`
 `
 
 const Container = ({ children }: ContainerProps) => {
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://app.embed.im/snow.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  });
 
   if (typeof window !== 'undefined') {
     let isScreenWidthBelowThreshold = window.innerWidth <= 430;
