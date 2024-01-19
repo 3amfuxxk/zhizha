@@ -278,7 +278,7 @@ const FavBlock = () => {
                     Wishlist
                 </Header>
                 <UnderHeader>
-                    A selection of products you've liked
+                    A selection of products you&apos;ve liked
                 </UnderHeader>
             </HeadContainer>
             <LinkPath>
