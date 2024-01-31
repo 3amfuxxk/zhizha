@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import LinkPath from '../../../components/LinkPath/LinkPath';
+import LinkPath from '@/components/LinkPath/LinkPath';
 import Link from 'next/link';
 import Card from '../Card/Card';
+import DynamicCard from '../DynamicCard/DynamicCard';
+import axios from 'axios';
 
 const CatalogContainer = styled.div`
     display: flex;
@@ -60,8 +62,9 @@ const PageChoice = styled.div`
 `
 const CardBlock = styled.div`
     display: flex;
-    width: 100%;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 11px;
+    justify-content: center;
     @media (max-width: 430px) {
         flex-wrap: wrap;
         justify-content: unset;
@@ -73,7 +76,30 @@ const Linked = styled(Link)`
         width: 49%;
     }
 `
+
+interface Props {
+    id: string;
+    title: string;
+    photo: string;
+}
+
 const CatalogBlock = () => {
+    const [categories, setCategories] = useState<Props[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`https://rainzhizha.com/api/v1/categories/`);
+                const categoriesData = response.data as Props[];
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setCategories(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
     return (
         <CatalogContainer>
             <HeaderBlock>
@@ -98,12 +124,21 @@ const CatalogBlock = () => {
                     <Linked href="/liquid">
                         <Card text={"Набори"} imgLink={'liquid.png'} />
                     </Linked>
-                    <Linked href={{pathname: "/accessories"} }>
+                    <Linked href={{ pathname: "/accessories" }}>
                         <Card text={"Комплектуючі"} imgLink={'component.png'} />
                     </Linked>
-                    <Linked href={{pathname: "/pods"}}>
+                    <Linked href={{ pathname: "/pods" }}>
                         <Card text={"Под системи"} imgLink={'pod.png'} />
                     </Linked>
+                    {categories?.map((category: any, index: number) => (
+                        <Linked key={index} href={{pathname: '/category', query: { id: category.id, title: category.title}}}>
+                            <DynamicCard
+                                id={category.id}
+                                photo={category.photo}
+                                title={category.title}
+                            />
+                        </Linked>
+                    ))}
                 </CardBlock>
             </PageChoice>
         </CatalogContainer>
