@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Card from "../../../components/Card/Card";
 import DetailCard from "../../../components/DetailCard/DetailCard";
 import PodCard from "../../../components/PodCard/PodCard";
+import CategoryCard from "@/components/category/CategoryCard/CategoryCard";
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 
@@ -235,6 +236,7 @@ const FavBlock = () => {
 
     //Details
     const [detailData, setDetailData] = useState<Details[]>([]);
+    const [abstractsData, setAbstractsData] = useState<Details[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -242,23 +244,44 @@ const FavBlock = () => {
                 if (favoriteProducts && favoriteProducts.details && favoriteProducts.details.length > 0) {
                     const detailIds = (favoriteProducts.details as favIDs[]).map(detail => detail.id);
 
-                    const response = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/', {
+                    // Запрос для товаров из 'https://rainzhizha.com/api/v1/details/'
+                    const detailsResponse = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/', {
                         params: {
                             id: detailIds.join(','),
                         },
                     });
 
-                    const filteredDetails = response.data.filter(detail => detailIds.includes(detail.id));
-                    const modifiedData = filteredDetails.map(item => ({
+                    // Запрос для товаров из 'https://rainzhizha.com/api/v1/abstracts/'
+                    const abstractsResponse = await axios.get<Details[]>('https://rainzhizha.com/api/v1/abstracts/', {
+                        params: {
+                            id: detailIds.join(','),
+                        },
+                    });
+
+                    // Обработка данных для деталей
+                    const filteredDetails = detailsResponse.data.filter(detail => detailIds.includes(detail.id));
+                    const modifiedDetails = filteredDetails.map(item => ({
                         ...item,
-                        chars: item.chars.map((char => ({
+                        chars: item.chars.map(char => ({
                             ...char,
-                        })))
+                        })),
                     }));
 
-                    setDetailData(modifiedData);
+                    // Обработка данных для абстрактов
+                    const filteredAbstracts = abstractsResponse.data.filter(abstract => detailIds.includes(abstract.id));
+                    const modifiedAbstracts = filteredAbstracts.map(item => ({
+                        ...item,
+                        chars: item.chars.map(char => ({
+                            ...char,
+                        })),
+                    }));
+
+                    // Устанавливаем данные в соответствующие стейты
+                    setDetailData(modifiedDetails);
+                    setAbstractsData(modifiedAbstracts);
                 } else {
                     setDetailData([]);
+                    setAbstractsData([]);
                 }
             } catch (error) {
                 console.error('Ошибка запроса:', error);
@@ -327,25 +350,44 @@ const FavBlock = () => {
                         />
                     </Link>
                 ))}
+                {abstractsData?.map((abstract, index) => (
+                    <Link key={index} href={{pathname: '/goods', query: { id: abstract.id}}}>
+                        <CategoryCard
+                            id={abstract.id}
+                            code={abstract.code}
+                            title={abstract.title}
+                            desc={abstract.desc}
+                            short_desc={abstract.short_desc}
+                            starting_price={abstract.starting_price}
+                            sale_price={abstract.sale_price}
+                            discount={abstract.discount}
+                            in_stock={abstract.in_stock}
+                            image={abstract.image}
+                            wide_image={abstract.wide_image}
+                            categories={abstract.categories}
+                            chars={abstract.chars}
+                        />
+                    </Link>
+                ))}
                 {podData?.map((pod, index) => (
-                        <Link key={index} href={{ pathname: '/podsproduct', query: { id: pod.id } }}>
-                            <PodCard
-                                id={pod.id}
-                                code={pod.code}
-                                title={pod.title}
-                                desc={pod.desc}
-                                short_desc={pod.short_desc}
-                                starting_price={pod.starting_price}
-                                sale_price={pod.sale_price}
-                                discount={pod.discount}
-                                in_stock={pod.in_stock}
-                                // image={item.image}
-                                image={'/img/Card/rb.jpg'}
-                                wide_image={pod.wide_image}
-                                categories={pod.categories}
-                                chars={pod.chars}
-                            />
-                        </Link>
+                    <Link key={index} href={{ pathname: '/podsproduct', query: { id: pod.id } }}>
+                        <PodCard
+                            id={pod.id}
+                            code={pod.code}
+                            title={pod.title}
+                            desc={pod.desc}
+                            short_desc={pod.short_desc}
+                            starting_price={pod.starting_price}
+                            sale_price={pod.sale_price}
+                            discount={pod.discount}
+                            in_stock={pod.in_stock}
+                            // image={item.image}
+                            image={'/img/Card/rb.jpg'}
+                            wide_image={pod.wide_image}
+                            categories={pod.categories}
+                            chars={pod.chars}
+                        />
+                    </Link>
                 ))}
             </Wishlist>
         </FavContainer>

@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Card from "@/components/Card/CardEN";
 import DetailCard from "@/components/DetailCard/DetailCardEN";
 import PodCard from "@/components/PodCard/PodCardEN";
+import CategoryCard from "@/components/category/CategoryCard/CategoryCardEN";
 import { useCookies } from 'react-cookie';
 import axios from "axios";
 
@@ -236,6 +237,7 @@ const FavBlock = () => {
 
     //Details
     const [detailData, setDetailData] = useState<Details[]>([]);
+    const [abstractsData, setAbstractsData] = useState<Details[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -243,23 +245,44 @@ const FavBlock = () => {
                 if (favoriteProducts && favoriteProducts.details && favoriteProducts.details.length > 0) {
                     const detailIds = (favoriteProducts.details as favIDs[]).map(detail => detail.id);
 
-                    const response = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/?lang=en', {
+                    // Запрос для товаров из 'https://rainzhizha.com/api/v1/details/'
+                    const detailsResponse = await axios.get<Details[]>('https://rainzhizha.com/api/v1/details/?lang=en', {
                         params: {
                             id: detailIds.join(','),
                         },
                     });
 
-                    const filteredDetails = response.data.filter(detail => detailIds.includes(detail.id));
-                    const modifiedData = filteredDetails.map(item => ({
+                    // Запрос для товаров из 'https://rainzhizha.com/api/v1/abstracts/'
+                    const abstractsResponse = await axios.get<Details[]>('https://rainzhizha.com/api/v1/abstracts/?lang=en', {
+                        params: {
+                            id: detailIds.join(','),
+                        },
+                    });
+
+                    // Обработка данных для деталей
+                    const filteredDetails = detailsResponse.data.filter(detail => detailIds.includes(detail.id));
+                    const modifiedDetails = filteredDetails.map(item => ({
                         ...item,
-                        chars: item.chars.map((char => ({
+                        chars: item.chars.map(char => ({
                             ...char,
-                        })))
+                        })),
                     }));
 
-                    setDetailData(modifiedData);
+                    // Обработка данных для абстрактов
+                    const filteredAbstracts = abstractsResponse.data.filter(abstract => detailIds.includes(abstract.id));
+                    const modifiedAbstracts = filteredAbstracts.map(item => ({
+                        ...item,
+                        chars: item.chars.map(char => ({
+                            ...char,
+                        })),
+                    }));
+
+                    // Устанавливаем данные в соответствующие стейты
+                    setDetailData(modifiedDetails);
+                    setAbstractsData(modifiedAbstracts);
                 } else {
                     setDetailData([]);
+                    setAbstractsData([]);
                 }
             } catch (error) {
                 console.error('Ошибка запроса:', error);
@@ -324,6 +347,25 @@ const FavBlock = () => {
                             wide_image={detail.wide_image}
                             categories={detail.categories}
                             chars={detail.chars}
+                        />
+                    </Link>
+                ))}
+                {abstractsData?.map((abstract, index) => (
+                    <Link key={index} href={{pathname: '/en/goods', query: { id: abstract.id}}}>
+                        <CategoryCard
+                            id={abstract.id}
+                            code={abstract.code}
+                            title={abstract.title}
+                            desc={abstract.desc}
+                            short_desc={abstract.short_desc}
+                            starting_price={abstract.starting_price}
+                            sale_price={abstract.sale_price}
+                            discount={abstract.discount}
+                            in_stock={abstract.in_stock}
+                            image={abstract.image}
+                            wide_image={abstract.wide_image}
+                            categories={abstract.categories}
+                            chars={abstract.chars}
                         />
                     </Link>
                 ))}

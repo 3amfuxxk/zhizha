@@ -42,7 +42,7 @@ interface Chars {
   id: number;
   color: string;
 }
-// For Deatails
+// For Details
 interface Details {
   id: string;
   title: string;
@@ -68,12 +68,14 @@ interface SearchState {
   liquids: Product[];
   pods: Pods[];
   details: Details[];
+  abstracts: Details[];
 }
 
 const initialState: SearchState = {
   liquids: [],
   pods: [],
   details: [],
+  abstracts: [],
 };
 
 const searchSlice = createSlice({
@@ -89,13 +91,17 @@ const searchSlice = createSlice({
     getDetailResults(state, action: PayloadAction<Details[]>) {
       state.details = action.payload;
     },
+    getAbstractResults(state, action: PayloadAction<Details[]>) {
+      state.abstracts = action.payload;
+    },
   },
 });
 
-export const { getLiquidResults, getPodResults, getDetailResults } = searchSlice.actions;
+export const { getLiquidResults, getPodResults, getDetailResults, getAbstractResults } = searchSlice.actions;
 
 export const selectAllLiquid = (state: RootState) => state.search.liquids;
 export const selectAllPods = (state: RootState) => state.search.pods;
 export const selectAllDetails = (state: RootState) => state.search.details;
+export const selectAllAbstracts = (state: RootState) => state.search.abstracts;
 
 export default searchSlice.reducer;

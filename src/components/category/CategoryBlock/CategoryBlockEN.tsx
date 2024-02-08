@@ -8,7 +8,7 @@ import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { setSelectedProduct } from '../../../store/liquidSlice';
 import { string } from "yup";
-import CategoryCard from "../CategoryCard/CategoryCard";
+import CategoryCard from "../CategoryCard/CategoryCardEN";
 
 const LiquidContainer = styled.div`
     display: flex;
@@ -170,7 +170,7 @@ const CategoryBlock = ({ id, title }: Props) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/abstracts/`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/abstracts/?lang=en`);
                 const categoryProducts = response.data as CategoryProduct[];
                 setDataProducts(categoryProducts);
             } catch (error) {
@@ -187,7 +187,7 @@ const CategoryBlock = ({ id, title }: Props) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/categories/`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/categories/?lang=en`);
                 const categoryData = response.data as Category[];
                 setDataCategory(categoryData);
             } catch (error) {
@@ -206,7 +206,7 @@ const CategoryBlock = ({ id, title }: Props) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/categories/${id}`);
+                const response = await axios.get(`https://rainzhizha.com/api/v1/categories/${id}/?lang=en`);
                 const itemsData = response.data as CategoryProduct[];
                 setDataItems(itemsData);
             } catch (error) {
@@ -236,14 +236,14 @@ const CategoryBlock = ({ id, title }: Props) => {
             </NameBlock>
             <ProductBlock>
                 <LinkPath>
-                    <Link href={"../"} >
+                    <Link href={"/en"} >
                         <TextInactive>
-                            Головна
+                            Home
                         </TextInactive>
                     </Link>
-                    <Link href={"/catalog"} >
+                    <Link href={"/en/catalog"} >
                         <TextInactive>
-                            Каталог
+                            Catalogue
                         </TextInactive>
                     </Link>
                     <Link href={""} >
@@ -254,7 +254,7 @@ const CategoryBlock = ({ id, title }: Props) => {
                 </LinkPath>
                 <CardContainer maxHeight={maxHeight}>
                     {dataItems?.map((item, index) => (
-                        <Link key={index} href={{pathname: '/goods', query: { id: item.id}}}>
+                        <Link key={index} href={{pathname: '/en/goods', query: { id: item.id}}}>
                             <CategoryCard
                                 id={item.id}
                                 code={item.code}

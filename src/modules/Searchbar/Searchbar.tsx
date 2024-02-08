@@ -6,7 +6,7 @@ import SearchItem from '../SearchItem/SearchItem';
 import Link from 'next/link';
 import Right from '../../../public/img/Header/right-sm.svg';
 import { useDispatch } from 'react-redux';
-import { getLiquidResults, getDetailResults, getPodResults } from '@/store/search';
+import { getLiquidResults, getDetailResults, getPodResults, getAbstractResults } from '@/store/search';
 
 const SearchBlock = styled.div`
     display: flex;
@@ -214,19 +214,19 @@ const Searchbar = () => {
 
     const [windowWidth, setWindowWidth] = useState<number>(0);
 
-        useEffect(() => {
-            const handleResize = () => {
-                setWindowWidth(window.innerWidth);
-            };
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
 
-            handleResize();
+        handleResize();
 
-            window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
 
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
-        }, []);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -283,16 +283,35 @@ const Searchbar = () => {
         fetchProduct();
     }, []);
 
+    const [abstracts, setAbstracts] = useState<Details[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`https://rainzhizha.com/api/v1/abstracts/`);
+                const abstractsData = response.data as Details[];
+                setAbstracts(abstractsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setAbstracts(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const [liquidResults, setLiquidResults] = useState<Product[]>([]);
     const [podResults, setPodResults] = useState<Pods[]>([]);
     const [detailResults, setDetailResults] = useState<Details[]>([]);
+    const [abstractResults, setAbstractResults] = useState<Details[]>([]);
 
     const clearData = () => {
         setLiquidResults([]);
         setPodResults([]);
         setDetailResults([]);
+        setAbstractResults([]);
     }
 
     const handleSearch = (event: any) => {
@@ -307,58 +326,63 @@ const Searchbar = () => {
         const liquidsResults = liquids?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
         const podsResults = pods?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
         const detailsResults = details?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
+        const abstractsResults = abstracts?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
 
         setLiquidResults(liquidsResults || []);
         setPodResults(podsResults || []);
         setDetailResults(detailsResults || []);
+        setAbstractResults(abstractsResults || []);
     }
-    const totalResultsCount = liquidResults.length + podResults.length + detailResults.length;
-    
+    const totalResultsCount = liquidResults.length + podResults.length + detailResults.length + abstractResults.length;
+
     useEffect(() => {
         if (windowWidth <= 430) {
-          const interval = setInterval(() => {
-            const searchBar = document.getElementById('search-bar');
-      
-            if (searchBar) {
-              const computedStyle = window.getComputedStyle(searchBar);
-              const topValue = computedStyle.getPropertyValue('top');
-      
-              if (topValue !== '-25px') {
-                setSearchTerm('');
-                setLiquidResults([]);
-                setPodResults([]);
-                setDetailResults([]);
-              }
-            }
-          }, 1);
-      
-          return () => clearInterval(interval);
+            const interval = setInterval(() => {
+                const searchBar = document.getElementById('search-bar');
+
+                if (searchBar) {
+                    const computedStyle = window.getComputedStyle(searchBar);
+                    const topValue = computedStyle.getPropertyValue('top');
+
+                    if (topValue !== '-25px') {
+                        setSearchTerm('');
+                        setLiquidResults([]);
+                        setPodResults([]);
+                        setDetailResults([]);
+                        setAbstractResults([]);
+                    }
+                }
+            }, 1);
+
+            return () => clearInterval(interval);
         } else {
             const interval = setInterval(() => {
                 const searchBar = document.getElementById('search-bar');
-          
+
                 if (searchBar) {
-                  const computedStyle = window.getComputedStyle(searchBar);
-                  const topValue = computedStyle.getPropertyValue('top');
-          
-                  if (topValue !== '0px') {
-                    setSearchTerm('');
-                    setLiquidResults([]);
-                    setPodResults([]);
-                    setDetailResults([]);
-                  }
+                    const computedStyle = window.getComputedStyle(searchBar);
+                    const topValue = computedStyle.getPropertyValue('top');
+
+                    if (topValue !== '0px') {
+                        setSearchTerm('');
+                        setLiquidResults([]);
+                        setPodResults([]);
+                        setDetailResults([]);
+                        setAbstractResults([]);
+                    }
                 }
-              }, 1);
+            }, 1);
         }
-      }, [windowWidth]);
+    }, [windowWidth]);
 
     const dispatch = useDispatch();
 
     const allSearches = () => {
-        if (liquidResults.length > 0 || podResults.length > 0 || detailResults.length > 0) {
+        if (liquidResults.length > 0 || podResults.length > 0 || detailResults.length > 0 || abstractResults.length > 0) {
             dispatch(getLiquidResults(liquidResults));
             dispatch(getPodResults(podResults));
             dispatch(getDetailResults(detailResults));
+            dispatch(getAbstractResults(abstractResults));
         } else {
             console.log('Нет результатов поиска');
         }
@@ -417,6 +441,19 @@ const Searchbar = () => {
                                             code={detail.code}
                                             price={detail.sale_price}
                                             title={detail.title}
+                                        />
+                                    </Link>
+                                    <Long />
+                                </Column>
+                            ))}
+                            {abstractResults.map((abstract, index) => (
+                                <Column key={index}>
+                                    <Link href={{ pathname: '/goods', query: { id: abstract.id } }}>
+                                        <SearchItem
+                                            img={abstract.image}
+                                            code={abstract.code}
+                                            price={abstract.sale_price}
+                                            title={abstract.title}
                                         />
                                     </Link>
                                     <Long />

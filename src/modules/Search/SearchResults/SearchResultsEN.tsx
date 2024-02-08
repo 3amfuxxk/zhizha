@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { Roboto } from "next/font/google";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAllLiquid, selectAllPods, selectAllDetails } from "@/store/search";
+import { selectAllLiquid, selectAllPods, selectAllDetails, selectAllAbstracts } from "@/store/search";
 import Card from "@/components/Card/Card";
 import DetailCard from "@/components/DetailCard/DetailCard";
 import PodCard from "@/components/PodCard/PodCard";
@@ -115,6 +115,7 @@ const SearchResults = () => {
     const liquids = useSelector(selectAllLiquid);
     const pods = useSelector(selectAllPods);
     const details = useSelector(selectAllDetails);
+    const abstracts = useSelector(selectAllAbstracts);
 
     return (
         <SearchContainer>
@@ -176,6 +177,25 @@ const SearchResults = () => {
                             wide_image={detail.wide_image}
                             categories={detail.categories}
                             chars={detail.chars}
+                        />
+                    </Link>
+                ))}
+                {abstracts?.map((abstract, index) => (
+                    <Link key={index} href={{ pathname: '/en/goods', query: { id: abstract.id } }}>
+                        <DetailCard
+                            id={abstract.id}
+                            code={abstract.code}
+                            title={abstract.title}
+                            desc={abstract.desc}
+                            short_desc={abstract.short_desc}
+                            starting_price={abstract.starting_price}
+                            sale_price={abstract.sale_price}
+                            discount={abstract.discount}
+                            in_stock={abstract.in_stock}
+                            image={abstract.image}
+                            wide_image={abstract.wide_image}
+                            categories={abstract.categories}
+                            chars={abstract.chars}
                         />
                     </Link>
                 ))}

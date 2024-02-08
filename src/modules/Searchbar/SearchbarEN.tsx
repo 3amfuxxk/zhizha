@@ -6,7 +6,7 @@ import SearchItem from '../SearchItem/SearchItem';
 import Link from 'next/link';
 import Right from '../../../public/img/Header/right-sm.svg';
 import { useDispatch } from 'react-redux';
-import { getLiquidResults, getDetailResults, getPodResults } from '@/store/search';
+import { getLiquidResults, getDetailResults, getPodResults, getAbstractResults } from '@/store/search';
 
 const SearchBlock = styled.div`
     display: flex;
@@ -283,16 +283,35 @@ const Searchbar = () => {
         fetchProduct();
     }, []);
 
+    const [abstracts, setAbstracts] = useState<Details[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`https://rainzhizha.com/api/v1/abstracts/`);
+                const abstractsData = response.data as Details[];
+                setAbstracts(abstractsData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setAbstracts(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const [liquidResults, setLiquidResults] = useState<Product[]>([]);
     const [podResults, setPodResults] = useState<Pods[]>([]);
     const [detailResults, setDetailResults] = useState<Details[]>([]);
+    const [abstractResults, setAbstractResults] = useState<Details[]>([]);
 
     const clearData = () => {
         setLiquidResults([]);
         setPodResults([]);
         setDetailResults([]);
+        setAbstractResults([]);
     }
 
     const handleSearch = (event: any) => {
@@ -307,10 +326,12 @@ const Searchbar = () => {
         const liquidsResults = liquids?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
         const podsResults = pods?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
         const detailsResults = details?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
+        const abstractsResults = abstracts?.filter(item => item.title.toLowerCase().includes(value.toLowerCase()));
 
         setLiquidResults(liquidsResults || []);
         setPodResults(podsResults || []);
         setDetailResults(detailsResults || []);
+        setAbstractResults(abstractsResults || []);
     }
     const totalResultsCount = liquidResults.length + podResults.length + detailResults.length;
     
@@ -328,6 +349,7 @@ const Searchbar = () => {
                 setLiquidResults([]);
                 setPodResults([]);
                 setDetailResults([]);
+                setAbstractResults([]);
               }
             }
           }, 1);
@@ -346,6 +368,7 @@ const Searchbar = () => {
                     setLiquidResults([]);
                     setPodResults([]);
                     setDetailResults([]);
+                    setAbstractResults([]);
                   }
                 }
               }, 1);
@@ -355,10 +378,11 @@ const Searchbar = () => {
     const dispatch = useDispatch();
 
     const allSearches = () => {
-        if (liquidResults.length > 0 || podResults.length > 0 || detailResults.length > 0) {
+        if (liquidResults.length > 0 || podResults.length > 0 || detailResults.length > 0 || abstractResults.length > 0) {
             dispatch(getLiquidResults(liquidResults));
             dispatch(getPodResults(podResults));
             dispatch(getDetailResults(detailResults));
+            dispatch(getAbstractResults(abstractResults));
         } else {
             console.log('Нет результатов поиска');
         }
@@ -371,7 +395,7 @@ const Searchbar = () => {
                     <Search />
                     <StInp placeholder='Search through our shop' value={searchTerm} onChange={handleSearch} />
                 </MnBlock>
-                <Link href="en/search" onClick={() => { allSearches(), clearData() }}>
+                <Link href="/en/search" onClick={() => { allSearches(), clearData() }}>
                     <SearchButton>
                         <SrBut>
                             Search
@@ -422,10 +446,23 @@ const Searchbar = () => {
                                     <Long />
                                 </Column>
                             ))}
+                            {abstractResults.map((abstract, index) => (
+                                <Column key={index}>
+                                    <Link href={{ pathname: '/en/goods', query: { id: abstract.id } }}>
+                                        <SearchItem
+                                            img={abstract.image}
+                                            code={abstract.code}
+                                            price={abstract.sale_price}
+                                            title={abstract.title}
+                                        />
+                                    </Link>
+                                    <Long />
+                                </Column>
+                            ))}
                         </ProductHolders>
                     )}
                     {totalResultsCount !== undefined && totalResultsCount > 4 && (
-                        <Link href="../en/search" onClick={() => { allSearches(), clearData() }}>
+                        <Link href="/en/search" onClick={() => { allSearches(), clearData() }}>
                             <LookMore>
                                 <TextMore>
                                     Show more {totalResultsCount - 4} searches

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import styled from 'styled-components';
-import LinkPath from "../LinkPath/LinkPath";
+import LinkPath from "../../LinkPath/LinkPath";
 import Link from "next/link";
 import Image from "next/image";
-import Counter from "../Counter/Counter";
-import Button from "../Button/Button";
+import Counter from "../../Counter/Counter";
+import Button from "../../Button/Button";
 import { Roboto } from "next/font/google";
-import { selectSelectedProduct, setSelectedProduct } from "../../store/liquidSlice";
+import { selectSelectedProduct, setSelectedProduct } from "../../../store/liquidSlice";
 import { useSelector, useDispatch } from 'react-redux'
-import { addToCart } from '../../store/slice';
-import { selectCart } from '../../store/slice';
+import { addDetailToCart } from '../../../store/slice';
+import { selectDetails } from '../../../store/slice';
 import { useEffect } from "react";
 import axios from "axios";
-import Card from "../Card/Card";
+import DetailCard from '../../../components/DetailCard/DetailCard';
 
 const roboto = Roboto({
     weight: ["300", "400", "500", "700"],
@@ -220,10 +220,6 @@ const BlockProps = styled.div<BlockProps>`
         padding: 0px 16px;
         height: 40px;
     }
-    transition: border-color 0.3s ease;
-    &:hover {
-        border-color: #fff;
-    }
 `
 const Text = styled.p`
     color: #FFF;
@@ -281,6 +277,9 @@ const DescHeader = styled.p`
     font-style: normal;
     font-weight: 800;
     line-height: 130%;
+    @media (max-width: 430px) {
+        font-size: 24px;
+    }
 `
 const FullBlock = styled.div`
     display: -webkit-box;
@@ -328,6 +327,81 @@ const Imgfull = styled(Image)`
         height: 230px;
     }
 `
+const FullData = styled.div`
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: #141414;
+    padding: 34px 29px 29px 29px;
+    flex-direction: column;
+    @media (max-width: 430px) {
+        padding: 22px 17px;
+    }
+`
+const FullDataBlock = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 430px) {
+        margin-top: 30px;
+    }
+`
+const DataValue = styled.p`
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+`
+const ValueBlock = styled.div`
+    display: flex;
+    height: auto;
+    width: auto;
+    gap: 18px;
+    flex-direction: column;
+`
+const ValueName = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+`
+const ValueRow = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+`
+const ButtonContainer = styled.div`
+        display: flex;
+        flex-shrink: 0;
+        border-radius: 8px;
+        background: #B6020D;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    @media (max-width: 430px) {
+        width: 100%;
+        height: 46px;
+    }
+`
+
+const LeftPart = styled.div`
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`
+const RightPart = styled.div`
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`
+
 const RecContainer = styled.div`
     display: flex;
     width: 100%;
@@ -356,54 +430,59 @@ const RecBlock = styled.div`
     }
 `
 
-interface AddToCartProduct {
-    id: string;
-    title: string;
-    code: number;
-    desc: string;
-    ice: boolean;
-    image: string;
-    categories: string[];
-    options: ProductOption;
-    totalQuantity: number;
-}
 
-
-interface Product {
+interface Details {
     id: string;
     title: string;
     code: number;
     desc: string;
     short_desc: string;
-    ice: boolean;
-    image: string;
-    wide_image: string;
-    categories: string[];
-    options: ProductOption[];
-}
-interface ProductOption {
-    id: number;
     starting_price: number;
     sale_price: number;
     discount: number;
     in_stock: boolean;
-    nico: number;
-    volume: number;
+    image: string;
+    wide_image: string;
+    categories: string[];
+    chars: Chars[];
 }
+
+interface Chars {
+    key: string;
+    value: string;
+}
+
 
 interface GetId {
     idp: string;
 }
 
-const ProductPage = ({ idp }: GetId) => {
+interface AddToCartProduct {
+    id: string;
+    title: string;
+    code: number;
+    image: string;
+    starting_price: number;
+    sale_price: number;
+    totalQuantity: number;
+}
 
-    const [product, setProduct] = useState<Product | null>(null);
+interface Category {
+    id: string;
+    title: string;
+    desc: string;
+    photo: string;
+}
+
+const DetailsPage = ({ idp }: GetId) => {
+
+    const [product, setProduct] = useState<Details | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://rainzhizha.com/api/v1/products/${idp}`);
-                const productData = response.data as Product;
+                const response = await axios.get(`https://rainzhizha.com/api/v1/abstracts/${idp}`);
+                const productData = response.data as Details;
                 setProduct(productData);
             } catch (error) {
                 console.error('Ошибка при запросе продукта:', error);
@@ -414,13 +493,32 @@ const ProductPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    const [recs, setRecs] = useState<Product[] | null>(null);
+    const [categories, setCategories] = useState<Category[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`https://rainzhizha.com/api/v1/categories`);
+                const categoriesData = response.data as Category[];
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setCategories(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    const category = categories?.find((cat) => cat.id === product?.categories[0]);
+
+    const [recs, setRecs] = useState<Details[] | null>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(`https://rainzhizha.com/api/v1/products/recommendations/${idp}`);
-                const recsData = response.data as Product[];
+                const recsData = response.data as Details[];
                 setRecs(recsData);
             } catch (error) {
                 console.error('Ошибка при запросе продукта:', error);
@@ -431,73 +529,33 @@ const ProductPage = ({ idp }: GetId) => {
         fetchProduct();
     }, [idp]);
 
-    const [selectedNico, setSelectedNico] = useState<number>(-1);
-    const [selectedVolume, setSelectedVolume] = useState<number>(-1);
-
     const [totalQuantity, setTotalQuantity] = useState<number>(1);
 
-    const cartProducts = useSelector(selectCart);
+    const cartDetails = useSelector(selectDetails);
     const dispatch = useDispatch();
 
     const handleQuantityChange = (newQuantity: number) => {
         setTotalQuantity(newQuantity);
     };
 
-    const selectedProduct = useSelector(selectSelectedProduct);
-
-    const [uniqueVolumes, setUniqueVolumes] = useState<number[]>([]);
-    const [filteredNicos, setFilteredNicos] = useState<number[]>([]);
-
-    const filterVolumeByNico = (selectedNico: number) => {
-        const filteredOptions = product?.options.filter((item) => item.nico === selectedNico);
-        const uniqueVolumes = Array.from(new Set(filteredOptions?.map((item) => item.volume)) || []);
-        setUniqueVolumes(uniqueVolumes);
-    };
-
-    const filterNicoByVolume = (selectedVolume: number) => {
-        const filteredOptions = product?.options.filter((item) => item.volume === selectedVolume);
-        const uniqueNicos = Array.from(new Set(filteredOptions?.map((item) => item.nico)) || []);
-        setFilteredNicos(uniqueNicos);
-    };
-
-    const findIdByOptions = (selectedNico: number, selectedVolume: number) => {
-        const selectedOptionID = product?.options.find((item) => item.nico === selectedNico && item.volume === selectedVolume);
-        return selectedOptionID?.id || null;
-    };
-
-    const id = findIdByOptions(selectedNico, selectedVolume) || 0;
-
-    const findByID = (id: number) => {
-        const selectedIndex = product?.options.findIndex((item) => item.id === id);
-        return selectedIndex !== -1 ? selectedIndex : null;
-    };
-
-    const index = findByID(id) || 0;
-
     const handleAddToCart = (quantity: number) => {
         if (product) {
-            const selectedOptions: ProductOption = product?.options[index];
-            const selectedProductToAdd: AddToCartProduct = {
+            const SelectedDetailToAdd: AddToCartProduct = {
                 ...product,
                 totalQuantity: quantity,
-                options: selectedOptions,
             };
-
-            const isProductInCart = cartProducts.some(
+            const isProductInCart = cartDetails.some(
                 item =>
-                    item.id === selectedProductToAdd.id &&
-                    item.options.id === selectedProductToAdd.options.id
+                    item.id === SelectedDetailToAdd.id
             );
 
             if (!isProductInCart) {
-                dispatch(addToCart(selectedProductToAdd));
+                dispatch(addDetailToCart(SelectedDetailToAdd));
             } else {
                 console.log('Этот товар уже есть в корзине');
             }
         }
     };
-
-    const descriptionLines = product?.desc.split('\r\n');
 
     return (
         <ProductContainer>
@@ -512,9 +570,9 @@ const ProductPage = ({ idp }: GetId) => {
                         Каталог
                     </TextInactive>
                 </Link>
-                <Link href={"/liquid"} >
+                <Link href={{ pathname: '/category', query: { id: category?.id, title: category?.title } }} >
                     <TextInactive>
-                        Набори
+                        {category?.title}
                     </TextInactive>
                 </Link>
                 <Link href={''}>
@@ -541,51 +599,17 @@ const ProductPage = ({ idp }: GetId) => {
                     </DescBlock>
                     <ProductPrice>
                         <StartingPrice>
-                            {((product?.options[index].starting_price || 0) * totalQuantity).toFixed(2)}₴
+                            {((product?.starting_price || 0) * totalQuantity).toFixed(2)}₴
                         </StartingPrice>
                         <SalePrice>
-                            {((product?.options[index].sale_price || 0) * totalQuantity).toFixed(2)}₴
+                            {((product?.sale_price || 0) * totalQuantity).toFixed(2)}₴
                         </SalePrice>
-                        {product?.options[index].discount !== 0 && (
+                        {product?.discount !== 0 && (
                             <Discount>
-                                {product?.options[index].discount}%
+                                {product?.discount}%
                             </Discount>
                         )}
                     </ProductPrice>
-                    <CategoryText>
-                        Міцність:
-                    </CategoryText>
-                    <Specs>
-                        {Array.from(new Set(filteredNicos.length > 0 ? filteredNicos : product?.options.map((item) => item.nico))).map((uniqueNico, index) => (
-                            <BlockProps
-                                key={index}
-                                isSelected={selectedNico === uniqueNico}
-                                onClick={() => {
-                                    setSelectedNico(uniqueNico);
-                                    filterVolumeByNico(uniqueNico);
-                                }}
-                            >
-                                <Text>{uniqueNico / 10}%({uniqueNico}мг)</Text>
-                            </BlockProps>
-                        ))}
-                    </Specs>
-                    <CategoryText>
-                        Об’єм
-                    </CategoryText>
-                    <Specs>
-                        {Array.from(new Set(uniqueVolumes.length > 0 ? uniqueVolumes : product?.options.map((item) => item.volume))).map((uniqueVolume, index) => (
-                            <BlockProps
-                                key={index}
-                                isSelected={selectedVolume === uniqueVolume}
-                                onClick={() => {
-                                    setSelectedVolume(uniqueVolume);
-                                    filterNicoByVolume(uniqueVolume);
-                                }}
-                            >
-                                <Text>{uniqueVolume}мл</Text>
-                            </BlockProps>
-                        ))}
-                    </Specs>
                     <NavBlock>
                         <Counter width={138} height={46} inpWidth={46} onQuantityChange={handleQuantityChange} totalQuantity={totalQuantity} />
                         <Button text={'В кошик'} width={213} height={46} onClick={() => handleAddToCart(totalQuantity)}>
@@ -599,13 +623,7 @@ const ProductPage = ({ idp }: GetId) => {
                     Опис товару:
                 </DescHeader>
                 <FullBlock className={roboto.className}>
-                    {descriptionLines?.map((line, index) => (
-                        <React.Fragment key={index}>
-                            {line}
-                            <br />
-                        </React.Fragment>
-                    ))}
-                    {/* {product?.desc} */}
+                    {product?.desc}
                 </FullBlock>
             </DescWhole>
             <ImageWhole>
@@ -613,25 +631,48 @@ const ProductPage = ({ idp }: GetId) => {
                     <Imgfull src={product?.wide_image ? `${product.wide_image}` : '/img/Card/rb.jpg'} width={1204} height={520} alt="" />
                 </ImageFull>
             </ImageWhole>
+            <FullData>
+                <DescHeader>
+                    Характеристики {product?.title}:
+                </DescHeader>
+                <FullDataBlock className={roboto.className}>
+                    <ValueBlock>
+                        {product?.chars.map((item, index) => (
+                            <ValueRow key={index}>
+                                <Active>
+                                    {item.key}
+                                </Active>
+                                <DataValue>
+                                    {item.value}
+                                </DataValue>
+                            </ValueRow>
+                        ))}
+                    </ValueBlock>
+                </FullDataBlock>
+            </FullData>
             <RecContainer>
                 <DescHeader>
                     Схожі товари
                 </DescHeader>
                 <RecBlock>
                     {recs?.map((item, index) => (
-                        <Link key={index} href={{ pathname: '/product', query: { id: item.id } }}>
-                            <Card
-                                code={item.code}
-                                desc={item.desc}
-                                ice={item.ice}
-                                categories={item.categories}
-                                // image={item.image}
-                                image={item.image}
-                                title={item.title}
-                                id={item.id}
-                                options={item.options}
+                        <Link key={index} href={{pathname: '/goods', query: { id: item.id}}}>
+                        <DetailCard
+                            id={item.id}
+                            code={item.code}
+                            title={item.title}
+                            desc={item.desc}
+                            short_desc={item.short_desc}
+                            starting_price={item.starting_price}
+                            sale_price={item.sale_price}
+                            discount={item.discount}
+                            in_stock={item.in_stock}
+                            image={item.image}
+                            wide_image={item.wide_image}
+                            categories={item.categories}
+                            chars={item.chars}
                             />
-                        </Link>
+                    </Link>
                     ))}
                 </RecBlock>
             </RecContainer>
@@ -639,4 +680,4 @@ const ProductPage = ({ idp }: GetId) => {
     )
 }
 
-export default ProductPage;
+export default DetailsPage;
