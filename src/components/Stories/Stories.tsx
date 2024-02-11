@@ -1,12 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { Roboto } from "next/font/google";
 import Image from "next/image";
+import axios from "axios";
+import Link from "next/link";
+
+import StoriesCircle from "../StoriesCircle/StoriesCircle";
 
 const roboto = Roboto({
     weight: ["500", "700"],
     subsets: ["cyrillic", "latin"],
 })
+
+interface Block {
+    id: number;
+    title: string;
+    photo: string;
+}
+
+interface Story {
+    id: string;
+    block: Block;
+    title: string;
+    start_date: string;
+    end_date: string;
+    content: string;
+}
+
+const Stories = () => {
+
+    const [blocks, setBlocks] = useState<Block[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`https://rainzhizha.com/api/v1/stories/blocks/`);
+                const blockData = response.data as Block[];
+                setBlocks(blockData);
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setBlocks(null);
+            }
+        };
+
+        fetchProduct();
+    }, []);
+
+    const [stories, setStories] = useState<Story[] | null>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                if (blocks && blocks.length > 0) {
+                    const response = await axios.get(`https://rainzhizha.com/api/v1/stories/blocks/1`);
+                    const storiesData = response.data as Story[];
+                    setStories(storiesData);
+                } else {
+                    console.error('Массив блоков пуст или null');
+                    setStories(null);
+                }
+            } catch (error) {
+                console.error('Ошибка при запросе продукта:', error);
+                setStories(null);
+            }
+        };
+
+        fetchProduct();
+    }, [blocks]);
+
+    return (
+        <StoriesContainer>
+            {/* <PlayerBlock>
+                {stories && stories.length > 0 && (
+                    <video width="100%" height="100%" controls>
+                        <source src={stories[1].content} />
+                    </video>
+                )}
+            </PlayerBlock> */}
+            <StoryBlock>
+                {blocks?.map((block, index) => (
+                    <Link href={{pathname: '/stories', query: { id: block.id}}}>
+                        <StoriesCircle {...block} key={index} />
+                    </Link>
+                ))}
+            </StoryBlock>
+            <ContactBlock>
+                <Text>
+                    Оновлення та анонси нашого магазину:
+                </Text>
+                <TgBlock>
+                    <Image src={'/img/Shipping/tg.svg'} width={16} height={16} alt="" />
+                    <TgText>
+                        Telegram
+                    </TgText>
+                </TgBlock>
+            </ContactBlock>
+        </StoriesContainer>
+    )
+}
+
+
 
 const StoriesContainer = styled.div`
     display: flex;
@@ -18,9 +111,22 @@ const StoriesContainer = styled.div`
     background: #141414;
     padding: 17px;
 `
+
+const PlayerBlock = styled.div`
+    display: flex;
+    position: fixed;
+    width: 432px;
+    height: 768px;
+    top: 100px;
+    background: #000;
+`
 const StoryBlock = styled.div`
     display: flex;
     width: auto;
+    max-width: 647px;
+    overflow-x: auto;
+    height: 100%;
+    gap: 17px;
 `
 const StoryText = styled.p`
     color: #FFF;
@@ -81,27 +187,5 @@ const TgText = styled.p`
     line-height: 120%;
 `
 
-const Stories = () => {
-    return (
-        <StoriesContainer>
-            <StoryBlock>
-                <StoryText>
-                    Тут скоро будуть круті історії ;)
-                </StoryText>
-            </StoryBlock>
-            <ContactBlock>
-                <Text>
-                    Оновлення та анонси нашого магазину:
-                </Text>
-                <TgBlock>
-                    <Image src={'/img/Shipping/tg.svg'} width={16} height={16} alt="" />
-                    <TgText>
-                        Telegram
-                    </TgText>
-                </TgBlock>
-            </ContactBlock>
-        </StoriesContainer>
-    )
-}
 
 export default Stories;

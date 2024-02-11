@@ -564,6 +564,8 @@ const PodsPage = ({ idp }: GetId) => {
         }
     };
 
+    const descriptionLines = product?.desc.split('\r\n');
+
     return (
         <ProductContainer>
             <LinkPath>
@@ -646,7 +648,13 @@ const PodsPage = ({ idp }: GetId) => {
                     Product description:
                 </DescHeader>
                 <FullBlock className={roboto.className}>
-                    {product?.desc}
+                    {descriptionLines?.map((line, index) => (
+                        <React.Fragment key={index}>
+                            {line}
+                            <br />
+                        </React.Fragment>
+                    ))}
+                    {/* {product?.desc} */}
                 </FullBlock>
             </DescWhole>
             <ImageWhole>

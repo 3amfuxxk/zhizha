@@ -43,7 +43,3 @@ a {
 .embedim-snow:nth-child(odd) {
   display: none;
 }
-/* .scrol::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,1);
-  width: 4px;
-} */

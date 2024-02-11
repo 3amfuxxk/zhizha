@@ -531,6 +531,8 @@ const DetailsPage = ({ idp }: GetId) => {
         }
     };
 
+    const descriptionLines = product?.desc.split('\r\n');
+
     return (
         <ProductContainer>
             <LinkPath>
@@ -597,7 +599,13 @@ const DetailsPage = ({ idp }: GetId) => {
                     Опис товару:
                 </DescHeader>
                 <FullBlock className={roboto.className}>
-                    {product?.desc}
+                    {descriptionLines?.map((line, index) => (
+                        <React.Fragment key={index}>
+                            {line}
+                            <br />
+                        </React.Fragment>
+                    ))}
+                    {/* {product?.desc} */}
                 </FullBlock>
             </DescWhole>
             <ImageWhole>
@@ -630,24 +638,24 @@ const DetailsPage = ({ idp }: GetId) => {
                 </DescHeader>
                 <RecBlock>
                     {recs?.map((item, index) => (
-                        <Link key={index} href={{pathname: '/detailsproduct', query: { id: item.id}}}>
-                        <DetailCard
-                            id={item.id}
-                            code={item.code}
-                            title={item.title}
-                            desc={item.desc}
-                            short_desc={item.short_desc}
-                            starting_price={item.starting_price}
-                            sale_price={item.sale_price}
-                            discount={item.discount}
-                            in_stock={item.in_stock}
-                            // image={item.image}
-                            image={item.image}
-                            wide_image={item.wide_image}
-                            categories={item.categories}
-                            chars={item.chars}
+                        <Link key={index} href={{ pathname: '/detailsproduct', query: { id: item.id } }}>
+                            <DetailCard
+                                id={item.id}
+                                code={item.code}
+                                title={item.title}
+                                desc={item.desc}
+                                short_desc={item.short_desc}
+                                starting_price={item.starting_price}
+                                sale_price={item.sale_price}
+                                discount={item.discount}
+                                in_stock={item.in_stock}
+                                // image={item.image}
+                                image={item.image}
+                                wide_image={item.wide_image}
+                                categories={item.categories}
+                                chars={item.chars}
                             />
-                    </Link>
+                        </Link>
                     ))}
                 </RecBlock>
             </RecContainer>
