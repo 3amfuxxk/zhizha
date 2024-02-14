@@ -33,9 +33,10 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>`;
 
-    const timeline = document.querySelector('.timeline');
+    const timeline = document.querySelector(`.timeline${id}`) as HTMLInputElement;
     const videoContainer = document.querySelector('.video-player');
-
+    const video = document.querySelector(`.video${id}`) as HTMLVideoElement;
+    const playButton = document.querySelector(`.play-button${id}`);
 
     const [isPlaying, setPlaying] = useState(false);
 
@@ -43,22 +44,43 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
     const Pause = "/img/Story/pause.png";
 
     const handlePlayPause = () => {
-        const playButton = document.querySelector('.play-button');
         if (playButton) {
             setPlaying(!isPlaying);
-            const video = document.querySelector('.video') as HTMLVideoElement;
             if (isPlaying) {
-                video.pause();            
+                video.pause();
             } else {
-                video.play();  
+                video.play();
             }
         }
     };
 
+    video.onended = function () {
+        setPlaying(false);
+    };
+
+    video.addEventListener("pause", function () {
+        setPlaying(false);
+    })
+
+    video.addEventListener("playing", function () {
+        setPlaying(true);
+    })
+
+    video.ontimeupdate = function () {
+        const percentagePosition = (100 * video.currentTime) / video.duration;
+        timeline.style.backgroundSize = `${percentagePosition}% 100%`;
+        timeline.value = percentagePosition.toString();
+    };
+
+    timeline.addEventListener('change', function () {
+        const time = (parseFloat(timeline.value) * video.duration) / 100;
+        video.currentTime = time;
+    });
+
     return (
         <Wrapper className="video-player">
             <ControlPanel>
-                <input type="range" min="0" max="100" defaultValue="0" className="timeline" />
+                <input type="range" min="0" max="100" defaultValue="0" className={`timeline${id}`} />
                 <InfoBlock>
                     <ImageBlock>
                         <Image src={image} width={34} height={34} alt="" />
@@ -66,15 +88,12 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
                     <Title className={manrope.className}>
                         {title}
                     </Title>
-                    <StyledButton className="play-button" onClick={handlePlayPause}>
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                        </svg> */}
+                    <StyledButton className={`play-button${id}`} onClick={handlePlayPause}>
                         <Image src={isPlaying ? Pause : Play} width={24} height={24} alt="" />
                     </StyledButton>
                 </InfoBlock>
             </ControlPanel>
-            <video width="100%" height="100%" className="video" controls>
+            <video width="100%" height="100%" className={`video${id}`} controls>
                 <source src={content} />
             </video>
         </Wrapper>
@@ -92,27 +111,37 @@ const ControlPanel = styled.div`
     
 
     input {
+        -webkit-appearance: none;
         width: 100%;
         height: 3px;
         background-color: #555555;
-        -webkit-appearance: none;
         border-radius: 10px;
-        /* overflow: hidden; */
+        background-size: 0% 100%;
+        background-image: linear-gradient(#B6020D, #B6020D);
+        background-repeat: no-repeat;
     }
 
     input::-webkit-slider-thumb {
-        -webkit-appearance: none;
+        /* -webkit-appearance: none;
         cursor: pointer;
         width: 10px;
         height: 10px;
         border-radius: 50%;
         opacity: 0;
         transition: all .1s;
-        background-color: pink;
+        background-color: pink; */
+        -webkit-appearance: none;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        cursor: pointer;
+        opacity: 0;
+        transition: all .1s;
+        background-color: #fff;
     }
 
     input::-webkit-slider-thumb:hover {
-        background-color: pink;
+        background-color: #fff;
     }
 
     input:hover::-webkit-slider-thumb {
@@ -120,10 +149,14 @@ const ControlPanel = styled.div`
     }
 
     input::-webkit-slider-runnable-track {
-        -webkit-appearance: none;
+        /* -webkit-appearance: none;
         box-shadow: none;
         border: none;
-        background: transparent;
+        background: transparent; */
+        -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
     }
     
 `
