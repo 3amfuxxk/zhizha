@@ -1,8 +1,13 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from "axios";
 
 import StoryVideo from "./StoryVideo";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface StoryBlock {
     idb: string | number;
@@ -24,7 +29,7 @@ interface Story {
 }
 
 const StoryBlock = ({ idb }: StoryBlock) => {
-
+    
     const [blocks, setBlocks] = useState<Block[] | null>(null);
 
     useEffect(() => {
@@ -64,20 +69,63 @@ const StoryBlock = ({ idb }: StoryBlock) => {
         fetchProduct();
     }, [blocks]);
 
+    const [swiperConfig, setSwiperConfig] = useState({
+        centeredSlides: true,
+        slidesPerView: 3,
+        spaceBetween: 50,
+      });
+    
+      useEffect(() => {
+        const handleResize = () => {
+          // Проверяем ширину экрана и обновляем конфигурацию Swiper
+          if (window.innerWidth < 430) {
+            setSwiperConfig({
+              centeredSlides: false,
+              slidesPerView: 1,
+              spaceBetween: 0, // или другое значение по вашему выбору
+            });
+          } else {
+            setSwiperConfig({
+              centeredSlides: true,
+              slidesPerView: 3,
+              spaceBetween: 50,
+            });
+          }
+        };
+    
+        // Вызываем функцию при монтировании компонента
+        handleResize();
+    
+        // Добавляем слушатель события изменения размера экрана
+        window.addEventListener('resize', handleResize);
+    
+        // Очищаем слушатель при размонтировании компонента
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+
     return (
         <Wrapper>
-            {stories?.map((story, index) => (
-                <StoryVideo
-                    key={index}
-                    id={story.id}
-                    block={story.block}
-                    title={story.title}
-                    start_date={story.start_date}
-                    end_date={story.end_date}
-                    content={story.content}
-                    image={story.block.photo}
-                />
-            ))}
+            <Swiper
+                modules={[Navigation]}
+                navigation
+                {...swiperConfig}
+            >
+                {stories?.map((story, index) => (
+                    <SwiperSlide key={index}>
+                        <StoryVideo
+                            id={story.id}
+                            block={story.block}
+                            title={story.title}
+                            start_date={story.start_date}
+                            end_date={story.end_date}
+                            content={story.content}
+                            image={story.block.photo}
+                        />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </Wrapper>
     )
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Manrope } from "next/font/google";
 import Image from "next/image";
 
+
 const manrope = Manrope({
     weight: ["500", "600", "700"],
     subsets: ["cyrillic", "latin"],
@@ -54,28 +55,30 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
         }
     };
 
-    video.onended = function () {
-        setPlaying(false);
-    };
+    if (video) {
+        video.onended = function () {
+            setPlaying(false);
+        };
 
-    video.addEventListener("pause", function () {
-        setPlaying(false);
-    })
+        video.addEventListener("pause", function () {
+            setPlaying(false);
+        })
 
-    video.addEventListener("playing", function () {
-        setPlaying(true);
-    })
+        video.addEventListener("playing", function () {
+            setPlaying(true);
+        })
 
-    video.ontimeupdate = function () {
-        const percentagePosition = (100 * video.currentTime) / video.duration;
-        timeline.style.backgroundSize = `${percentagePosition}% 100%`;
-        timeline.value = percentagePosition.toString();
-    };
+        video.ontimeupdate = function () {
+            const percentagePosition = (100 * video.currentTime) / video.duration;
+            timeline.style.backgroundSize = `${percentagePosition}% 100%`;
+            timeline.value = percentagePosition.toString();
+        };
 
-    timeline.addEventListener('change', function () {
-        const time = (parseFloat(timeline.value) * video.duration) / 100;
-        video.currentTime = time;
-    });
+        timeline.addEventListener('change', function () {
+            const time = (parseFloat(timeline.value) * video.duration) / 100;
+            video.currentTime = time;
+        });
+    }
 
     return (
         <Wrapper className="video-player">
@@ -93,7 +96,7 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
                     </StyledButton>
                 </InfoBlock>
             </ControlPanel>
-            <video width="100%" height="100%" className={`video${id}`} controls>
+            <video width="100%" height="100%" className={`video${id}`}>
                 <source src={content} />
             </video>
         </Wrapper>
@@ -122,14 +125,6 @@ const ControlPanel = styled.div`
     }
 
     input::-webkit-slider-thumb {
-        /* -webkit-appearance: none;
-        cursor: pointer;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        opacity: 0;
-        transition: all .1s;
-        background-color: pink; */
         -webkit-appearance: none;
         width: 9px;
         height: 9px;
@@ -149,14 +144,10 @@ const ControlPanel = styled.div`
     }
 
     input::-webkit-slider-runnable-track {
-        /* -webkit-appearance: none;
+        -webkit-appearance: none;
         box-shadow: none;
         border: none;
-        background: transparent; */
-        -webkit-appearance: none;
-  box-shadow: none;
-  border: none;
-  background: transparent;
+        background: transparent;
     }
     
 `
@@ -169,8 +160,6 @@ const InfoBlock = styled.div`
 `
 
 const Wrapper = styled.div`
-    width: 432px;
-    height: 768px;
     flex-shrink: 0;
     display: flex;
     border-radius: 14px;

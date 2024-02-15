@@ -70,13 +70,6 @@ const Stories = () => {
 
     return (
         <StoriesContainer>
-            {/* <PlayerBlock>
-                {stories && stories.length > 0 && (
-                    <video width="100%" height="100%" controls>
-                        <source src={stories[1].content} />
-                    </video>
-                )}
-            </PlayerBlock> */}
             <StoryBlock>
                 {blocks?.map((block, index) => (
                     <Link href={{pathname: '/stories', query: { id: block.id}}}>
@@ -111,15 +104,6 @@ const StoriesContainer = styled.div`
     background: #141414;
     padding: 17px;
 `
-
-const PlayerBlock = styled.div`
-    display: flex;
-    position: fixed;
-    width: 432px;
-    height: 768px;
-    top: 100px;
-    background: #000;
-`
 const StoryBlock = styled.div`
     display: flex;
     width: auto;
@@ -127,16 +111,6 @@ const StoryBlock = styled.div`
     overflow-x: auto;
     height: 100%;
     gap: 17px;
-`
-const StoryText = styled.p`
-    color: #FFF;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 130%;
-    @media (max-width: 430px) {
-        display: none;
-    }
 `
 const ContactBlock = styled.div`
     display: flex;
@@ -147,6 +121,7 @@ const ContactBlock = styled.div`
     @media (max-width: 430px) {
         margin-right: 0;
         align-items: center;   
+        display: none;
     }
 `
 const Text = styled.p`
