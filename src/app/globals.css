@@ -8,9 +8,6 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {}
-}
 
 * {
   box-sizing: border-box;
@@ -25,7 +22,6 @@ body {
   background: #000;
 }
 
-body {}
 
 a {
   color: inherit;

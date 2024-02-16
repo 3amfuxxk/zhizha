@@ -72,8 +72,8 @@ const Stories = () => {
         <StoriesContainer>
             <StoryBlock>
                 {blocks?.map((block, index) => (
-                    <Link href={{pathname: '/stories', query: { id: block.id}}}>
-                        <StoriesCircle {...block} key={index} />
+                    <Link href={{pathname: '/stories', query: { id: block.id}}} key={index}>
+                        <StoriesCircle {...block} />
                     </Link>
                 ))}
             </StoryBlock>
