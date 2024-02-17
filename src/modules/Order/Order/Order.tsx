@@ -227,23 +227,16 @@ const Order = () => {
         }
     };
 
-    console.log(postRequestConf);
-
-    // const [cookies] = useCookies(['favoriteProducts']);
-    // const favoriteProducts = cookies['favoriteProducts'];
-
-    // console.log(favoriteProducts);
-
     const orderConfirm = async (payload: any) => {
         try {
-            const response = await axios.post('https://rainzhizha.com/api/v1/orders/', payload);
-            console.log('POST request successful:', response.data);
-            dispatch(clearCart());
+          const response = await axios.post('https://rainzhizha.com/api/v1/orders/', payload, postRequestConf);
+          console.log('POST request successful:', response.data);
+          dispatch(clearCart());
         } catch (error) {
-            console.error('Error sending POST request:', error);
-            console.log(payload);
+          console.error('Error sending POST request:', error);
+          console.log(payload);
         }
-    };
+      };
 
     const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
         const payload = {
