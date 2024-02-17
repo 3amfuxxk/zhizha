@@ -99,7 +99,8 @@ a {
     left: var(--swiper-navigation-sides-offset, 10px) !important;
   }
 
-  .swiper-slide-active {
+  .swiper-slide-active,
+  .swiper-slide .video-player {
     width: 100% !important;
     height: 728px !important;
   }

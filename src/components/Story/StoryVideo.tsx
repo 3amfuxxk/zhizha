@@ -96,7 +96,7 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
                     </StyledButton>
                 </InfoBlock>
             </ControlPanel>
-            <video width="100%" height="100%" className={`video${id}`}>
+            <video className={`video${id}`} controls>
                 <source src={content} />
             </video>
         </Wrapper>
@@ -166,6 +166,21 @@ const Wrapper = styled.div`
     background: #181818;
     overflow: hidden;
     position: relative;
+
+    video::-webkit-media-controls-timeline,
+    video::-webkit-media-controls-current-time-display,
+    video::-webkit-media-controls-time-remaining-display,
+    video::-webkit-media-controls-play-button {
+        display: none;
+    }
+
+    video {
+        z-index: 4;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        object-fit: fill;
+    }
 `
 
 const Title = styled.p`

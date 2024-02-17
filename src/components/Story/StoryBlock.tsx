@@ -133,10 +133,15 @@ const StoryBlock = ({ idb }: StoryBlock) => {
 const Wrapper = styled.div`
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     position: relative;
     justify-content: center;
     align-items: center;
+    padding: 140px 0px;
+    
+    @media (max-width: 430px) {
+        padding: 100px 0px;
+    }
 `
 
 export default StoryBlock;
