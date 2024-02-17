@@ -96,7 +96,7 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
                     </StyledButton>
                 </InfoBlock>
             </ControlPanel>
-            <video className={`video${id}`} controls>
+            <video className={`video${id}`}>
                 <source src={content} />
             </video>
         </Wrapper>
@@ -175,7 +175,6 @@ const Wrapper = styled.div`
     }
 
     video {
-        z-index: 4;
         width: 100%;
         height: 100%;
         cursor: pointer;

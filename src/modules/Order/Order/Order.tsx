@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCart, clearCart, selectPods, selectDetails } from "../../../store/slice";
 import axios from "axios";
 
+import { Cookies, useCookies } from "react-cookie";
+
 const roboto = Roboto({
     weight: ["100", "300", "400", "500"],
     subsets: ["cyrillic", "latin"],
@@ -216,6 +218,22 @@ const Order = () => {
     }))
     const [isVisible, setIsVisible] = useState(false);
 
+    const [cookies] = useCookies(['csrftoken']);
+
+    const postRequestConf = {
+        withCredentials: true,
+        headers: {
+            'X-CSRFToken': cookies.csrftoken
+        }
+    };
+
+    console.log(postRequestConf);
+
+    // const [cookies] = useCookies(['favoriteProducts']);
+    // const favoriteProducts = cookies['favoriteProducts'];
+
+    // console.log(favoriteProducts);
+
     const orderConfirm = async (payload: any) => {
         try {
             const response = await axios.post('https://rainzhizha.com/api/v1/orders/', payload);
@@ -245,7 +263,7 @@ const Order = () => {
         setIsVisible((prevVisible) => !prevVisible);
         orderConfirm(payload);
     };
-    
+
     return (
         <OrderContainer>
             <Formik
