@@ -27,33 +27,33 @@ interface Story {
 
 const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: Story) => {
 
-    const play = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-    </svg>`;
-    const pause = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>`;
+    // const play = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+    //     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+    // </svg>`;
+    // const pause = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    // </svg>`;
 
     const timeline = document.querySelector(`.timeline${id}`) as HTMLInputElement;
     const videoContainer = document.querySelector('.video-player');
     const video = document.querySelector(`.video${id}`) as HTMLVideoElement;
-    const playButton = document.querySelector(`.play-button${id}`);
+    // const playButton = document.querySelector(`.play-button${id}`);
 
     const [isPlaying, setPlaying] = useState(false);
 
     const Play = "/img/Story/play.png";
     const Pause = "/img/Story/pause.png";
 
-    const handlePlayPause = () => {
-        if (playButton) {
-            setPlaying(!isPlaying);
-            if (isPlaying) {
-                video.pause();
-            } else {
-                video.play();
-            }
-        }
-    };
+    // const handlePlayPause = () => {
+    //     if (playButton) {
+    //         setPlaying(!isPlaying);
+    //         if (isPlaying) {
+    //             video.pause();
+    //         } else {
+    //             video.play();
+    //         }
+    //     }
+    // };
 
     if (video) {
         video.onended = function () {
@@ -91,12 +91,12 @@ const StoryVideo = ({ id, block, title, start_date, end_date, content, image }: 
                     <Title className={manrope.className}>
                         {title}
                     </Title>
-                    <StyledButton className={`play-button${id}`} onClick={handlePlayPause}>
+                    {/* <StyledButton className={`play-button${id}`}>
                         <Image src={isPlaying ? Pause : Play} width={24} height={24} alt="" />
-                    </StyledButton>
+                    </StyledButton> */}
                 </InfoBlock>
             </ControlPanel>
-            <video className={`video${id}`}>
+            <video className={`video${id}`} controls>
                 <source src={content} />
             </video>
         </Wrapper>
@@ -167,10 +167,7 @@ const Wrapper = styled.div`
     overflow: hidden;
     position: relative;
 
-    video::-webkit-media-controls-timeline,
-    video::-webkit-media-controls-current-time-display,
-    video::-webkit-media-controls-time-remaining-display,
-    video::-webkit-media-controls-play-button {
+    video::-webkit-media-controls-panel {
         display: none;
     }
 
